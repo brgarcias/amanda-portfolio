@@ -1,0 +1,18 @@
+{
+  "HomePage": {
+    "Title": ""
+  },
+  "NotFoundPage": {
+    "Code": "Página 404",
+    "Title": "Opa! Página errada",
+    "Content": "Desculpe, mas a página que você está procurando pode estar quebrada ou não ter sido criada."
+  },
+  "ErrorContent": {
+    "Title": "Opa! Página não encontrada.",
+    "Content": "Parece que a página que você estava procurando não foi encontrada. Tente ir para a Página Inicial usando o botão abaixo.",
+    "ContentButton": "Voltar à Página Inicial"
+  },
+  "PreLoader": {
+    "Loading": "Carregando..."
+  }
+}
