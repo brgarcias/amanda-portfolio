@@ -24,7 +24,7 @@ const nextConfig = {
   },
   swcMinify: true,
   poweredByHeader: false,
-  reactStrictMode: false,
+  reactStrictMode: true,
   i18n: {
     locales: ['pt-BR'],
     defaultLocale: 'pt-BR',
