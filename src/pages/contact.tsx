@@ -1,9 +1,20 @@
+import { useState } from 'react';
 import PageBanner from '@/src/components/PageBanner';
 import Layouts from '@/src/layouts/Layouts';
-import { Formik } from 'formik';
-import appData from '@data/app.json';
+import { ErrorMessage, Field, Formik } from 'formik';
+import * as Yup from 'yup';
+
+import SnackbarFeedback from '../components/feedback/Feedback';
+import { Box } from '@mui/system';
 
 const Contact = () => {
+  const [openSnackbar, setOpenSnackbar] = useState({
+    open: false,
+    title: '',
+    description: '',
+    icon: '',
+    colorIcon: '',
+  });
   return (
     <Layouts
       rightPanelBackground={'/assets/images/person/bg-2.jpg'}
@@ -12,25 +23,28 @@ const Contact = () => {
       <PageBanner
         pageTitle={'Get in touch!'}
         align={'center'}
-        breadTitle={''}
+        breadTitle={'Contact'}
       />
+
+      {/* snackbar */}
+      <SnackbarFeedback content={openSnackbar} setOpen={setOpenSnackbar} />
 
       {/* info */}
       <div>
         <ul className="mil-puplication-details mil-up mil-mb-90">
           <li>
             <span className="mil-upper mil-accent">Call: </span>&nbsp;&nbsp;
-            <span className="mil-upper mil-dark">+27(034)765 64 X5</span>
+            <span className="mil-upper mil-dark">+55 (11) 99624-0704</span>
           </li>
           <li>
             <span className="mil-upper mil-accent">Write: </span>&nbsp;&nbsp;
-            <span className="mil-upper mil-dark">miller.themes@gmail.com</span>
+            <span className="mil-upper mil-dark">arra347@gmail.com</span>
           </li>
         </ul>
       </div>
 
       {/* map */}
-      <div className="mil-map mil-mb-90">
+      {/* <div className="mil-map mil-mb-90">
         <iframe
           src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d1396.5769090312324!2d-73.6519672!3d45.5673453!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4cc91f8abc30e0ff%3A0xfc6d9cbb49022e9c!2sManoir%20Saint-Joseph!5e0!3m2!1sen!2sua!4v1685485811069!5m2!1sen!2sua"
           style={{ border: '0' }}
@@ -38,7 +52,7 @@ const Contact = () => {
           loading="lazy"
           referrerPolicy="no-referrer-when-downgrade"
         />
-      </div>
+      </div> */}
       {/* map end */}
 
       <div className="mil-section-title mil-up">
@@ -46,110 +60,121 @@ const Contact = () => {
         <h3>Let&apos;s Talk</h3>
       </div>
 
-      {/* contact */}
       <div id="contact" className="mil-p-90-60">
         <Formik
           initialValues={{ email: '', name: '', message: '' }}
-          validate={(values) => {
-            const errors = {};
-            if (!values.email) {
-              errors.email = 'Required';
-            } else if (
-              !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-            ) {
-              errors.email = 'Invalid email address';
-            }
-            return errors;
-          }}
+          validationSchema={Yup.object({
+            name: Yup.string()
+              .min(3, 'Must be 3 characters or more')
+              .required('Please, tell me your name'),
+            email: Yup.string()
+              .email('Invalid email address')
+              .required('Enter your best email'),
+            message: Yup.string()
+              .min(20, 'Must be 20 characters or more')
+              .required('Give me some feedback, please'),
+          })}
           onSubmit={(values, { setSubmitting }) => {
-            const form = document.getElementById('contactForm');
-            const status = document.getElementById('contactFormStatus');
-            const data = new FormData();
-
-            data.append('name', values.name);
-            data.append('email', values.email);
-            data.append('message', values.message);
-
-            fetch(form.action, {
+            fetch('/', {
               method: 'POST',
-              body: data,
-              headers: {
-                Accept: 'application/json',
-              },
+              headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+              body: new URLSearchParams({
+                'form-name': 'contactForm',
+                ...values,
+              }).toString(),
             })
               .then((response) => {
+                console.log(response);
                 if (response.ok) {
-                  status.innerHTML = 'Thanks for your submission!';
-                  form.reset();
+                  setOpenSnackbar({
+                    open: true,
+                    title: 'Form Submitted',
+                    description: 'Thank you very much for your message!',
+                    icon: 'fa-light fa-check',
+                    colorIcon: '#66bb6a',
+                  });
                 } else {
-                  response.json().then((data) => {
-                    if (Object.hasOwn(data, 'errors')) {
-                      status.innerHTML = data['errors']
-                        .map((error) => error['message'])
-                        .join(', ');
-                    } else {
-                      status.innerHTML =
-                        'Oops! There was a problem submitting your form';
-                    }
+                  console.error('Error submitting form: ', response);
+                  setOpenSnackbar({
+                    open: true,
+                    title: 'We had a problem',
+                    description:
+                      'An error occurred while sending your message!',
+                    icon: 'fa-light fa-circle-exclamation',
+                    colorIcon: 'rgb(230, 154, 147)',
                   });
                 }
               })
               .catch((error) => {
-                status.innerHTML =
-                  'Oops! There was a problem submitting your form';
-              });
-
-            setSubmitting(false);
+                console.error('Error submitting form:', error);
+                setOpenSnackbar({
+                  open: true,
+                  title: 'We had a problem',
+                  description: 'An error occurred while sending your message!',
+                  icon: 'fa-light fa-circle-exclamation',
+                  colorIcon: 'rgb(230, 154, 147)',
+                });
+              })
+              .finally(() => setSubmitting(false));
           }}
         >
-          {({
-            values,
-            errors,
-            touched,
-            handleChange,
-            handleBlur,
-            handleSubmit,
-            isSubmitting,
-            /* and other goodies */
-          }) => (
+          {({ handleSubmit, isSubmitting }) => (
             <form
               onSubmit={handleSubmit}
               id="contactForm"
-              action={appData.settings.formspreeURL}
               className="row align-items-center"
+              data-netlify="true"
+              netlify-honeypot="bot-field"
             >
+              <input type="hidden" name="form-name" value="contact" />
               <div className="col-lg-6 mil-up">
-                <input
+                <Field
+                  id="name"
                   type="text"
                   placeholder="What's your name"
                   name="name"
+                  disabled={isSubmitting}
                   required
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.name}
+                />
+                <ErrorMessage
+                  name="name"
+                  component="span"
+                  className="error-message-form"
                 />
               </div>
+              <Box sx={{ m: 3 }} />
               <div className="col-lg-6 mil-up">
-                <input
-                  type="email"
-                  placeholder="Your Email"
+                <Field
+                  id="email"
+                  type="text"
+                  placeholder="Your best email"
                   name="email"
+                  disabled={isSubmitting}
                   required
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.email}
+                />
+                <ErrorMessage
+                  name="email"
+                  component="span"
+                  className="error-message-form"
                 />
               </div>
+              <Box sx={{ m: 3 }} />
               <div className="col-lg-12 mil-up">
-                <textarea
-                  placeholder="Tell us about our project"
+                <Field
+                  as="textarea"
+                  id="message"
+                  placeholder="Give me some feedback"
                   name="message"
+                  disabled={isSubmitting}
                   required
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.message}
+                />
+                <ErrorMessage
+                  name="message"
+                  component="span"
+                  className="error-message-form"
                 />
               </div>
+              <Box sx={{ m: 5 }} />
               <div className="col-lg-8">
                 <p className="mil-up mil-mb-30">
                   <span className="mil-accent">*</span> We promise not to
@@ -164,11 +189,11 @@ const Contact = () => {
                 </div>
               </div>
               <div className="form-status" id="contactFormStatus" />
+              <div data-netlify-recaptcha="true" />
             </form>
           )}
         </Formik>
       </div>
-      {/* contact end */}
     </Layouts>
   );
 };

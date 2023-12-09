@@ -1,4 +1,4 @@
-import Data from '@data/sections/skills-1.json';
+import Data from '@data/sections/skills-1';
 
 const SkillsOneSection = () => {
   return (
@@ -8,7 +8,6 @@ const SkillsOneSection = () => {
         <h3>{Data.title}</h3>
       </div>
 
-      {/* language */}
       <section className="mil-lang-skills mil-p-90-60">
         <div className="row justify-content-between align-items-center">
           {Data.items.map((item, key) => (
@@ -31,7 +30,6 @@ const SkillsOneSection = () => {
           ))}
         </div>
       </section>
-      {/* language end */}
     </>
   );
 };

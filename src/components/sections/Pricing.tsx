@@ -1,5 +1,5 @@
 import React from 'react';
-import Data from '@data/sections/pricing.json';
+import Data from '@data/sections/pricing';
 import Link from 'next/link';
 
 const PricingSection = () => {

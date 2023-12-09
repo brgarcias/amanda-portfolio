@@ -34,7 +34,12 @@ const ProjectsMasonry = ({ projects }) => {
                     className="mil-portfolio-item mil-mb-60"
                   >
                     <div className="mil-cover-frame mil-up">
-                      <Image src={item.image} alt={item.title} unoptimized />
+                      <Image
+                        src={item.image}
+                        alt={item.title}
+                        unoptimized
+                        fill
+                      />
                     </div>
                     <div className="mil-description mil-up">
                       <div>

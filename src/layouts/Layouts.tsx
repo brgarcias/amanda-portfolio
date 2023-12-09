@@ -23,7 +23,6 @@ interface LayoutsProps {
   rightPanelBackground: string;
   rightPanelImg: string;
   fullWidth100?: boolean;
-  extraClass?: string;
 }
 
 const Layouts: FC<LayoutsProps> = ({
@@ -36,7 +35,6 @@ const Layouts: FC<LayoutsProps> = ({
   rightPanelBackground,
   rightPanelImg,
   fullWidth100 = false,
-  extraClass,
 }) => {
   let bodyClass = null;
   let containerClass = null;
@@ -69,7 +67,7 @@ const Layouts: FC<LayoutsProps> = ({
       <Preloader />
 
       <div className="mil-frame">
-        {!noHeader && <Header layout={header} extraClass={extraClass} />}
+        {!noHeader && <Header layout={header} />}
 
         <LeftPanel />
 

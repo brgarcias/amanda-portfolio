@@ -1,22 +1,20 @@
 /** @type {import('next').NextConfig} */
 
 const appVersion = () => {
-  return Date.now();
+  return Date.now().toString();
 };
 
 const nextConfig = {
   env: {
-    APP_ENV: 'development',
-    API: 'http://localhost:3001/v1',
-    APP_VERSION_CODE: appVersion(),
+    NEXT_PUBLIC_APP_ENV: 'development',
+    NEXT_PUBLIC_API: 'http://localhost:3001/v1',
+    NEXT_PUBLIC_APP_VERSION_CODE: appVersion(),
   },
   images: {
-    // domains: ["assets.arra-portfolio.netlify.app", "d2r9epyceweg5n.cloudfront.net"],
-    unoptimized: false,
+    unoptimized: true,
   },
   serverRuntimeConfig: {},
   publicRuntimeConfig: {
-    staticFolder: '/public',
     assets: 'https://assets.arra-portfolio.netlify.app',
   },
   generateBuildId: async () => {

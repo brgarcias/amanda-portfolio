@@ -1,5 +1,5 @@
-import Data from '@data/sections/subscribe.json';
-import appData from '@data/app.json';
+import Data from '@data/sections/subscribe';
+import appData from '@/src/data/app';
 
 const SubscribeSection = () => {
   return (

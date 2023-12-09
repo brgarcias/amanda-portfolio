@@ -25,6 +25,7 @@ const ProjectsSlider = ({ projects }) => {
                       data-swiper-parallax="-130"
                       data-swiper-parallax-scale="1.25"
                       unoptimized
+                      fill
                     />
                   </div>
                   <div

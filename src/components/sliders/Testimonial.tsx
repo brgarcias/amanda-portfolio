@@ -1,7 +1,7 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Image from 'next/image';
 import { sliderProps } from '@/src/common/sliderProps';
-import Data from '@data/sliders/testimonial.json';
+import Data from '@data/sliders/testimonial';
 
 const TestimonialSlider = () => {
   return (
@@ -11,7 +11,6 @@ const TestimonialSlider = () => {
         <h3>{Data.title}</h3>
       </div>
 
-      {/* revievs */}
       <section className="mil-p-90-90">
         <div className="row justify-content-center mil-reviews-slider-frame">
           <div className="col-lg-8">
@@ -35,7 +34,6 @@ const TestimonialSlider = () => {
                         src={item.image}
                         alt={item.name}
                         className="mil-avatar mil-up"
-                        unoptimized
                       />
                       <div className="mil-name">
                         <h4 className="mil-up mil-mb-5">{item.name}</h4>
@@ -89,7 +87,6 @@ const TestimonialSlider = () => {
           <div className="swiper-reviews-pagination mil-up" />
         </div>
       </section>
-      {/* revievs end */}
     </>
   );
 };

@@ -59,6 +59,8 @@ const ProjectDetail = (props) => {
           alt={postData.title}
           style={{ width: '100%' }}
           className="mil-up mil-mb-90"
+          unoptimized
+          fill
         />
       )}
 
@@ -93,6 +95,8 @@ const ProjectDetail = (props) => {
                         alt={item.alt}
                         style={{ width: '100%' }}
                         className="mil-up mil-mb-30"
+                        unoptimized
+                        fill
                       />
                     </div>
                   ))}
@@ -160,6 +164,8 @@ const ProjectDetail = (props) => {
                         alt={item.alt}
                         style={{ width: '100%' }}
                         className="mil-up mil-mb-30"
+                        unoptimized
+                        fill
                       />
                     </div>
                   ))}

@@ -35,6 +35,7 @@ const Services = (props) => {
                     src={item.image}
                     alt={item.title}
                     className="mil-mb-30"
+                    fill
                   />
                 </div>
                 <h5 className="mil-up mil-mb-30">{item.title}</h5>

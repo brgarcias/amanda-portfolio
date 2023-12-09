@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useState } from 'react';
-import appData from '@data/app.json';
+import appData from '@/src/data/app';
 import { useRouter } from 'next/router';
 
 const DefaultHeader = () => {

@@ -1,7 +1,7 @@
 import Head from 'next/head';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import appData from '@data/app.json';
+import appData from '@/src/data/app';
 import { FC } from 'react';
 
 interface PageBannerProps {

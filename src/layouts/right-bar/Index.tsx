@@ -18,6 +18,7 @@ const rightPanelModule = ({ background, img }) => {
             alt="background"
             className={img ? 'mil-banner-bg mil-blur' : 'mil-banner-bg'}
             unoptimized
+            fill
           />
         </div>
       </div>
@@ -29,6 +30,7 @@ const rightPanelModule = ({ background, img }) => {
               alt="person"
               className="mil-banner-person"
               unoptimized
+              fill
             />
           </div>
         )}
@@ -37,13 +39,13 @@ const rightPanelModule = ({ background, img }) => {
         {img != undefined && (
           <div id="swupSkills" className="mil-skills-frame">
             <div className="mil-item" style={{ top: '30%', left: '10%' }}>
-              <Image src={Logo1} alt="logo" unoptimized />
+              <Image src={Logo1} alt="logo" unoptimized fill />
             </div>
             <div className="mil-item" style={{ bottom: '15%', left: '20%' }}>
-              <Image src={Logo2} alt="logo2" unoptimized />
+              <Image src={Logo2} alt="logo2" unoptimized fill />
             </div>
             <div className="mil-item" style={{ bottom: '45%', right: '15%' }}>
-              <Image src={Logo3} alt="logo3" unoptimized />
+              <Image src={Logo3} alt="logo3" unoptimized fill />
             </div>
 
             <div className="mil-el mil-addition-el-1">+</div>

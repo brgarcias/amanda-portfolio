@@ -33,6 +33,7 @@ const ProjectsGrid = ({ projects, columns }) => {
                       src={item.image}
                       alt={item.title}
                       unoptimized
+                      fill
                       data-swiper-parallax="-130"
                       data-swiper-parallax-scale="1.25"
                     />
@@ -54,7 +55,7 @@ const ProjectsGrid = ({ projects, columns }) => {
                   className="mil-portfolio-item mil-mb-60"
                 >
                   <div className="mil-cover-frame mil-up">
-                    <Image src={item.image} alt={item.title} unoptimized />
+                    <Image src={item.image} alt={item.title} unoptimized fill />
                   </div>
                   <div className="mil-description mil-up">
                     <div>

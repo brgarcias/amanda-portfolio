@@ -1,4 +1,4 @@
-import appData from '@data/app.json';
+import appData from '@/src/data/app';
 import { FC } from 'react';
 
 interface DefaultFooterProps {

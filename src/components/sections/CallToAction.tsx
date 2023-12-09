@@ -1,4 +1,4 @@
-import Data from '@data/sections/call-to-action.json';
+import Data from '@data/sections/call-to-action';
 import Link from 'next/link';
 
 const CallToActionSection = () => {
@@ -6,7 +6,6 @@ const CallToActionSection = () => {
     <>
       <div className="mil-divider mil-up mil-mb-90" />
 
-      {/* call to action */}
       <div className="mil-p-0-90">
         <div className="row justify-content-center">
           <div className="col-lg-8">
@@ -21,7 +20,6 @@ const CallToActionSection = () => {
           </div>
         </div>
       </div>
-      {/* call to action end */}
     </>
   );
 };

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import Data from '@data/sections/services.json';
+import Data from '@data/sections/services';
 
 const ServicesSection = () => {
   return (
@@ -10,7 +10,6 @@ const ServicesSection = () => {
         <h3>{Data.title}</h3>
       </div>
 
-      {/* services */}
       <section className="mil-p-90-30">
         <div className="row justify-content-between align-items-center">
           {Data.items.map((item, key) => (
@@ -21,7 +20,6 @@ const ServicesSection = () => {
                     src={item.icon}
                     alt={item.title}
                     className="mil-mb-30"
-                    unoptimized
                   />
                 </div>
                 <h5 className="mil-up mil-mb-30">{item.title}</h5>
@@ -50,7 +48,6 @@ const ServicesSection = () => {
           ))}
         </div>
       </section>
-      {/* services end */}
     </>
   );
 };
