@@ -12,7 +12,7 @@ const Projects = (props) => {
     >
       <PageBanner
         pageTitle={'Designing a <br>Better World Today'}
-        breadTitle={'Portfolio'}
+        breadTitle={'Projects'}
         align={'center'}
       />
 

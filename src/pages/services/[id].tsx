@@ -23,7 +23,11 @@ const ServiceDetail = ({ postData }) => {
       rightPanelBackground={'/assets/images/person/bg-3.jpg'}
       rightPanelImg={'/assets/images/person/6.png'}
     >
-      <PageBanner pageTitle={postData.title} align={'center'} breadTitle={''} />
+      <PageBanner
+        pageTitle={postData.title}
+        align={'center'}
+        breadTitle={postData.id}
+      />
 
       {postData.subtitle != undefined && (
         <div className="mil-section-title mil-up mil-mb-90">
