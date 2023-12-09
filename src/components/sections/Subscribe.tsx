@@ -1,5 +1,4 @@
 import Data from '@data/sections/subscribe';
-import appData from '@/src/data/app';
 
 const SubscribeSection = () => {
   return (
@@ -12,7 +11,6 @@ const SubscribeSection = () => {
               <h2 className="mil-up mil-mb-60">{Data.title}</h2>
               <div className="mil-up">
                 <form
-                  action={appData.settings.mailchimp.url}
                   method="post"
                   target="_blank"
                   className="mil-subscribe-form"
@@ -23,7 +21,7 @@ const SubscribeSection = () => {
                     name="EMAIL"
                     required
                   />
-                  <input type="hidden" name={appData.settings.mailchimp.key} />
+                  <input type="hidden" />
                   <button type="submit">Subscribe</button>
                 </form>
               </div>
