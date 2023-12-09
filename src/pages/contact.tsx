@@ -3,9 +3,9 @@ import PageBanner from '@/src/components/PageBanner';
 import Layouts from '@/src/layouts/Layouts';
 import { ErrorMessage, Field, Formik } from 'formik';
 import * as Yup from 'yup';
+import { Box } from '@mui/system';
 
 import SnackbarFeedback from '../components/feedback/Feedback';
-import { Box } from '@mui/system';
 
 const Contact = () => {
   const [openSnackbar, setOpenSnackbar] = useState({
