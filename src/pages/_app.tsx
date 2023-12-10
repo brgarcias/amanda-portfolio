@@ -1,52 +1,24 @@
+import React from 'react';
 import Head from 'next/head';
-import { NextIntlProvider } from 'next-intl';
-import { useEffect, useState } from 'react';
-import { NextUIProvider } from '@nextui-org/react';
+import appData from '@/src/data/app';
+import '../styles/scss/style-dark.scss';
+import '../styles/globals.css';
+import { register } from 'swiper/element/bundle';
+// register Swiper custom elements
+register();
 
-import Preloader from '@/layout/Preloader';
-
-import '@/styles/globals.css';
-
-const App = ({ Component, pageProps }) => {
-  const [loader, setLoader] = useState(true);
-  const customErrorFunction = () => false;
-
-  useEffect(() => {
-    setTimeout(() => {
-      setLoader(false);
-    }, 1000);
-  }, []);
-
+function MyApp({ Component, pageProps }) {
   return (
-    <NextIntlProvider
-      onError={customErrorFunction}
-      locale="pt-BR"
-      formats={{
-        dateTime: {
-          short: {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric',
-          },
-        },
-      }}
-      messages={pageProps.messages}
-      now={new Date(pageProps.now)}
-      timeZone="America/Sao_Paulo"
-    >
+    <>
       <Head>
-        <title>Amanda Roque &mdash; Eng Civil</title>
-        <meta httpEquiv="Content-Type" content="text/html; charset=utf-8" />
-        <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="HandheldFriendly" content="true" />
-        <meta name="author" content="amanda-roque" />
+        {/* seo begin */}
+        <title>{appData.settings.siteName}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        {/* seo end */}
       </Head>
-      {loader && <Preloader />}
-      <NextUIProvider>
-        <Component {...pageProps} />
-      </NextUIProvider>
-    </NextIntlProvider>
+      <Component {...pageProps} />
+    </>
   );
-};
-export default App;
+}
+
+export default MyApp;

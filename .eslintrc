@@ -14,15 +14,7 @@
     "import",
     "@typescript-eslint"
   ],
-  "extends": [
-    // "next/core-web-vitals",
-    "eslint:recommended",
-    "prettier",
-    // "prettier/react",
-    "plugin:@typescript-eslint/eslint-recommended",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@next/next/recommended"
-  ],
+  "extends": ["next", "next/core-web-vitals", "prettier", "eslint:recommended"],
   "env": {
     "browser": true,
     "jest": true,
@@ -76,7 +68,8 @@
         "allowDestructuring": true, // Allow `const { props, state } = this`; false by default
         "allowedNames": ["ref"] // Allow `const vm= this`; `[]` by default
       }
-    ]
+    ],
+    "prettier/prettier": "error"
   },
   "overrides": [
     {
