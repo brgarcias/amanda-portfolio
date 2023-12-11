@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import { Box } from '@mui/system';
 
 import SnackbarFeedback from '../components/feedback/Feedback';
+import CircularProgress from '../components/feedback/CircularProgress';
 
 const Contact = () => {
   const [openSnackbar, setOpenSnackbar] = useState({
@@ -74,7 +75,7 @@ const Contact = () => {
               .min(20, 'Must be 20 characters or more')
               .required('Give me some feedback, please'),
           })}
-          onSubmit={(values, { setSubmitting }) => {
+          onSubmit={(values, { setSubmitting, resetForm }) => {
             fetch('/', {
               method: 'POST',
               headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -93,6 +94,7 @@ const Contact = () => {
                     icon: 'fa-light fa-check',
                     colorIcon: '#66bb6a',
                   });
+                  resetForm();
                 } else {
                   console.error('Error submitting form: ', response);
                   setOpenSnackbar({
@@ -134,7 +136,6 @@ const Contact = () => {
                   placeholder="What's your name"
                   name="name"
                   disabled={isSubmitting}
-                  required
                 />
                 <ErrorMessage
                   name="name"
@@ -150,7 +151,6 @@ const Contact = () => {
                   placeholder="Your best email"
                   name="email"
                   disabled={isSubmitting}
-                  required
                 />
                 <ErrorMessage
                   name="email"
@@ -166,7 +166,6 @@ const Contact = () => {
                   placeholder="Give me some feedback"
                   name="message"
                   disabled={isSubmitting}
-                  required
                 />
                 <ErrorMessage
                   name="message"
@@ -183,8 +182,14 @@ const Contact = () => {
               </div>
               <div className="col-lg-4">
                 <div className="mil-adaptive-right mil-up mil-mb-30">
-                  <button type="submit" className="mil-btn mil-sm-btn">
-                    <span>Send message</span>
+                  <button
+                    type="submit"
+                    className="mil-btn mil-sm-btn"
+                    disabled={isSubmitting}
+                  >
+                    <span>
+                      {isSubmitting ? <CircularProgress /> : 'Send message'}
+                    </span>
                   </button>
                 </div>
               </div>

@@ -10,7 +10,7 @@ const Story = () => {
     >
       <PageBanner
         pageTitle={'Success Story'}
-        breadTitle={''}
+        breadTitle={'Professional Experience'}
         align={'center'}
       />
 

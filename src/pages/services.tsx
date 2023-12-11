@@ -21,7 +21,7 @@ const Services = (props) => {
       <PageBanner
         pageTitle={'This is what i do best'}
         align={'center'}
-        breadTitle={''}
+        breadTitle={'Services'}
       />
 
       {/* services */}
