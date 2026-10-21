@@ -2,6 +2,7 @@
 
 # dependencies
 /node_modules
+/.pnpm-store/
 /.pnp
 .pnp.js
 
@@ -36,3 +37,8 @@ yarn-error.log*
 
 # Local Netlify folder
 .netlify
+
+# TypeScript and browser checks
+*.tsbuildinfo
+/playwright-report/
+/test-results/

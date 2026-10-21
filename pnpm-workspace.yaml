@@ -1,0 +1,13 @@
+allowBuilds:
+  sharp: true
+  unrs-resolver: true
+minimumReleaseAgeExclude:
+  - lucide-react@1.61.0
+
+# Next 16.4 supplies the ESLint 10 compatibility adapters for these plugins.
+# Their upstream peer declarations still stop at ESLint 9.
+peerDependencyRules:
+  allowedVersions:
+    'eslint-plugin-import>eslint': '10'
+    'eslint-plugin-jsx-a11y>eslint': '10'
+    'eslint-plugin-react>eslint': '10'
