@@ -4,6 +4,7 @@
     "deny": [
       "Bash(netlify api deleteSite:*)",
       "Bash(netlify sites:delete:*)",
+      "Bash(netlify deploy:*)",
       "Bash(gh repo delete:*)",
       "Bash(gh api -X DELETE:*)",
       "Bash(gh api --method DELETE:*)"

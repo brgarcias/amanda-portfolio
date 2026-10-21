@@ -14,4 +14,4 @@
   nvm use >/dev/null && netlify api listSiteDeploys --data '{"site_id":"a3b3694d-8389-4031-8107-6639d8f3e2dc","per_page":3}'
   ```
 
-- `.claude/settings.json` bloqueia comandos destrutivos, como apagar o site no Netlify, apagar o repositório ou enviar `DELETE` pela API do GitHub. Não contorne esses bloqueios. Permissões pessoais ficam em `.claude/settings.local.json`, que não é versionado.
+- `.claude/settings.json` bloqueia comandos destrutivos, como apagar o site no Netlify, publicar pelo Netlify CLI, apagar o repositório ou enviar `DELETE` pela API do GitHub. Não contorne esses bloqueios. Permissões pessoais ficam em `.claude/settings.local.json`, que não é versionado.

@@ -90,4 +90,5 @@ Os testes também procuram textos visíveis, como o título principal, o título
 - O Netlify gera um Deploy Preview para cada PR, em `https://deploy-preview-<número>--arra-portfolio.netlify.app`. A `main` exige quatro checks do Netlify: `Header rules - arra-portfolio`, `Pages changed - arra-portfolio`, `Redirect rules - arra-portfolio` e `netlify/arra-portfolio/deploy-preview`.
 - A `main` exige histórico linear e PR atualizado em relação a ela. Faça merge só com **Squash and merge**, depois que os checks passarem.
 - Nunca faça push direto ou force push em `main` e nunca altere as proteções da branch.
+- Não publique pelo Netlify CLI. A produção só muda por merge em `main`.
 - A configuração do Netlify fica no painel do site. Não há `netlify.toml` no repositório.
