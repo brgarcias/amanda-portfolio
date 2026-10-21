@@ -4,7 +4,7 @@ Instruções para agentes de código que trabalham neste repositório. O projeto
 
 ## Ambiente
 
-- Use Node.js 24.22.1, a versão do `.nvmrc`. Rode `nvm use` antes de qualquer comando e confira com `node --version`, porque o shell pode abrir em outra versão. O `.npmrc` tem `engine-strict=true`, então outra versão do Node faz a instalação falhar.
+- Use Node.js 24.22.1, a versão do `.nvmrc`. Rode `nvm use` antes de qualquer comando e confira com `node --version`, porque o shell pode abrir em outra versão. Se cada comando abrir um shell novo, ative o Node no mesmo comando, como em `nvm use >/dev/null && pnpm check`. O `.npmrc` tem `engine-strict=true`, então outra versão do Node faz a instalação falhar.
 - Use somente pnpm 11.3.0, via Corepack. Não use npm nem yarn para instalar dependências e não crie outros lockfiles. O único lockfile é o `pnpm-lock.yaml`.
 - Instale com `pnpm install --frozen-lockfile`.
 - O `pnpm-workspace.yaml` libera scripts de instalação apenas para `sharp` e `unrs-resolver` e lista exceções à idade mínima de publicação de pacotes. Ele também aceita ESLint 10 nos plugins que ainda declaram suporte só até a versão 9. Mantenha essas regras ao mexer em dependências.
