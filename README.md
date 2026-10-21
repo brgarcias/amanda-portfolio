@@ -53,6 +53,14 @@ Execute como uma aplicação Next.js em uma hospedagem compatível com Node 24. 
 
 As antigas rotas do template redirecionam permanentemente para as seções correspondentes. Fontes e imagens são servidas pelo próprio projeto; a página não depende de CDNs de estilos ou fontes.
 
+### Fluxo de branches e Netlify
+
+O site `arra-portfolio` no Netlify usa `main` para produção e tem `develop` habilitada para deploys de branch. Para validar alterações, envie uma branch de trabalho e abra um pull request com destino a `develop`. O Netlify pode gerar Deploy Previews para PRs destinados às branches habilitadas.
+
+A branch `develop` exige um pull request, commits com assinatura verificada pelo GitHub e quatro checks do Netlify: `Header rules - arra-portfolio`, `Pages changed - arra-portfolio`, `Redirect rules - arra-portfolio` e `netlify/arra-portfolio/deploy-preview`. Antes do merge, confira os resultados no PR. As branches habilitadas são configuradas no painel do Netlify, em **Branches and deploy contexts**.
+
+Para assinaturas SSH, a chave pública usada pelo Git deve estar cadastrada no GitHub como **Signing Key**. Uma chave cadastrada apenas para autenticação não basta para verificar a assinatura dos commits.
+
 ## Créditos
 
 Identidade visual fornecida pelo projeto original. Fontes: Manrope e DM Sans, distribuídas pelo Fontsource. Ícones: Lucide. Fotografia ilustrativa de arquitetura: [Unsplash](https://images.unsplash.com/photo-1486406146926-c627a92ad1ab), sem associação a trabalhos ou clientes da profissional.
