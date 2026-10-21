@@ -1,24 +1,8 @@
-import React from 'react';
-import Head from 'next/head';
-import appData from '@/src/data/app';
-import '../styles/scss/style-dark.scss';
-import '../styles/globals.css';
-import { register } from 'swiper/element/bundle';
-// register Swiper custom elements
-register();
+import type { AppProps } from 'next/app';
+import '@fontsource-variable/dm-sans';
+import '@fontsource-variable/manrope';
+import '@/styles/globals.css';
 
-function MyApp({ Component, pageProps }) {
-  return (
-    <>
-      <Head>
-        {/* seo begin */}
-        <title>{appData.settings.siteName}</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        {/* seo end */}
-      </Head>
-      <Component {...pageProps} />
-    </>
-  );
+export default function App({ Component, pageProps }: AppProps) {
+  return <Component {...pageProps} />;
 }
-
-export default MyApp;
