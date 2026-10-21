@@ -55,9 +55,24 @@ As antigas rotas do template redirecionam permanentemente para as seções corre
 
 ### Fluxo de branches e Netlify
 
-O site `arra-portfolio` no Netlify usa `main` para produção e tem `develop` habilitada para deploys de branch. Para validar alterações, envie uma branch de trabalho e abra um pull request com destino a `develop`. O Netlify pode gerar Deploy Previews para PRs destinados às branches habilitadas.
+`main` é a única branch permanente do repositório e a branch de produção do site `arra-portfolio` no Netlify. Cada merge em `main` publica o site.
 
-A branch `develop` exige um pull request, commits com assinatura verificada pelo GitHub e quatro checks do Netlify: `Header rules - arra-portfolio`, `Pages changed - arra-portfolio`, `Redirect rules - arra-portfolio` e `netlify/arra-portfolio/deploy-preview`. Antes do merge, confira os resultados no PR. As branches habilitadas são configuradas no painel do Netlify, em **Branches and deploy contexts**.
+Para qualquer alteração, crie uma branch de trabalho a partir de `main` e abra um pull request com destino a `main`. O Netlify gera um Deploy Preview para cada PR, com endereço próprio, para validar a mudança antes da publicação.
+
+```sh
+git switch main && git pull
+git switch -c feat/minha-alteracao
+# faça commits assinados
+git push -u origin feat/minha-alteracao
+gh pr create --base main --fill
+# após a aprovação dos checks
+gh pr merge --squash --delete-branch
+git switch main && git pull --prune
+```
+
+A branch `main` exige pull request, histórico linear, commits com assinatura verificada pelo GitHub, PR atualizado em relação a `main` e quatro checks do Netlify: `Header rules - arra-portfolio`, `Pages changed - arra-portfolio`, `Redirect rules - arra-portfolio` e `netlify/arra-portfolio/deploy-preview`. Antes do merge, confira os resultados no PR. Use **Squash and merge**: o GitHub assina o commit gerado, o que atende à exigência de assinatura. Se o PR ficar desatualizado, use **Update branch** ou faça rebase da branch de trabalho sobre `main`.
+
+Não use uma segunda branch permanente, como `develop`, para promover alterações a `main`. Com histórico linear obrigatório, cada squash ou rebase cria em `main` um commit que não existe na outra branch, e as duas divergem a cada publicação. No painel do Netlify, em **Branches and deploy contexts**, somente `main` tem deploy de branch; os Deploy Previews de PRs continuam ativos.
 
 Para assinaturas SSH, a chave pública usada pelo Git deve estar cadastrada no GitHub como **Signing Key**. Uma chave cadastrada apenas para autenticação não basta para verificar a assinatura dos commits.
 
