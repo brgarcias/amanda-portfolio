@@ -33,7 +33,7 @@ Antes de considerar uma mudança pronta, rode `pnpm check`, `pnpm build` e `pnpm
 - `src/styles/globals.css` é a única folha de estilos.
 - `next.config.mjs` define os redirecionamentos permanentes das rotas antigas do template e os cabeçalhos de segurança.
 - `tests/portfolio.spec.ts` contém todos os testes de navegador.
-- `public/` guarda logo, imagem, favicon, `robots.txt` e o currículo em PDF.
+- `public/` guarda logo, foto da profissional, imagem de compartilhamento, favicon, `robots.txt`, `sitemap.xml` e o currículo em PDF.
 
 O projeto usa o Pages Router. Não migre para o App Router sem pedido explícito.
 
@@ -45,7 +45,7 @@ O projeto usa o Pages Router. Não migre para o App Router sem pedido explícito
 - Ao trocar o currículo, mantenha o mesmo nome de arquivo. Os testes verificam o nome do download e o conteúdo PDF.
 - Os contatos abrem WhatsApp, e-mail ou telefone. Não adicione formulários, servidores de envio nem simulações de envio.
 - Todo texto visível é em português do Brasil, incluindo `aria-label`, `alt` e títulos de testes.
-- Ainda não há domínio próprio. Não adicione URL canônica, sitemap nem URLs absolutas de compartilhamento até que o domínio seja definido.
+- O endereço oficial é <https://arra-portfolio.netlify.app>, definido em `site.url` de `src/data/profile.ts`. Ele alimenta a URL canônica, o Open Graph e os dados estruturados, e também está escrito em `public/robots.txt` e `public/sitemap.xml`. Ao trocar o domínio, atualize os três arquivos.
 
 ## Código
 
@@ -59,7 +59,7 @@ O projeto usa o Pages Router. Não migre para o App Router sem pedido explícito
 - Cores vêm só dos tokens do `:root`, sem valores fixos nas regras. Para transparência, use `color-mix()` com um token.
 - Rótulos em maiúsculas são escritos normalmente no JSX e recebem `text-transform: uppercase` no CSS, para que leitores de tela não soletrem as palavras como siglas.
 - Ícones vêm do `lucide-react`. Ícones decorativos recebem `aria-hidden="true"`.
-- Imagens ficam em WebP dentro de `public/` e são exibidas com `next/image`.
+- Imagens ficam em WebP dentro de `public/` e são exibidas com `next/image`. A exceção é a imagem de compartilhamento, `public/images/og-image.jpg`, que fica em JPEG com 1200 × 630 px, porque nem todas as plataformas aceitam WebP. Remova metadados, como localização, de qualquer foto antes de publicá-la.
 - Fontes são servidas pelo próprio projeto via Fontsource. Não use CDNs de fontes, estilos ou scripts.
 - O projeto tem poucas dependências de produção. Evite adicionar novas e justifique no PR quando for necessário.
 - Não edite `next-env.d.ts`, que é gerado pelo Next.js. Não versione `.next/`, `test-results/`, `playwright-report/` nem `tsconfig.tsbuildinfo`.

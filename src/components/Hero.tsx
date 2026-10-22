@@ -1,11 +1,5 @@
 import Image from 'next/image';
-import {
-  ArrowDown,
-  ArrowUpRight,
-  Download,
-  MapPin,
-  ShieldCheck,
-} from 'lucide-react';
+import { ArrowDown, ArrowUpRight, Download, MapPin } from 'lucide-react';
 import { profile } from '@/data/profile';
 
 export function Hero() {
@@ -46,18 +40,13 @@ export function Hero() {
       <div className="hero-visual">
         <div className="hero-image">
           <Image
-            src="/images/architecture.webp"
-            alt="Edifícios vistos de baixo, destacando as linhas e estruturas da arquitetura"
+            src={profile.photo}
+            alt="Amanda Assumpção sorrindo, de blusa escura, diante de um painel de folhagens"
             fill
             sizes="(max-width: 760px) 100vw, 44vw"
             priority
-            className="architecture-image"
+            className="hero-photo"
           />
-          <span className="image-index">01 / Perspectivas que transformam</span>
-          <div className="engineering-orbit" aria-hidden="true">
-            <span />
-            <ShieldCheck strokeWidth={1} />
-          </div>
           <div className="image-caption">
             <span className="caption-line" />
             <p>

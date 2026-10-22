@@ -46,12 +46,14 @@ O GitHub Actions roda `pnpm check`, `pnpm build` e `pnpm test:e2e` em cada pull 
 - `src/styles/globals.css`: cores, tipografia, espaçamento e regras de responsividade.
 - `src/pages/index.tsx`: composição, metadados e dados estruturados da profissional.
 - `public/documents/curriculo-amanda-assumpcao.pdf`: currículo original para download.
+- `public/images/amanda-assumpcao.webp`: foto exibida no topo da página.
+- `public/images/og-image.jpg`: imagem de prévia exibida quando o link é compartilhado, com 1200 × 630 px.
 
-Os cargos e o MBA refletem o documento fornecido. Atualize `experience` e `education` quando houver mudanças. Os links de contato abrem WhatsApp, aplicativo de e-mail ou telefone; não dependem de servidor de formulários nem simulam o envio de mensagens.
+Os cargos e o MBA refletem o documento fornecido. Atualize `experience` e `education` quando houver mudanças. Os links de contato abrem WhatsApp, LinkedIn, aplicativo de e-mail ou telefone; não dependem de servidor de formulários nem simulam o envio de mensagens.
 
 ## Publicação
 
-Execute como uma aplicação Next.js em uma hospedagem compatível com Node 24. O comando de build é `pnpm build` e o de produção é `pnpm start`. O projeto está preparado localmente; nenhum deploy é feito pelos scripts. Depois de definir o domínio, adicione URLs absolutas de compartilhamento, a URL canônica e um sitemap para esse domínio.
+O site fica em <https://arra-portfolio.netlify.app> e é publicado pelo Netlify a cada merge em `main`, como descrito abaixo. O endereço está em `site.url`, em `src/data/profile.ts`, e alimenta a URL canônica, a imagem de prévia usada no WhatsApp e no LinkedIn e os dados estruturados. `public/robots.txt` e `public/sitemap.xml` repetem o endereço. Ao trocar o domínio, atualize os três arquivos.
 
 As antigas rotas do template redirecionam permanentemente para as seções correspondentes. Fontes e imagens são servidas pelo próprio projeto; a página não depende de CDNs de estilos ou fontes.
 
@@ -84,4 +86,4 @@ As instruções para agentes de código ficam em `AGENTS.md`. O `CLAUDE.md` impo
 
 ## Créditos
 
-Identidade visual fornecida pelo projeto original. Fontes: Manrope e DM Sans, distribuídas pelo Fontsource. Ícones: Lucide. Fotografia ilustrativa de arquitetura: [Unsplash](https://images.unsplash.com/photo-1486406146926-c627a92ad1ab), sem associação a trabalhos ou clientes da profissional.
+Identidade visual fornecida pelo projeto original. Fontes: Manrope e DM Sans, distribuídas pelo Fontsource. Ícones: Lucide. Fotografia fornecida pela profissional.
