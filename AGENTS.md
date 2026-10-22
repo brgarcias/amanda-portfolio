@@ -46,6 +46,7 @@ O projeto usa o Pages Router. Não migre para o App Router sem pedido explícito
 - Os contatos abrem WhatsApp, e-mail ou telefone. Não adicione formulários, servidores de envio nem simulações de envio.
 - Todo texto visível é em português do Brasil, incluindo `aria-label`, `alt` e títulos de testes.
 - O endereço oficial é <https://arra-portfolio.netlify.app>, definido em `site.url` de `src/data/profile.ts`. Ele alimenta a URL canônica, o Open Graph e os dados estruturados, e também está escrito em `public/robots.txt` e `public/sitemap.xml`. Ao trocar o domínio, atualize os três arquivos.
+- A meta tag `google-site-verification`, com o código em `site.googleSiteVerification`, mantém o site verificado no Google Search Console. Não a remova.
 
 ## Código
 

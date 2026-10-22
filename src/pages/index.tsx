@@ -55,6 +55,10 @@ export default function Home({
         <meta name="description" content={description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="canonical" href={pageUrl} />
+        <meta
+          name="google-site-verification"
+          content={site.googleSiteVerification}
+        />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:type" content="profile" />
