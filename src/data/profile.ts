@@ -18,7 +18,7 @@ export const profile = {
   whatsapp: `https://wa.me/${phoneNumber}`,
   linkedin: 'https://www.linkedin.com/in/amanda-assump%C3%A7%C3%A3o-285922328',
   photo: '/images/amanda-assumpcao.webp',
-  resume: '/documents/Amanda-Assumpcao-Curriculo.pdf',
+  resume: '/documents/Amanda-Assumpcao-Engenheira-de-Seguranca-do-Trabalho.pdf',
 } as const;
 
 export const navigation = [
