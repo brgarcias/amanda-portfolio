@@ -1,3 +1,8 @@
+export const site = {
+  url: 'https://arra-portfolio.netlify.app',
+  shareImage: '/images/og-image.jpg',
+} as const;
+
 /** Content transcribed and adapted from Amanda's supplied résumé. */
 export const profile = {
   name: 'Amanda Assumpção',
@@ -8,6 +13,8 @@ export const profile = {
   phone: '(11) 99624-0704',
   phoneHref: 'tel:+5511996240704',
   whatsapp: 'https://wa.me/5511996240704',
+  linkedin: 'https://www.linkedin.com/in/amanda-assump%C3%A7%C3%A3o-285922328',
+  photo: '/images/amanda-assumpcao.webp',
   resume: '/documents/curriculo-amanda-assumpcao.pdf',
 } as const;
 

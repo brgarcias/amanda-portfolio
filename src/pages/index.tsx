@@ -8,7 +8,7 @@ import { Experience } from '@/components/Experience';
 import { Education } from '@/components/Education';
 import { Contact } from '@/components/Contact';
 import { Footer } from '@/components/Footer';
-import { profile } from '@/data/profile';
+import { profile, site } from '@/data/profile';
 
 export const getStaticProps = (() => ({
   props: { year: new Date().getFullYear() },
@@ -21,12 +21,16 @@ export default function Home({
   const title = `${profile.name} | Engenharia de Segurança do Trabalho`;
   const description =
     'Conheça a trajetória de Amanda Assumpção, engenheira de segurança do trabalho e engenheira civil em São Paulo. Experiência em SSMA, gestão de riscos, indicadores e sustentabilidade.';
+  const pageUrl = `${site.url}/`;
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'Person',
     name: profile.fullName,
     jobTitle: profile.title,
     description,
+    url: pageUrl,
+    image: `${site.url}${profile.photo}`,
+    sameAs: [profile.linkedin],
     email: profile.email,
     telephone: '+55-11-99624-0704',
     address: {
@@ -50,11 +54,22 @@ export default function Home({
         <title>{title}</title>
         <meta name="description" content={description} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <link rel="canonical" href={pageUrl} />
         <meta property="og:title" content={title} />
         <meta property="og:description" content={description} />
         <meta property="og:type" content="profile" />
         <meta property="og:locale" content="pt_BR" />
-        <meta name="twitter:card" content="summary" />
+        <meta property="og:url" content={pageUrl} />
+        <meta property="og:site_name" content={profile.name} />
+        <meta property="og:image" content={`${site.url}${site.shareImage}`} />
+        <meta property="og:image:type" content="image/jpeg" />
+        <meta property="og:image:width" content="1200" />
+        <meta property="og:image:height" content="630" />
+        <meta
+          property="og:image:alt"
+          content={`${profile.name}, ${profile.title.toLowerCase()}`}
+        />
+        <meta name="twitter:card" content="summary_large_image" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

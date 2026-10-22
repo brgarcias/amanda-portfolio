@@ -1,5 +1,6 @@
 import {
   ArrowUpRight,
+  BriefcaseBusiness,
   Download,
   Mail,
   MapPin,
@@ -48,6 +49,19 @@ export function Contact() {
             <span>
               <span>Telefone</span>
               <strong>{profile.phone}</strong>
+            </span>
+            <ArrowUpRight size={19} aria-hidden="true" />
+          </a>
+          <a
+            className="contact-row"
+            href={profile.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <BriefcaseBusiness size={21} aria-hidden="true" />
+            <span>
+              <span>LinkedIn</span>
+              <strong>Ver perfil profissional</strong>
             </span>
             <ArrowUpRight size={19} aria-hidden="true" />
           </a>

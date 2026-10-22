@@ -78,6 +78,47 @@ test('oferece o currículo original e canais de contato válidos', async ({
     'href',
     'tel:+5511996240704',
   );
+  await expect(page.getByRole('link', { name: /LinkedIn/ })).toHaveAttribute(
+    'href',
+    'https://www.linkedin.com/in/amanda-assump%C3%A7%C3%A3o-285922328',
+  );
+});
+
+test('publica os metadados de busca e compartilhamento', async ({
+  page,
+  request,
+}) => {
+  const siteUrl = 'https://arra-portfolio.netlify.app';
+  await page.goto('/');
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute(
+    'href',
+    `${siteUrl}/`,
+  );
+  await expect(page.locator('meta[property="og:url"]')).toHaveAttribute(
+    'content',
+    `${siteUrl}/`,
+  );
+  const shareImage = await page
+    .locator('meta[property="og:image"]')
+    .getAttribute('content');
+  expect(shareImage).toMatch(new RegExp(`^${siteUrl}/`));
+  const imageResponse = await request.get(new URL(shareImage!).pathname);
+  expect(imageResponse.status()).toBe(200);
+  expect(imageResponse.headers()['content-type']).toContain('image/jpeg');
+  const structuredData = JSON.parse(
+    (await page
+      .locator('script[type="application/ld+json"]')
+      .textContent()) as string,
+  );
+  expect(structuredData.url).toBe(`${siteUrl}/`);
+  expect(structuredData.sameAs).toContain(
+    'https://www.linkedin.com/in/amanda-assump%C3%A7%C3%A3o-285922328',
+  );
+  const sitemap = await request.get('/sitemap.xml');
+  expect(sitemap.status()).toBe(200);
+  expect(await sitemap.text()).toContain(`<loc>${siteUrl}/</loc>`);
+  const robots = await (await request.get('/robots.txt')).text();
+  expect(robots).toContain(`Sitemap: ${siteUrl}/sitemap.xml`);
 });
 
 test('mantém as rotas antigas úteis e oferece uma página 404', async ({

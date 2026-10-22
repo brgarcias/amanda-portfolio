@@ -369,70 +369,13 @@ ol {
   inset: 0;
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--overlay) 24%, transparent),
-    transparent 45%,
-    color-mix(in srgb, var(--overlay) 90%, transparent)
+    transparent 50%,
+    color-mix(in srgb, var(--overlay) 88%, transparent)
   );
 }
-.architecture-image {
+.hero-photo {
   object-fit: cover;
-  filter: grayscale(1) contrast(0.9) brightness(0.83);
-  object-position: 46% center;
-}
-.image-index {
-  position: absolute;
-  top: 26px;
-  left: 27px;
-  right: 27px;
-  z-index: 1;
-  font-size: var(--text-label);
-  font-weight: 500;
-  color: var(--paper);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-.engineering-orbit {
-  position: absolute;
-  z-index: 2;
-  width: 260px;
-  height: 260px;
-  top: 45%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  border: 1px solid color-mix(in srgb, var(--orange) 75%, transparent);
-  border-radius: 50%;
-  display: grid;
-  place-items: center;
-}
-.engineering-orbit::before,
-.engineering-orbit::after {
-  content: '';
-  position: absolute;
-  background: color-mix(in srgb, var(--orange) 65%, transparent);
-}
-.engineering-orbit::before {
-  width: calc(100% + 48px);
-  height: 1px;
-}
-.engineering-orbit::after {
-  height: calc(100% + 48px);
-  width: 1px;
-}
-.engineering-orbit > span {
-  position: absolute;
-  inset: 17px;
-  border: 1px solid color-mix(in srgb, var(--paper) 25%, transparent);
-  border-radius: 50%;
-}
-.engineering-orbit > svg {
-  color: var(--accent-pale);
-  width: 72px;
-  height: 72px;
-  position: relative;
-  z-index: 1;
-  background: color-mix(in srgb, var(--ink) 75%, transparent);
-  border-radius: 50%;
-  padding: 12px;
+  object-position: 50% 12%;
 }
 .image-caption {
   position: absolute;
@@ -1162,20 +1105,12 @@ a.contact-row:hover strong {
   .hero-image {
     height: 490px;
   }
-  .engineering-orbit {
-    width: 205px;
-    height: 205px;
-  }
   .image-caption {
     left: 22px;
     gap: 10px;
   }
   .image-caption p {
     font-size: 1rem;
-  }
-  .image-index {
-    left: 22px;
-    right: 22px;
   }
   .hero-label {
     right: 12px;
@@ -1302,10 +1237,6 @@ a.contact-row:hover strong {
   .hero-image {
     height: 390px;
     border-top-right-radius: 70px;
-  }
-  .engineering-orbit {
-    width: 235px;
-    height: 235px;
   }
   .image-caption p {
     font-size: 1.1875rem;
