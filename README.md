@@ -44,6 +44,7 @@ O GitHub Actions roda `pnpm check`, `pnpm build` e `pnpm test:e2e` em cada pull 
 - `src/data/profile.ts`: nome, contatos, currículo, competências, cargos, formações e cursos.
 - `src/components/`: seções independentes da página, navegação responsiva e formulário de avaliação.
 - `src/pages/avaliar.tsx`: página de avaliação para clientes.
+- `src/pages/painel.tsx`: painel onde a Amanda publica as avaliações.
 - `src/styles/globals.css`: cores, tipografia, espaçamento e regras de responsividade.
 - `src/pages/index.tsx`: composição, metadados e dados estruturados da profissional.
 - `public/documents/Amanda-Assumpcao-Engenheira-de-Seguranca-do-Trabalho.pdf`: currículo original para download, com nome e cargo no nome do arquivo. Os nomes anteriores do arquivo redirecionam para ele.
@@ -57,10 +58,14 @@ Os cargos e o MBA refletem o documento fornecido. Atualize `experience` e `educa
 Clientes avaliam o trabalho em `/avaliar`. A página não aparece nos buscadores, mas está no botão da seção "Avaliações", que também fica no menu, e pode ser enviada diretamente. Cada envio chega ao Netlify Forms, no formulário `avaliacoes`, com filtro de spam do Netlify e um campo-armadilha para robôs. Nada é publicado automaticamente:
 
 1. A avaliação chega ao painel do Netlify, em **Forms → avaliacoes**, e também por e-mail, se a notificação estiver configurada em **Site configuration → Notifications → Emails and webhooks → Form submission notifications**. O assunto do e-mail traz a nota e o nome, como "Nova avaliação: 5 estrelas, de Maria". Ele vem do campo `subject` que o formulário envia, e esse campo tem prioridade sobre o assunto definido no painel.
-2. Se a Amanda aprovar e a pessoa tiver autorizado a publicação, o depoimento entra em `testimonials`, em `src/data/profile.ts`, com o texto como foi recebido e sem o e-mail.
-3. Os depoimentos aprovados aparecem em cartões na seção "Avaliações" da página inicial, acima do convite para avaliar.
+2. A função `netlify/functions/review-submitted.ts` guarda a avaliação no Netlify Blobs, como pendente.
+3. A Amanda entra em <https://arra-portfolio.netlify.app/painel> com usuário e senha, revisa o depoimento e clica em **Publicar no portfólio**. Ele aparece na hora em cartões na seção "Avaliações" da página inicial. Pelo mesmo painel, ela pode retirar uma avaliação do portfólio ou excluí-la.
 
-O formulário envia os dados para `public/__forms.html`, que declara os campos para o Netlify. Ao mudar um campo, atualize os dois arquivos. Para remover um depoimento a pedido do cliente, apague o item de `testimonials` e a submissão no painel.
+O painel só permite publicar depoimentos com a autorização marcada e nunca mostra o e-mail fora dele. Avaliações enviadas antes do painel existir ficam só no Netlify Forms.
+
+O usuário e a senha ficam nas variáveis de ambiente do Netlify, em **Site configuration → Environment variables**: `PANEL_USERNAME`, `PANEL_PASSWORD` e `PANEL_SESSION_SECRET`, o segredo que assina a sessão. Para trocar a senha, mude `PANEL_PASSWORD` e faça um novo deploy. Isso também encerra as sessões abertas. Depois de 5 senhas erradas seguidas, o login fica bloqueado por 15 minutos.
+
+O formulário envia os dados para `public/__forms.html`, que declara os campos para o Netlify. Ao mudar um campo, atualize os dois arquivos. Para remover um depoimento a pedido do cliente, exclua a avaliação no painel e a submissão em **Forms**.
 
 ## Publicação
 

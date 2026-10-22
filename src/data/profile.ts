@@ -155,18 +155,3 @@ export const courses = [
   { title: 'AutoCAD 2D e 3D', institution: 'Arquitettar Cursos', year: '2020' },
   { title: 'Inglês intermediário', institution: 'Wizard', year: '2016 — 2020' },
 ] as const;
-
-export type Testimonial = {
-  name: string;
-  role?: string;
-  service: string;
-  rating: 1 | 2 | 3 | 4 | 5;
-  quote: string;
-  date: string;
-};
-
-/**
- * Reviews sent through /avaliar that Amanda approved and the client
- * authorized for publication, copied as received.
- */
-export const testimonials: readonly Testimonial[] = [];

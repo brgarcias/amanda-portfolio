@@ -60,6 +60,10 @@ const nextConfig = {
           },
         ],
       },
+      ...['/painel', '/api/:path*'].map((source) => ({
+        source,
+        headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
+      })),
     ];
   },
 };

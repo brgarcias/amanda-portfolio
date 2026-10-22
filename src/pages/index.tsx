@@ -10,14 +10,21 @@ import { Testimonials } from '@/components/Testimonials';
 import { Contact } from '@/components/Contact';
 import { Footer } from '@/components/Footer';
 import { profile, site } from '@/data/profile';
+import { listTestimonials, type Testimonial } from '@/lib/reviews';
 
-export const getStaticProps = (() => ({
-  props: { year: new Date().getFullYear() },
-  revalidate: 86400,
-})) satisfies GetStaticProps<{ year: number }>;
+// The panel rebuilds this page when a review changes. The short interval
+// also brings published reviews back soon after a deploy.
+export const getStaticProps = (async () => ({
+  props: {
+    year: new Date().getFullYear(),
+    testimonials: await listTestimonials(),
+  },
+  revalidate: 60,
+})) satisfies GetStaticProps<{ year: number; testimonials: Testimonial[] }>;
 
 export default function Home({
   year,
+  testimonials,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
   const title = `${profile.name} | Engenharia de Segurança do Trabalho`;
   const description =
@@ -93,7 +100,7 @@ export default function Home({
           <Expertise />
           <Experience />
           <Education />
-          <Testimonials />
+          <Testimonials testimonials={testimonials} />
           <Contact />
         </main>
         <Footer year={year} />

@@ -1,11 +1,15 @@
 import Link from 'next/link';
 import { ArrowUpRight, Star } from 'lucide-react';
-import { testimonials } from '@/data/profile';
 import { SectionHeading } from '@/components/SectionHeading';
+import type { Testimonial } from '@/lib/reviews';
 
 const stars = [1, 2, 3, 4, 5] as const;
 
-export function Testimonials() {
+export function Testimonials({
+  testimonials,
+}: {
+  testimonials: Testimonial[];
+}) {
   const hasTestimonials = testimonials.length > 0;
 
   return (
@@ -39,10 +43,7 @@ export function Testimonials() {
         </div>
         <div className="testimonials-grid">
           {testimonials.map((item) => (
-            <figure
-              className="testimonial-card"
-              key={`${item.name}-${item.date}`}
-            >
+            <figure className="testimonial-card" key={item.id}>
               <p
                 className="testimonial-rating"
                 role="img"
