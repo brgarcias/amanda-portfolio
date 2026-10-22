@@ -56,7 +56,7 @@ Os cargos e o MBA refletem o documento fornecido. Atualize `experience` e `educa
 
 Clientes avaliam o trabalho em `/avaliar`. A página não aparece nos buscadores, mas está no botão da seção "Avaliações", que também fica no menu, e pode ser enviada diretamente. Cada envio chega ao Netlify Forms, no formulário `avaliacoes`, com filtro de spam do Netlify e um campo-armadilha para robôs. Nada é publicado automaticamente:
 
-1. A avaliação chega ao painel do Netlify, em **Forms → avaliacoes**, e também por e-mail, se a notificação estiver configurada em **Site configuration → Notifications → Emails and webhooks → Form submission notifications**.
+1. A avaliação chega ao painel do Netlify, em **Forms → avaliacoes**, e também por e-mail, se a notificação estiver configurada em **Site configuration → Notifications → Emails and webhooks → Form submission notifications**. O assunto do e-mail traz a nota e o nome, como "Nova avaliação: 5 estrelas, de Maria". Ele vem do campo `subject` que o formulário envia, e esse campo tem prioridade sobre o assunto definido no painel.
 2. Se a Amanda aprovar e a pessoa tiver autorizado a publicação, o depoimento entra em `testimonials`, em `src/data/profile.ts`, com o texto como foi recebido e sem o e-mail.
 3. Os depoimentos aprovados aparecem em cartões na seção "Avaliações" da página inicial, acima do convite para avaliar.
 
