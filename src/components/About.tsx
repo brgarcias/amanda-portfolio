@@ -30,8 +30,9 @@ export function About() {
             </p>
             <p>
               Na Brink’s, construí um percurso que começou no estágio e evoluiu
-              até a posição de analista de segurança do trabalho. Hoje, amplio
-              esse olhar com o MBA em ESG e Negócios Sustentáveis na USP/Esalq.
+              até a posição de especialista de segurança do trabalho. Hoje,
+              amplio esse olhar com o MBA em ESG e Negócios Sustentáveis na
+              USP/Esalq.
             </p>
             <a className="text-link" href="#atuacao">
               Como essa experiência se traduz na prática{' '}
