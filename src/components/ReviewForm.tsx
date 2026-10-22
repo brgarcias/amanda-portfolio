@@ -30,6 +30,13 @@ export function ReviewForm() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    // Netlify uses this field as the subject of the notification email,
+    // overriding the one set in the dashboard.
+    const rating = Number(data.get('avaliacao'));
+    data.set(
+      'subject',
+      `Nova avaliação: ${rating} ${rating === 1 ? 'estrela' : 'estrelas'}, de ${String(data.get('nome')).trim()}`,
+    );
     setStatus('sending');
     try {
       const response = await fetch('/__forms.html', {

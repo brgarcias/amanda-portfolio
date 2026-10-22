@@ -341,6 +341,9 @@ test('recebe avaliações de clientes pelo formulário', async ({
   expect(payload?.get('nome')).toBe('Cliente de teste');
   expect(payload?.get('servico')).toBe('Segurança do trabalho');
   expect(payload?.get('consentimento')).toBe('sim');
+  expect(payload?.get('subject')).toBe(
+    'Nova avaliação: 4 estrelas, de Cliente de teste',
+  );
   expect(payload?.get('bot-field')).toBe('');
   const staticForm = await (await request.get('/__forms.html')).text();
   expect(staticForm).toContain('name="avaliacoes"');
