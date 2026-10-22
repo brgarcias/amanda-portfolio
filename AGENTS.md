@@ -39,10 +39,10 @@ O projeto usa o Pages Router. Não migre para o App Router sem pedido explícito
 
 ## Conteúdo
 
-- A fonte do conteúdo é o currículo em `public/documents/curriculo-amanda-assumpcao.pdf`. Nunca invente projetos, clientes, métricas, depoimentos, certificações ou datas. Se faltar uma informação, pergunte.
+- A fonte do conteúdo é o currículo em `public/documents/Amanda-Assumpcao-Curriculo.pdf`. Nunca invente projetos, clientes, métricas, depoimentos, certificações ou datas. Se faltar uma informação, pergunte.
 - Os dados da profissional ficam em `src/data/profile.ts`. Títulos e textos próprios de cada seção ficam no componente da seção.
 - O número de telefone fica só em `phoneNumber`, em `src/data/profile.ts`, e gera o link de ligação, o link do WhatsApp e o telefone dos dados estruturados. O formato exibido na página fica em `profile.phone`.
-- Ao trocar o currículo, mantenha o mesmo nome de arquivo. Os testes verificam o nome do download e o conteúdo PDF.
+- Ao trocar o currículo, mantenha o nome `Amanda-Assumpcao-Curriculo.pdf`, sem acentos nem espaços. Os testes verificam o nome do download e o conteúdo PDF. O endereço antigo, `/documents/curriculo-amanda-assumpcao.pdf`, redireciona para o novo em `next.config.mjs`. O título do documento no Google Docs vira o título do PDF, exibido na aba do navegador, então ele deve ser "Amanda Assumpção — Currículo".
 - Os contatos abrem WhatsApp, e-mail ou telefone. Não adicione formulários, servidores de envio nem simulações de envio.
 - Todo texto visível é em português do Brasil, incluindo `aria-label`, `alt` e títulos de testes.
 - O endereço oficial é <https://arra-portfolio.netlify.app>, definido em `site.url` de `src/data/profile.ts`. Ele alimenta a URL canônica, o Open Graph e os dados estruturados, e também está escrito em `public/robots.txt` e `public/sitemap.xml`. Ao trocar o domínio, atualize os três arquivos.
