@@ -26,7 +26,7 @@ Antes de considerar uma mudança pronta, rode `pnpm check`, `pnpm build` e `pnpm
 ## Estrutura
 
 - `src/pages/index.tsx` monta a página, define título, descrição, Open Graph e os dados estruturados `Person` em JSON-LD. O `getStaticProps` revalida uma vez por dia para atualizar o ano do rodapé.
-- `src/pages/_document.tsx` define `lang="pt-BR"`, a cor de tema e o favicon. `src/pages/_app.tsx` carrega as fontes e o CSS global.
+- `src/pages/_document.tsx` define `lang="pt-BR"`, a cor de tema e os ícones: `favicon.svg`, `favicon.ico` com 16, 32 e 48 px e `apple-touch-icon.png` com 180 px. Ícones ficam em SVG, ICO ou PNG, os formatos que navegadores e sistemas aceitam. O favicon reproduz o selo do logo. `src/pages/_app.tsx` carrega as fontes e o CSS global.
 - `src/pages/404.tsx` é a página de erro, marcada com `noindex`.
 - `src/components/` tem um componente por seção. `SectionHeading` é o cabeçalho compartilhado das seções numeradas.
 - `src/data/profile.ts` concentra os dados da profissional: contatos, navegação, áreas de atuação, experiências, formação e cursos.
@@ -41,7 +41,7 @@ O projeto usa o Pages Router. Não migre para o App Router sem pedido explícito
 
 - A fonte do conteúdo é o currículo em `public/documents/curriculo-amanda-assumpcao.pdf`. Nunca invente projetos, clientes, métricas, depoimentos, certificações ou datas. Se faltar uma informação, pergunte.
 - Os dados da profissional ficam em `src/data/profile.ts`. Títulos e textos próprios de cada seção ficam no componente da seção.
-- O telefone também aparece nos dados estruturados de `src/pages/index.tsx`. Ao mudar contatos, atualize os dois arquivos.
+- O número de telefone fica só em `phoneNumber`, em `src/data/profile.ts`, e gera o link de ligação, o link do WhatsApp e o telefone dos dados estruturados. O formato exibido na página fica em `profile.phone`.
 - Ao trocar o currículo, mantenha o mesmo nome de arquivo. Os testes verificam o nome do download e o conteúdo PDF.
 - Os contatos abrem WhatsApp, e-mail ou telefone. Não adicione formulários, servidores de envio nem simulações de envio.
 - Todo texto visível é em português do Brasil, incluindo `aria-label`, `alt` e títulos de testes.

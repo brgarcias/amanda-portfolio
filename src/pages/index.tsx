@@ -32,7 +32,7 @@ export default function Home({
     image: `${site.url}${profile.photo}`,
     sameAs: [profile.linkedin],
     email: profile.email,
-    telephone: '+55-11-99624-0704',
+    telephone: profile.phoneE164,
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'São Paulo',

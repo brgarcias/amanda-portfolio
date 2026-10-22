@@ -119,6 +119,16 @@ test('publica os metadados de busca e compartilhamento', async ({
   expect(await sitemap.text()).toContain(`<loc>${siteUrl}/</loc>`);
   const robots = await (await request.get('/robots.txt')).text();
   expect(robots).toContain(`Sitemap: ${siteUrl}/sitemap.xml`);
+  for (const [icon, type] of [
+    ['/favicon.ico', 'image/'],
+    ['/favicon.svg', 'image/svg+xml'],
+    ['/apple-touch-icon.png', 'image/png'],
+  ]) {
+    await expect(page.locator(`link[href="${icon}"]`)).toHaveCount(1);
+    const response = await request.get(icon);
+    expect(response.status()).toBe(200);
+    expect(response.headers()['content-type']).toContain(type);
+  }
 });
 
 test('mantém as rotas antigas úteis e oferece uma página 404', async ({

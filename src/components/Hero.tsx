@@ -30,7 +30,7 @@ export function Hero() {
             Baixar currículo <Download size={17} aria-hidden="true" />
           </a>
         </div>
-        <p className="hero-location">
+        <p className="hero-location divided-list">
           <span>
             <MapPin size={15} aria-hidden="true" /> {profile.location}
           </span>
@@ -57,8 +57,7 @@ export function Hero() {
           </div>
         </div>
         <div className="hero-label">
-          <span className="status-dot" /> Prevenção é o ponto de partida{' '}
-          <ArrowUpRight size={16} aria-hidden="true" />
+          <span className="status-dot" /> Prevenção é o ponto de partida
         </div>
         <span className="visual-cross cross-top" aria-hidden="true">
           +
