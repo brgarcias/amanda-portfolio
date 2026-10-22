@@ -44,7 +44,8 @@ export function Hero() {
             alt="Amanda Assumpção sorrindo, de blusa escura, diante de um painel de folhagens"
             fill
             sizes="(max-width: 760px) 100vw, 44vw"
-            priority
+            loading="eager"
+            fetchPriority="high"
             className="hero-photo"
           />
           <div className="image-caption">

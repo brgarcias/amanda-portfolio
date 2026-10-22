@@ -22,18 +22,13 @@ export function Header() {
   return (
     <header className="site-header">
       <div className="container header-inner">
-        <a
-          className="brand"
-          href="#inicio"
-          aria-label={`${profile.name} — início`}
-          onClick={() => setMenuOpen(false)}
-        >
+        <a className="brand" href="#inicio" onClick={() => setMenuOpen(false)}>
           <Image
             src="/assets/images/logo/amanda-portfolio-logo-transparency.webp"
             alt=""
             width={48}
             height={48}
-            priority
+            loading="eager"
           />
           <span>
             <strong>{profile.name}</strong>

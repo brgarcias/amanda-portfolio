@@ -13,6 +13,15 @@ test('apresenta o portfólio sem erros de execução e sem rolagem horizontal', 
     /Cuidar de pessoas.*Construir um.*futuro seguro\./,
   );
   await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR');
+  await expect(page.locator('img.hero-photo')).toHaveAttribute(
+    'fetchpriority',
+    'high',
+  );
+  await expect(
+    page.getByRole('link', {
+      name: /^Amanda Assumpção\s*Engenharia & segurança$/i,
+    }),
+  ).toHaveAttribute('href', '#inicio');
   await page.evaluate(() => document.fonts.ready);
   await page
     .locator('img')
