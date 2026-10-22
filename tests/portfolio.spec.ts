@@ -232,3 +232,29 @@ test('mantém todo texto visível com pelo menos 12 px', async ({ page }) => {
     expect(smallTexts, `largura de ${width} px`).toEqual([]);
   }
 });
+
+test('aplica os cabeçalhos de segurança sem bloquear a página', async ({
+  page,
+}) => {
+  await page.addInitScript(() => {
+    const violations: string[] = [];
+    Object.assign(window, { cspViolations: violations });
+    document.addEventListener('securitypolicyviolation', (event) =>
+      violations.push(`${event.violatedDirective} ${event.blockedURI}`),
+    );
+  });
+  const response = await page.goto('/');
+  const headers = response!.headers();
+  expect(headers['content-security-policy']).toContain(
+    "frame-ancestors 'none'",
+  );
+  expect(headers['content-security-policy']).toContain("object-src 'none'");
+  expect(headers['permissions-policy']).toContain('camera=()');
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await expect(page.locator('.site-footer')).toBeInViewport();
+  expect(
+    await page.evaluate(
+      () => (window as unknown as { cspViolations: string[] }).cspViolations,
+    ),
+  ).toEqual([]);
+});

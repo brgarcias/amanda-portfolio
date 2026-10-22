@@ -31,7 +31,7 @@ Antes de considerar uma mudança pronta, rode `pnpm check`, `pnpm build` e `pnpm
 - `src/components/` tem um componente por seção. `SectionHeading` é o cabeçalho compartilhado das seções numeradas.
 - `src/data/profile.ts` concentra os dados da profissional: contatos, navegação, áreas de atuação, experiências, formação e cursos.
 - `src/styles/globals.css` é a única folha de estilos.
-- `next.config.mjs` define os redirecionamentos permanentes das rotas antigas do template e os cabeçalhos de segurança.
+- `next.config.mjs` define os redirecionamentos permanentes e os cabeçalhos de segurança, incluindo a Content Security Policy e a `Permissions-Policy`. A CSP só aceita recursos do próprio site. Não carregue scripts, estilos, fontes ou imagens de outros domínios. Se isso for inevitável, ajuste a política e explique o motivo no PR.
 - `tests/portfolio.spec.ts` contém todos os testes de navegador.
 - `public/` guarda logo, foto da profissional, imagem de compartilhamento, favicon, `robots.txt`, `sitemap.xml` e o currículo em PDF.
 
@@ -81,6 +81,7 @@ Os testes de navegador são o contrato de qualidade do site. Eles exigem:
 - Menu móvel com `aria-expanded`, que fecha com Escape e devolve o foco ao botão.
 - Experiências anteriores recolhidas em `<details>`, com a atual aberta.
 - Nenhum erro de JavaScript no carregamento da página.
+- Nenhuma violação da Content Security Policy.
 
 Os testes também procuram textos visíveis, como o título principal, o título da seção de formação e trechos das experiências. Se mudar esses textos, atualize os testes na mesma mudança. Nunca enfraqueça ou remova um teste para fazê-lo passar.
 
