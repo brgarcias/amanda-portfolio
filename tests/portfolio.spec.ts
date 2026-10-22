@@ -110,6 +110,9 @@ test('publica os metadados de busca e compartilhamento', async ({
     'content',
     `${siteUrl}/`,
   );
+  await expect(
+    page.locator('meta[name="google-site-verification"]'),
+  ).toHaveAttribute('content', 'UQfTWpVprRBLVKKPX5-HYduU6JZc1pwnXqO9F9ry-QI');
   const shareImage = await page
     .locator('meta[property="og:image"]')
     .getAttribute('content');
