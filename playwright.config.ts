@@ -1,4 +1,9 @@
 import { defineConfig, devices } from '@playwright/test';
+import {
+  blobsContext,
+  blobsServer,
+  panelCredentials,
+} from './tests/panel-environment';
 
 export default defineConfig({
   testDir: './tests',
@@ -30,10 +35,29 @@ export default defineConfig({
       },
     },
   ],
-  webServer: {
-    command: 'pnpm start --hostname 127.0.0.1 --port 4173',
-    url: 'http://127.0.0.1:4173',
-    reuseExistingServer: !process.env.CI,
-    timeout: 60_000,
-  },
+  webServer: [
+    {
+      command: 'node tests/blobs-server.mjs',
+      port: blobsServer.port,
+      env: {
+        BLOBS_PORT: String(blobsServer.port),
+        BLOBS_TOKEN: blobsServer.token,
+      },
+      reuseExistingServer: !process.env.CI,
+    },
+    {
+      command: 'pnpm start --hostname 127.0.0.1 --port 4173',
+      url: 'http://127.0.0.1:4173',
+      env: {
+        NETLIFY_BLOBS_CONTEXT: Buffer.from(
+          JSON.stringify(blobsContext),
+        ).toString('base64'),
+        PANEL_USERNAME: panelCredentials.username,
+        PANEL_PASSWORD: panelCredentials.password,
+        PANEL_SESSION_SECRET: 'segredo-de-teste',
+      },
+      reuseExistingServer: !process.env.CI,
+      timeout: 60_000,
+    },
+  ],
 });

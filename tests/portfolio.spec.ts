@@ -1,5 +1,42 @@
-import { expect, test } from '@playwright/test';
+import { expect, test, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { getStore } from '@netlify/blobs';
+import type { Review } from '@/lib/reviews';
+import { blobsContext, panelCredentials } from './panel-environment';
+
+const wcagTags = ['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'];
+
+function reviewStore() {
+  return getStore({ name: 'reviews', ...blobsContext });
+}
+
+async function addReview(details: Partial<Review>) {
+  const review: Review = {
+    id: crypto.randomUUID(),
+    status: 'pending',
+    receivedAt: new Date().toISOString(),
+    rating: 5,
+    name: 'Cliente de teste',
+    role: 'Gerente de operações',
+    service: 'Segurança do trabalho',
+    quote: 'Atendimento cuidadoso e documentação bem organizada.',
+    email: 'cliente@example.com',
+    consent: true,
+    ...details,
+  };
+  await reviewStore().setJSON(review.id, review);
+  return review;
+}
+
+async function signIn(page: Page) {
+  await page.goto('/painel');
+  await page.getByLabel('Usuário').fill(panelCredentials.username);
+  await page.getByLabel('Senha').fill(panelCredentials.password);
+  await page.getByRole('button', { name: 'Entrar' }).click();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    'Avaliações recebidas',
+  );
+}
 
 test('apresenta o portfólio sem erros de execução e sem rolagem horizontal', async ({
   page,
@@ -181,11 +218,9 @@ test('mantém as rotas antigas úteis e oferece uma página 404', async ({
 test('atende às verificações automáticas de acessibilidade WCAG AA', async ({
   page,
 }) => {
-  for (const path of ['/', '/avaliar']) {
+  for (const path of ['/', '/avaliar', '/painel']) {
     await page.goto(path);
-    const result = await new AxeBuilder({ page })
-      .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
-      .analyze();
+    const result = await new AxeBuilder({ page }).withTags(wcagTags).analyze();
     expect(result.violations, path).toEqual([]);
   }
 });
@@ -220,7 +255,7 @@ test('preserva o layout em telas estreitas e com movimento reduzido', async ({
 }) => {
   await page.setViewportSize({ width: 320, height: 740 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  for (const path of ['/', '/avaliar']) {
+  for (const path of ['/', '/avaliar', '/painel']) {
     await page.goto(path);
     expect(
       await page.evaluate(
@@ -234,7 +269,7 @@ test('preserva o layout em telas estreitas e com movimento reduzido', async ({
 });
 
 test('mantém todo texto visível com pelo menos 12 px', async ({ page }) => {
-  for (const [path, width] of ['/', '/avaliar'].flatMap((path) =>
+  for (const [path, width] of ['/', '/avaliar', '/painel'].flatMap((path) =>
     [320, 820, 1024, 1440].map((width) => [path, width] as const),
   )) {
     await page.setViewportSize({ width, height: 900 });
@@ -384,4 +419,128 @@ test('avisa quando a avaliação não pode ser enviada', async ({ page }) => {
   await expect(
     page.getByRole('button', { name: 'Enviar avaliação' }),
   ).toBeEnabled();
+});
+
+test('protege o painel de avaliações com usuário e senha', async ({
+  page,
+  request,
+}) => {
+  const response = await page.goto('/painel');
+  expect(response?.headers()['x-robots-tag']).toContain('noindex');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText(
+    'Painel de',
+  );
+  const blocked = await request.post('/api/panel/reviews', {
+    data: { id: 'qualquer', action: 'delete' },
+  });
+  expect(blocked.status()).toBe(401);
+
+  await page.getByLabel('Usuário').fill(panelCredentials.username);
+  await page.getByLabel('Senha').fill('senha-errada');
+  await page.getByRole('button', { name: 'Entrar' }).click();
+  await expect(
+    page.getByRole('alert').filter({ hasText: 'Usuário ou senha incorretos.' }),
+  ).toBeVisible();
+
+  await page.getByLabel('Senha').fill(panelCredentials.password);
+  await page.getByRole('button', { name: 'Entrar' }).click();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(
+    'Avaliações recebidas',
+  );
+  const session = (await page.context().cookies()).find(
+    (cookie) => cookie.name === 'panel_session',
+  );
+  expect(session).toMatchObject({ httpOnly: true, sameSite: 'Strict' });
+
+  await page.getByRole('button', { name: 'Sair' }).click();
+  await expect(page.getByRole('heading', { level: 1 })).toContainText(
+    'Painel de',
+  );
+  expect(
+    (await page.context().cookies()).some(
+      (cookie) => cookie.name === 'panel_session',
+    ),
+  ).toBe(false);
+});
+
+test('bloqueia logins repetidos e pedidos de outros sites', async ({
+  request,
+  baseURL,
+}, testInfo) => {
+  const username = `bloqueio-${testInfo.project.name}-${Date.now()}`;
+  const attempt = (origin: string) =>
+    request.post('/api/panel/login', {
+      headers: { origin },
+      data: { username, password: 'senha-errada' },
+    });
+  expect((await attempt('https://exemplo.com')).status()).toBe(403);
+  for (let count = 0; count < 5; count += 1) {
+    expect((await attempt(baseURL!)).status()).toBe(401);
+  }
+  const locked = await attempt(baseURL!);
+  expect(locked.status()).toBe(429);
+  expect((await locked.json()).error).toContain('Muitas tentativas');
+});
+
+test('publica, retira e exclui avaliações pelo painel', async ({
+  page,
+}, testInfo) => {
+  const project = testInfo.project.name;
+  const review = await addReview({
+    name: `Cliente ${project}`,
+    quote: `Depoimento publicado pelo painel (${project}).\nCom duas linhas.`,
+  });
+  const withoutConsent = await addReview({
+    name: `Sem autorização ${project}`,
+    quote: `Depoimento sem autorização (${project}).`,
+    consent: false,
+  });
+  const card = page
+    .getByRole('article')
+    .filter({ hasText: `Depoimento publicado pelo painel (${project})` });
+
+  await signIn(page);
+  await expect(card).toContainText(review.email);
+  await expect(
+    page
+      .getByRole('article')
+      .filter({ hasText: withoutConsent.quote })
+      .getByRole('button', { name: /Publicar no portfólio/ }),
+  ).toBeDisabled();
+  const result = await new AxeBuilder({ page }).withTags(wcagTags).analyze();
+  expect(result.violations).toEqual([]);
+
+  await card.getByRole('button', { name: /Publicar no portfólio/ }).click();
+  await expect(
+    page.getByRole('status').filter({ hasText: 'Avaliação publicada.' }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('region', { name: /Publicadas no portfólio/ }),
+  ).toContainText(`Depoimento publicado pelo painel (${project})`);
+
+  await page.goto('/');
+  const testimonial = page
+    .locator('#avaliacoes figure')
+    .filter({ hasText: `Depoimento publicado pelo painel (${project})` });
+  await expect(testimonial).toContainText(review.name);
+  await expect(
+    testimonial.getByRole('img', { name: 'Avaliação: 5 de 5' }),
+  ).toBeVisible();
+  await expect(page.getByText(review.email)).toHaveCount(0);
+  await expect(page.getByText(withoutConsent.quote)).toHaveCount(0);
+
+  await page.goto('/painel');
+  await card.getByRole('button', { name: /Retirar do portfólio/ }).click();
+  await expect(
+    page.getByRole('region', { name: /Aguardando revisão/ }),
+  ).toContainText(`Depoimento publicado pelo painel (${project})`);
+  await page.goto('/');
+  await expect(testimonial).toHaveCount(0);
+
+  await page.goto('/painel');
+  page.once('dialog', (dialog) => dialog.accept());
+  await card.getByRole('button', { name: /Excluir/ }).click();
+  await expect(card).toHaveCount(0);
+  expect(await reviewStore().get(review.id)).toBeNull();
+  await reviewStore().delete(withoutConsent.id);
 });

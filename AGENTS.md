@@ -25,15 +25,18 @@ Antes de considerar uma mudança pronta, rode `pnpm check`, `pnpm build` e `pnpm
 
 ## Estrutura
 
-- `src/pages/index.tsx` monta a página, define título, descrição, Open Graph e os dados estruturados `Person` em JSON-LD. O `getStaticProps` revalida uma vez por dia para atualizar o ano do rodapé.
+- `src/pages/index.tsx` monta a página, define título, descrição, Open Graph e os dados estruturados `Person` em JSON-LD. O `getStaticProps` lê os depoimentos publicados e revalida a cada minuto. O painel também pede uma revalidação a cada mudança.
 - `src/pages/_document.tsx` define `lang="pt-BR"`, a cor de tema e os ícones: `favicon.svg`, `favicon.ico` com 16, 32 e 48 px e `apple-touch-icon.png` com 180 px. Ícones ficam em SVG, ICO ou PNG, os formatos que navegadores e sistemas aceitam. O favicon reproduz o selo do logo. `src/pages/_app.tsx` carrega as fontes e o CSS global.
 - `src/pages/404.tsx` é a página de erro, marcada com `noindex`.
 - `src/pages/avaliar.tsx` é a página de avaliação, marcada com `noindex`. A Amanda envia o link para clientes, e a página também é acessível pelo botão da seção de avaliações.
-- `src/components/` tem um componente por seção. `SectionHeading` é o cabeçalho compartilhado das seções numeradas, `Brand` é a marca usada nos cabeçalhos e `ReviewForm` é o formulário de avaliação.
+- `src/pages/painel.tsx` é o painel de avaliações, protegido por usuário e senha e marcado com `noindex`. As rotas de login, saída e ações ficam em `src/pages/api/panel/`.
+- `src/components/` tem um componente por seção. `SectionHeading` é o cabeçalho compartilhado das seções numeradas, `Brand` é a marca usada nos cabeçalhos, `ReviewForm` é o formulário de avaliação, e `PanelLogin` e `ReviewPanel` formam o painel.
+- `src/lib/reviews.ts` guarda e lê as avaliações no Netlify Blobs. `src/lib/panel-auth.ts` cuida do login, da sessão e do limite de tentativas.
+- `netlify/functions/review-submitted.ts` recebe cada envio do formulário que passa pelo filtro de spam do Netlify e o guarda como avaliação pendente.
 - `src/data/profile.ts` concentra os dados da profissional: contatos, navegação, áreas de atuação, experiências, formação e cursos.
 - `src/styles/globals.css` é a única folha de estilos.
-- `next.config.mjs` desliga o `agentRules`, para que o `next dev` não acrescente instruções próprias a este arquivo, e define os redirecionamentos permanentes e os cabeçalhos de segurança, incluindo a Content Security Policy e a `Permissions-Policy`. A CSP só aceita recursos do próprio site. Não carregue scripts, estilos, fontes ou imagens de outros domínios. Se isso for inevitável, ajuste a política e explique o motivo no PR.
-- `tests/portfolio.spec.ts` contém todos os testes de navegador.
+- `next.config.mjs` desliga o `agentRules`, para que o `next dev` não acrescente instruções próprias a este arquivo, e define os redirecionamentos permanentes e os cabeçalhos de segurança, incluindo a Content Security Policy, a `Permissions-Policy` e o `X-Robots-Tag` do painel e das rotas de API. A CSP só aceita recursos do próprio site. Não carregue scripts, estilos, fontes ou imagens de outros domínios. Se isso for inevitável, ajuste a política e explique o motivo no PR.
+- `tests/portfolio.spec.ts` contém todos os testes de navegador. `tests/blobs-server.mjs` sobe um Netlify Blobs local, numa pasta temporária, e `tests/panel-environment.ts` tem as credenciais usadas só nos testes.
 - `public/` guarda logo, foto da profissional, imagem de compartilhamento, favicon, `robots.txt`, `sitemap.xml`, o currículo em PDF, o arquivo de verificação do Google e `__forms.html`, que declara o formulário de avaliação para o Netlify Forms.
 
 O projeto usa o Pages Router. Não migre para o App Router sem pedido explícito.
@@ -45,8 +48,9 @@ O projeto usa o Pages Router. Não migre para o App Router sem pedido explícito
 - O número de telefone fica só em `phoneNumber`, em `src/data/profile.ts`, e gera o link de ligação, o link do WhatsApp e o telefone dos dados estruturados. O formato exibido na página fica em `profile.phone`.
 - O nome do currículo segue o padrão nome e cargo, sem acentos nem espaços: `Amanda-Assumpcao-Engenheira-de-Seguranca-do-Trabalho.pdf`. Ao trocar o arquivo, mantenha esse nome. Os testes verificam o nome do download e o conteúdo PDF. Se o cargo principal mudar, renomeie o arquivo e acrescente o nome anterior à lista de redirecionamentos do currículo em `next.config.mjs`. O título do documento no Google Docs vira o título do PDF, exibido na aba do navegador, então ele segue o mesmo padrão: "Amanda Assumpção — Engenheira de Segurança do Trabalho".
 - Os contatos abrem WhatsApp, LinkedIn, e-mail ou telefone.
-- O único formulário é o de avaliação, em `/avaliar`. Ele envia os dados ao Netlify Forms com um `POST` para `public/__forms.html`, o arquivo estático que o Netlify lê no deploy. O Netlify só aceita campos declarados nesse arquivo, então qualquer campo novo ou renomeado em `ReviewForm` precisa ser atualizado lá também. Um teste confere isso. Não adicione outros formulários, servidores de envio nem simulações de envio.
-- Os depoimentos ficam em `testimonials`, em `src/data/profile.ts`. Só entram avaliações recebidas pelo formulário, aprovadas pela Amanda e com a autorização de publicação marcada. Copie o texto como foi recebido e nunca publique o e-mail do cliente. A seção "Avaliações" aparece sempre, com o convite para avaliar. Os cartões de depoimento só aparecem quando a lista tem pelo menos um item, e o título da seção muda com eles.
+- O formulário de avaliação fica em `/avaliar` e envia os dados ao Netlify Forms com um `POST` para `public/__forms.html`, o arquivo estático que o Netlify lê no deploy. O Netlify só aceita campos declarados nesse arquivo, então qualquer campo novo ou renomeado em `ReviewForm` precisa ser atualizado lá também. Um teste confere isso. Além dele, só existe o login do painel. Não adicione outros formulários, servidores de envio nem simulações de envio.
+- Os depoimentos ficam no Netlify Blobs, na store `reviews`. Cada envio verificado entra como pendente, e a Amanda decide em `/painel` quais aparecem no portfólio. Só avaliações com a autorização de publicação marcada podem ser publicadas. O texto nunca é editado, e o e-mail de quem avaliou nunca aparece fora do painel. Não acrescente depoimentos pelo código.
+- A seção "Avaliações" aparece sempre, com o convite para avaliar. Os cartões de depoimento só aparecem quando há pelo menos um publicado, e o título da seção muda com eles. O build não lê o Blobs, então um deploy novo começa sem depoimentos e os mostra a partir da primeira revalidação.
 - Todo texto visível é em português do Brasil, incluindo `aria-label`, `alt` e títulos de testes.
 - O endereço oficial é <https://arra-portfolio.netlify.app>, definido em `site.url` de `src/data/profile.ts`. Ele alimenta a URL canônica, o Open Graph e os dados estruturados, e também está escrito em `public/robots.txt` e `public/sitemap.xml`. Ao trocar o domínio, atualize os três arquivos.
 - O site é verificado no Google Search Console como propriedade de prefixo do URL, por dois métodos: a meta tag `google-site-verification`, com o código em `site.googleSiteVerification`, e o arquivo `public/google7cb04b6b30f7ad2f.html`, copiado sem alterações do Search Console. Não remova nenhum dos dois.
@@ -68,6 +72,14 @@ O projeto usa o Pages Router. Não migre para o App Router sem pedido explícito
 - O projeto tem poucas dependências de produção. Evite adicionar novas e justifique no PR quando for necessário.
 - Não edite `next-env.d.ts`, que é gerado pelo Next.js. Não versione `.next/`, `test-results/`, `playwright-report/` nem `tsconfig.tsbuildinfo`.
 
+## Painel de avaliações
+
+- O usuário, a senha e o segredo que assina a sessão ficam só nas variáveis de ambiente do Netlify: `PANEL_USERNAME`, `PANEL_PASSWORD` e `PANEL_SESSION_SECRET`. O repositório é público. Nunca escreva os valores reais no código, nos testes, em PRs ou em logs. O plano atual do Netlify não aceita variáveis secretas nem escopo restrito, então elas valem para todos os escopos e contextos. O `netlify env:set` falha sem mensagem quando pede um escopo; use `netlify api createEnvVars` sem `scopes`.
+- Trocar a senha nas variáveis de ambiente encerra todas as sessões abertas, depois do próximo deploy.
+- Cada cliente tem 5 tentativas de login por usuário a cada 15 minutos, e o site inteiro tem 100 por hora. Não afrouxe esses limites, porque protegem uma senha curta.
+- As ações do painel exigem a sessão e um pedido JSON vindo do próprio site. O cookie é `HttpOnly` e `SameSite=Strict`.
+- O build e o `next dev` não acessam o Blobs. Nos testes, o Playwright sobe o Blobs local e passa credenciais próprias ao servidor.
+
 ## Seções e âncoras
 
 - As seções usam ids em português: `sobre`, `atuacao`, `experiencia`, `formacao`, `avaliacoes` e `contato`. O topo usa `inicio` e o conteúdo principal usa `conteudo`, alvo do link de pular conteúdo.
@@ -81,8 +93,9 @@ Os testes de navegador são o contrato de qualidade do site. Eles exigem:
 - Nenhuma violação do axe nas regras WCAG 2.2 nível AA.
 - Nenhuma rolagem horizontal, inclusive em telas de 320 px.
 - Rolagem suave desativada quando o usuário prefere movimento reduzido.
-- Nenhum texto visível com menos de 12 px, em qualquer largura de tela, na página inicial e em `/avaliar`.
+- Nenhum texto visível com menos de 12 px, em qualquer largura de tela, na página inicial, em `/avaliar` e em `/painel`.
 - Formulário de avaliação com campos rotulados, envio real ao Netlify Forms e mensagens de sucesso e de erro.
+- Painel que só abre com login, recusa pedidos de outros sites, bloqueia tentativas repetidas e publica, retira e exclui avaliações com efeito imediato na página inicial.
 - Menu móvel com `aria-expanded`, que fecha com Escape e devolve o foco ao botão.
 - Todas as experiências em `<details>` abertos por padrão, que continuam podendo ser recolhidos pelo clique ou pelo teclado.
 - Nenhum erro de JavaScript no carregamento da página.
