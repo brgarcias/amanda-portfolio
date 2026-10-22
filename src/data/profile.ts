@@ -169,4 +169,13 @@ export type Testimonial = {
  * Reviews sent through /avaliar that Amanda approved and the client
  * authorized for publication, copied as received.
  */
-export const testimonials: readonly Testimonial[] = [];
+export const testimonials: readonly Testimonial[] = [
+  {
+    name: 'Bruno',
+    role: 'Empresas Bruno',
+    service: 'Gestão & conformidade',
+    rating: 5,
+    quote: 'Muito bom!',
+    date: 'Out. 2026',
+  },
+];
