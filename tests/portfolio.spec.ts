@@ -112,7 +112,12 @@ test('publica os metadados de busca e compartilhamento', async ({
   );
   await expect(
     page.locator('meta[name="google-site-verification"]'),
-  ).toHaveAttribute('content', 'UQfTWpVprRBLVKKPX5-HYduU6JZc1pwnXqO9F9ry-QI');
+  ).toHaveAttribute('content', 'zE-A_JWezHcTY0RPEAiraoj-ORR540i46tyJwSk0T3s');
+  const verificationFile = await request.get('/google7cb04b6b30f7ad2f.html');
+  expect(verificationFile.status()).toBe(200);
+  expect(await verificationFile.text()).toBe(
+    'google-site-verification: google7cb04b6b30f7ad2f.html',
+  );
   const shareImage = await page
     .locator('meta[property="og:image"]')
     .getAttribute('content');

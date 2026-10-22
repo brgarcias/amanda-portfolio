@@ -34,7 +34,7 @@ Antes de considerar uma mudança pronta, rode `pnpm check`, `pnpm build` e `pnpm
 - `src/styles/globals.css` é a única folha de estilos.
 - `next.config.mjs` desliga o `agentRules`, para que o `next dev` não acrescente instruções próprias a este arquivo, e define os redirecionamentos permanentes e os cabeçalhos de segurança, incluindo a Content Security Policy e a `Permissions-Policy`. A CSP só aceita recursos do próprio site. Não carregue scripts, estilos, fontes ou imagens de outros domínios. Se isso for inevitável, ajuste a política e explique o motivo no PR.
 - `tests/portfolio.spec.ts` contém todos os testes de navegador.
-- `public/` guarda logo, foto da profissional, imagem de compartilhamento, favicon, `robots.txt`, `sitemap.xml`, o currículo em PDF e `__forms.html`, que declara o formulário de avaliação para o Netlify Forms.
+- `public/` guarda logo, foto da profissional, imagem de compartilhamento, favicon, `robots.txt`, `sitemap.xml`, o currículo em PDF, o arquivo de verificação do Google e `__forms.html`, que declara o formulário de avaliação para o Netlify Forms.
 
 O projeto usa o Pages Router. Não migre para o App Router sem pedido explícito.
 
@@ -49,7 +49,7 @@ O projeto usa o Pages Router. Não migre para o App Router sem pedido explícito
 - Os depoimentos ficam em `testimonials`, em `src/data/profile.ts`. Só entram avaliações recebidas pelo formulário, aprovadas pela Amanda e com a autorização de publicação marcada. Copie o texto como foi recebido e nunca publique o e-mail do cliente. A seção "Avaliações" aparece sempre, com o convite para avaliar. Os cartões de depoimento só aparecem quando a lista tem pelo menos um item, e o título da seção muda com eles.
 - Todo texto visível é em português do Brasil, incluindo `aria-label`, `alt` e títulos de testes.
 - O endereço oficial é <https://arra-portfolio.netlify.app>, definido em `site.url` de `src/data/profile.ts`. Ele alimenta a URL canônica, o Open Graph e os dados estruturados, e também está escrito em `public/robots.txt` e `public/sitemap.xml`. Ao trocar o domínio, atualize os três arquivos.
-- A meta tag `google-site-verification`, com o código em `site.googleSiteVerification`, mantém o site verificado no Google Search Console. Não a remova.
+- O site é verificado no Google Search Console como propriedade de prefixo do URL, por dois métodos: a meta tag `google-site-verification`, com o código em `site.googleSiteVerification`, e o arquivo `public/google7cb04b6b30f7ad2f.html`, copiado sem alterações do Search Console. Não remova nenhum dos dois.
 
 ## Código
 
