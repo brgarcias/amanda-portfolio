@@ -79,7 +79,7 @@ Os testes de navegador são o contrato de qualidade do site. Eles exigem:
 - Rolagem suave desativada quando o usuário prefere movimento reduzido.
 - Nenhum texto visível com menos de 12 px, em qualquer largura de tela.
 - Menu móvel com `aria-expanded`, que fecha com Escape e devolve o foco ao botão.
-- Experiências anteriores recolhidas em `<details>`, com a atual aberta.
+- Todas as experiências em `<details>` abertos por padrão, que continuam podendo ser recolhidos pelo clique ou pelo teclado.
 - Nenhum erro de JavaScript no carregamento da página.
 - Nenhuma violação da Content Security Policy.
 
