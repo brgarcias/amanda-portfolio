@@ -882,14 +882,11 @@ details[open] .details-symbol::after {
   background: var(--paper);
 }
 .testimonials-grid {
-  list-style: none;
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 19px;
-  margin-bottom: 19px;
 }
 .testimonial-card {
-  height: 100%;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -970,6 +967,17 @@ details[open] .details-symbol::after {
 }
 .review-invite .button {
   flex-shrink: 0;
+}
+/* After an odd number of testimonials, the invitation fills the free cell
+   beside the last one. Otherwise it takes a whole row. */
+.review-invite:nth-child(odd) {
+  grid-column: 1 / -1;
+}
+.review-invite:nth-child(even) {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 28px;
 }
 
 /* Review form */
@@ -1702,7 +1710,7 @@ a.contact-row:hover strong {
   .testimonial-card {
     padding: 24px;
   }
-  .review-invite {
+  .testimonials-grid .review-invite {
     flex-direction: column;
     align-items: stretch;
     gap: 26px;
