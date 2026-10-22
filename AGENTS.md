@@ -55,6 +55,7 @@ O projeto usa o Pages Router. Não migre para o App Router sem pedido explícito
 - Prettier com aspas simples e vírgula final. Indentação de dois espaços e quebras de linha LF.
 - Nomes de código, classes CSS e identificadores ficam em inglês. Classes CSS usam kebab-case, e estados usam o prefixo `is-`, como `is-open` e `is-current`.
 - Estilos ficam em CSS puro, em `src/styles/globals.css`. Use os tokens definidos em `:root` e não adicione frameworks de CSS nem CSS-in-JS.
+- Tamanhos de fonte usam `rem`. Para textos de até 16 px, use os tokens `--text-*` do `:root`.
 - Ícones vêm do `lucide-react`. Ícones decorativos recebem `aria-hidden="true"`.
 - Imagens ficam em WebP dentro de `public/` e são exibidas com `next/image`.
 - Fontes são servidas pelo próprio projeto via Fontsource. Não use CDNs de fontes, estilos ou scripts.
@@ -74,6 +75,7 @@ Os testes de navegador são o contrato de qualidade do site. Eles exigem:
 - Nenhuma violação do axe nas regras WCAG 2.2 nível AA.
 - Nenhuma rolagem horizontal, inclusive em telas de 320 px.
 - Rolagem suave desativada quando o usuário prefere movimento reduzido.
+- Nenhum texto visível com menos de 12 px, em qualquer largura de tela.
 - Menu móvel com `aria-expanded`, que fecha com Escape e devolve o foco ao botão.
 - Experiências anteriores recolhidas em `<details>`, com a atual aberta.
 - Nenhum erro de JavaScript no carregamento da página.

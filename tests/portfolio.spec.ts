@@ -152,3 +152,30 @@ test('preserva o layout em telas estreitas e com movimento reduzido', async ({
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
   await expect(page.locator('html')).toHaveCSS('scroll-behavior', 'auto');
 });
+
+test('mantém todo texto visível com pelo menos 12 px', async ({ page }) => {
+  await page.goto('/');
+  await page.evaluate(() => {
+    for (const details of document.querySelectorAll('details')) {
+      details.open = true;
+    }
+  });
+  for (const width of [320, 820, 1024, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    const smallTexts = await page.evaluate(() =>
+      [...document.querySelectorAll('body *')]
+        .filter((element) =>
+          [...element.childNodes].some(
+            (node) =>
+              node.nodeType === Node.TEXT_NODE && node.textContent?.trim(),
+          ),
+        )
+        .filter((element) => element.getClientRects().length > 0)
+        .filter(
+          (element) => parseFloat(getComputedStyle(element).fontSize) < 12,
+        )
+        .map((element) => element.textContent?.trim()),
+    );
+    expect(smallTexts, `largura de ${width} px`).toEqual([]);
+  }
+});

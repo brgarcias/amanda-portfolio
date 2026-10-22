@@ -9,6 +9,11 @@
   --accent: #b73b13;
   --orange: #ed6a3b;
   --dark: #222a25;
+  --text-label: 0.75rem;
+  --text-meta: 0.8125rem;
+  --text-ui: 0.875rem;
+  --text-small: 0.9375rem;
+  --text-body: 1rem;
   --font-heading: 'Manrope Variable', sans-serif;
   --font-body: 'DM Sans Variable', sans-serif;
 }
@@ -25,7 +30,7 @@ body {
   background: var(--canvas);
   color: var(--ink);
   font-family: var(--font-body);
-  font-size: 16px;
+  font-size: var(--text-body);
   line-height: 1.7;
   -webkit-font-smoothing: antialiased;
 }
@@ -65,6 +70,9 @@ h3,
 p {
   margin: 0;
 }
+p {
+  text-wrap: pretty;
+}
 h1,
 h2,
 h3 {
@@ -76,7 +84,7 @@ h2 {
   letter-spacing: -0.055em;
 }
 h2 {
-  font-size: clamp(32px, 3.4vw, 46px);
+  font-size: clamp(2rem, 3.4vw, 2.875rem);
   line-height: 1.2;
 }
 h3 {
@@ -105,7 +113,7 @@ ol {
   display: flex;
   align-items: center;
   gap: 13px;
-  font-size: 10px;
+  font-size: var(--text-label);
   line-height: 1.6;
   letter-spacing: 0.16em;
   font-weight: 650;
@@ -121,7 +129,7 @@ ol {
   margin-top: 23px;
   max-width: 340px;
   color: var(--muted);
-  font-size: 15px;
+  font-size: var(--text-small);
 }
 .muted-heading {
   color: #7a8076;
@@ -135,7 +143,7 @@ ol {
   padding: 14px 23px;
   border: 1px solid transparent;
   border-radius: 3px;
-  font-size: 12px;
+  font-size: var(--text-ui);
   line-height: 1.5;
   font-weight: 600;
   transition:
@@ -163,7 +171,7 @@ ol {
   display: inline-flex;
   gap: 16px;
   align-items: center;
-  font-size: 12px;
+  font-size: var(--text-ui);
   font-weight: 600;
   text-decoration: underline;
   text-decoration-color: #b7bbb1;
@@ -225,14 +233,14 @@ ol {
 }
 .brand strong {
   font-family: var(--font-heading);
-  font-size: 16px;
+  font-size: 1rem;
   letter-spacing: -0.04em;
   font-weight: 700;
   line-height: 1.5;
 }
 .brand > span > span {
-  font-size: 8px;
-  letter-spacing: 0.14em;
+  font-size: var(--text-label);
+  letter-spacing: 0.1em;
   color: var(--muted);
   margin-top: 3px;
 }
@@ -242,7 +250,7 @@ ol {
   gap: 31px;
 }
 .main-navigation > a:not(.button) {
-  font-size: 12px;
+  font-size: var(--text-ui);
   color: #53594f;
   transition: color 180ms;
 }
@@ -251,7 +259,7 @@ ol {
 }
 .header-contact {
   min-height: 43px;
-  font-size: 11px;
+  font-size: var(--text-meta);
   gap: 18px;
   margin-left: 6px;
   padding: 11px 18px;
@@ -279,11 +287,10 @@ ol {
 }
 .hero-eyebrow {
   margin-bottom: 24px;
-  font-size: 10px;
   letter-spacing: 0.14em;
 }
 .hero h1 {
-  font-size: clamp(44px, 4.8vw, 68px);
+  font-size: clamp(2.75rem, 4.8vw, 4.25rem);
   line-height: 1.12;
 }
 .hero h1 > span {
@@ -291,9 +298,9 @@ ol {
 }
 .hero-description {
   color: var(--muted);
-  font-size: 14px;
-  line-height: 1.9;
-  max-width: 440px;
+  font-size: var(--text-body);
+  line-height: 1.8;
+  max-width: 470px;
   margin-top: 28px;
 }
 .hero-actions {
@@ -308,23 +315,28 @@ ol {
   padding-inline: 19px;
 }
 .hero-actions .text-link {
-  font-size: 11px;
   gap: 9px;
 }
+/* Each item draws its own divider. The container clips the divider of
+   whichever item starts a line, so a wrapped line never begins with one. */
 .hero-location {
   margin-top: 34px;
+  margin-left: -12px;
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
-  gap: 8px;
-  font-size: 10px;
+  row-gap: 4px;
+  overflow: hidden;
+  font-size: var(--text-meta);
   color: var(--muted);
 }
-.location-divider {
-  height: 11px;
-  width: 1px;
-  background: #bfc3b9;
-  margin-inline: 5px;
+.hero-location > span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: -1px;
+  margin-right: 12px;
+  padding-left: 12px;
+  border-left: 1px solid #bfc3b9;
 }
 .hero-visual {
   position: relative;
@@ -358,8 +370,9 @@ ol {
   position: absolute;
   top: 26px;
   left: 27px;
+  right: 27px;
   z-index: 1;
-  font-size: 8px;
+  font-size: var(--text-label);
   font-weight: 500;
   color: #fff;
   letter-spacing: 0.14em;
@@ -424,7 +437,7 @@ ol {
   margin-top: 12px;
 }
 .image-caption p {
-  font-size: 18px;
+  font-size: 1.125rem;
   font-weight: 400;
   line-height: 1.5;
   letter-spacing: -0.025em;
@@ -445,7 +458,7 @@ ol {
   padding: 17px 21px;
   background: var(--dark);
   color: white;
-  font-size: 8px;
+  font-size: var(--text-label);
   letter-spacing: 0.1em;
   border: 1px solid #485148;
 }
@@ -455,7 +468,7 @@ ol {
 }
 .visual-cross {
   position: absolute;
-  font-size: 18px;
+  font-size: 1.125rem;
   line-height: 1;
   font-weight: 300;
   color: #8a9185;
@@ -475,7 +488,7 @@ ol {
   display: flex;
   gap: 14px;
   align-items: center;
-  font-size: 9px;
+  font-size: var(--text-label);
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--muted);
@@ -498,12 +511,12 @@ ol {
   padding-top: 37px;
 }
 .about-copy p {
-  font-size: 14px;
+  font-size: var(--text-body);
   color: var(--muted);
   margin-bottom: 20px;
 }
 .about-copy p.lead {
-  font-size: 18px;
+  font-size: 1.25rem;
   line-height: 1.65;
   color: var(--ink);
   letter-spacing: -0.02em;
@@ -539,11 +552,11 @@ ol {
   gap: 4px;
 }
 .practice-strip strong {
-  font-size: 13px;
+  font-size: var(--text-small);
   font-weight: 550;
 }
 .practice-strip span span {
-  font-size: 11px;
+  font-size: var(--text-meta);
   color: var(--muted);
 }
 
@@ -556,8 +569,8 @@ ol {
   margin-bottom: 47px;
 }
 .section-aside {
-  max-width: 275px;
-  font-size: 13px;
+  max-width: 320px;
+  font-size: var(--text-small);
   line-height: 1.9;
   color: var(--muted);
   padding-bottom: 5px;
@@ -585,17 +598,17 @@ ol {
   color: var(--accent);
 }
 .expertise-card-top > span {
-  font-size: 10px;
+  font-size: var(--text-label);
   letter-spacing: 0.06em;
   color: var(--muted);
 }
 .expertise-card h3 {
-  font-size: 23px;
+  font-size: 1.4375rem;
   margin-bottom: 14px;
 }
 .expertise-card > p {
   color: var(--muted);
-  font-size: 13px;
+  font-size: var(--text-small);
   line-height: 1.85;
   max-width: 440px;
 }
@@ -611,7 +624,7 @@ ol {
   border: 1px solid #dfe1d7;
   border-radius: 2px;
   color: #5b6256;
-  font-size: 9px;
+  font-size: var(--text-label);
 }
 .training-note {
   display: grid;
@@ -621,13 +634,13 @@ ol {
   padding-top: 27px;
 }
 .training-note > span {
-  font-size: 14px;
+  font-size: var(--text-body);
   letter-spacing: -0.02em;
   font-weight: 550;
 }
 .training-note p {
   color: var(--muted);
-  font-size: 11px;
+  font-size: var(--text-ui);
 }
 .training-note > svg {
   color: var(--accent);
@@ -692,7 +705,7 @@ ol {
   gap: 10px;
   color: var(--muted);
   margin-bottom: 12px;
-  font-size: 10px;
+  font-size: var(--text-meta);
 }
 .current-badge {
   display: flex;
@@ -703,7 +716,7 @@ ol {
   border-radius: 2px;
   background: #fff7f1;
   color: #9c391c;
-  font-size: 9px;
+  font-size: var(--text-label);
   line-height: 1.4;
 }
 .current-badge .status-dot {
@@ -711,7 +724,7 @@ ol {
   width: 4px;
 }
 .timeline-item h3 {
-  font-size: 20px;
+  font-size: 1.25rem;
   line-height: 1.45;
 }
 .timeline-company {
@@ -720,14 +733,14 @@ ol {
   gap: 13px;
   margin-top: 7px;
   color: var(--accent);
-  font-size: 12px;
+  font-size: var(--text-ui);
   font-weight: 550;
 }
 .timeline-company > span {
   padding-left: 13px;
   border-left: 1px solid var(--line);
   color: var(--muted);
-  font-size: 10px;
+  font-size: var(--text-meta);
   font-weight: 400;
 }
 .timeline-item details {
@@ -740,7 +753,7 @@ ol {
   padding-block: 5px;
   list-style: none;
   color: #596050;
-  font-size: 11px;
+  font-size: var(--text-ui);
 }
 .timeline-item summary::-webkit-details-marker {
   display: none;
@@ -774,7 +787,7 @@ details[open] .details-symbol::after {
 .timeline-item details li {
   position: relative;
   padding-left: 15px;
-  font-size: 12px;
+  font-size: var(--text-small);
   line-height: 1.85;
   color: var(--muted);
   margin-bottom: 10px;
@@ -783,7 +796,7 @@ details[open] .details-symbol::after {
   content: '';
   position: absolute;
   left: 0;
-  top: 10px;
+  top: 0.8em;
   width: 4px;
   height: 4px;
   border-radius: 50%;
@@ -818,16 +831,13 @@ details[open] .details-symbol::after {
   margin-bottom: 37px;
   color: var(--muted);
 }
-.education-card-top .eyebrow {
-  font-size: 9px;
-}
 .education-card h3 {
-  font-size: 20px;
+  font-size: 1.25rem;
   max-width: 270px;
   margin-bottom: 9px;
 }
 .institution {
-  font-size: 12px;
+  font-size: var(--text-ui);
   color: var(--muted);
   margin-bottom: 34px;
 }
@@ -838,12 +848,12 @@ details[open] .details-symbol::after {
   display: flex;
   flex-direction: column;
   gap: 12px;
-  font-size: 10px;
+  font-size: var(--text-meta);
   color: var(--muted);
 }
 .education-status {
   align-self: flex-start;
-  font-size: 9px;
+  font-size: var(--text-label);
   color: #5a6353;
 }
 .education-status.studying {
@@ -859,12 +869,11 @@ details[open] .details-symbol::after {
   margin-top: 65px;
 }
 .courses-layout .eyebrow {
-  font-size: 9px;
   margin-bottom: 12px;
   color: var(--muted);
 }
 .courses-layout h3 {
-  font-size: 24px;
+  font-size: 1.5rem;
 }
 .courses-arrow {
   margin-top: 27px;
@@ -890,11 +899,11 @@ details[open] .details-symbol::after {
   gap: 3px;
 }
 .course-list strong {
-  font-size: 13px;
+  font-size: var(--text-small);
   font-weight: 500;
 }
 .course-list span {
-  font-size: 10px;
+  font-size: var(--text-meta);
   color: var(--muted);
 }
 .course-list > li > span {
@@ -919,14 +928,14 @@ details[open] .details-symbol::after {
   color: #f6a67e;
 }
 .contact-intro h2 {
-  font-size: clamp(34px, 3.4vw, 46px);
+  font-size: clamp(2.125rem, 3.4vw, 2.875rem);
 }
 .contact-intro h2 > span {
   color: #b7c0b0;
 }
 .contact-intro > p:not(.eyebrow) {
   color: #bac2b5;
-  font-size: 13px;
+  font-size: var(--text-body);
   max-width: 360px;
   margin-top: 25px;
 }
@@ -954,12 +963,12 @@ details[open] .details-symbol::after {
   gap: 5px;
 }
 .contact-row > span > span {
-  font-size: 8px;
+  font-size: var(--text-label);
   color: #b9c2b3;
   letter-spacing: 0.13em;
 }
 .contact-row strong {
-  font-size: 13px;
+  font-size: var(--text-body);
   font-weight: 400;
   overflow-wrap: anywhere;
 }
@@ -974,7 +983,7 @@ a.contact-row:hover strong {
   gap: 17px;
   align-items: center;
   margin-top: 25px;
-  font-size: 11px;
+  font-size: var(--text-ui);
 }
 .contact-resume > svg:last-child {
   margin-left: auto;
@@ -987,7 +996,7 @@ a.contact-row:hover strong {
   align-items: center;
   gap: 8px;
   color: #b7c0b0;
-  font-size: 10px;
+  font-size: var(--text-meta);
   margin-top: 22px;
 }
 .site-footer {
@@ -1003,7 +1012,7 @@ a.contact-row:hover strong {
 }
 .footer-inner > div > strong {
   font-family: var(--font-heading);
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: 600;
   letter-spacing: -0.04em;
 }
@@ -1012,12 +1021,12 @@ a.contact-row:hover strong {
 }
 .footer-inner p {
   color: #b7c0b0;
-  font-size: 9px;
+  font-size: var(--text-meta);
   margin-top: 4px;
 }
 .copyright {
   color: #b7c0b0;
-  font-size: 9px;
+  font-size: var(--text-meta);
   margin-left: auto;
 }
 .back-to-top {
@@ -1040,7 +1049,7 @@ a.contact-row:hover strong {
   padding-block: 15vh;
 }
 .not-found h1 {
-  font-size: clamp(36px, 6vw, 70px);
+  font-size: clamp(2.25rem, 6vw, 4.375rem);
   line-height: 1.2;
   margin-block: 25px;
 }
@@ -1055,7 +1064,7 @@ a.contact-row:hover strong {
     padding-bottom: 105px;
   }
   .hero h1 {
-    font-size: 72px;
+    font-size: 4.5rem;
   }
   .hero-image {
     height: 570px;
@@ -1074,7 +1083,7 @@ a.contact-row:hover strong {
     padding-top: 55px;
   }
   .hero h1 {
-    font-size: clamp(44px, 5vw, 58px);
+    font-size: clamp(2.75rem, 5vw, 3.625rem);
   }
   .hero-image {
     height: 510px;
@@ -1084,17 +1093,8 @@ a.contact-row:hover strong {
   }
   .hero-actions .button {
     padding-inline: 15px;
-    font-size: 11px;
-  }
-  .hero-description {
-    font-size: 13px;
-  }
-  .hero-location {
-    font-size: 9px;
-    gap: 6px;
   }
   .hero-label {
-    font-size: 7px;
     padding-inline: 14px;
   }
   .about-layout,
@@ -1107,17 +1107,11 @@ a.contact-row:hover strong {
   .practice-strip > div {
     gap: 12px;
   }
-  .practice-strip strong {
-    font-size: 12px;
-  }
-  .practice-strip span span {
-    font-size: 10px;
-  }
   .education-card {
     padding: 23px;
   }
   .education-card h3 {
-    font-size: 18px;
+    font-size: 1.125rem;
   }
   .contact-layout {
     gap: 60px;
@@ -1126,16 +1120,16 @@ a.contact-row:hover strong {
 
 @media (max-width: 900px) {
   .brand strong {
-    font-size: 14px;
+    font-size: var(--text-ui);
   }
   .main-navigation {
     gap: 17px;
   }
   .main-navigation > a:not(.button) {
-    font-size: 11px;
+    font-size: var(--text-meta);
   }
   .header-contact {
-    font-size: 10px;
+    font-size: var(--text-label);
     padding-inline: 12px;
     gap: 10px;
     margin-left: 0;
@@ -1147,7 +1141,7 @@ a.contact-row:hover strong {
     column-gap: 27px;
   }
   .hero h1 {
-    font-size: 43px;
+    font-size: 2.6875rem;
   }
   .hero-image {
     height: 490px;
@@ -1161,21 +1155,14 @@ a.contact-row:hover strong {
     gap: 10px;
   }
   .image-caption p {
-    font-size: 15px;
-  }
-  .hero-location .location-divider {
-    display: none;
-  }
-  .hero-location {
-    max-width: 230px;
+    font-size: 1rem;
   }
   .image-index {
-    font-size: 6px;
     left: 22px;
+    right: 22px;
   }
   .hero-label {
     right: 12px;
-    font-size: 6px;
   }
   .about-layout,
   .experience-layout {
@@ -1194,19 +1181,16 @@ a.contact-row:hover strong {
     padding: 20px;
   }
   .education-card h3 {
-    font-size: 17px;
+    font-size: 1.0625rem;
   }
   .education-card-top {
     margin-bottom: 25px;
-  }
-  .education-card-top .eyebrow {
-    font-size: 8px;
   }
   .contact-layout {
     gap: 40px;
   }
   .contact-row strong {
-    font-size: 11px;
+    font-size: var(--text-ui);
   }
   .contact-row {
     gap: 12px;
@@ -1231,10 +1215,7 @@ a.contact-row:hover strong {
     height: 40px;
   }
   .brand strong {
-    font-size: 15px;
-  }
-  .brand > span > span {
-    font-size: 7px;
+    font-size: var(--text-small);
   }
   .menu-toggle {
     display: block;
@@ -1261,12 +1242,12 @@ a.contact-row:hover strong {
     flex-direction: column;
   }
   .main-navigation > a:not(.button) {
-    font-size: 14px;
+    font-size: var(--text-body);
     padding: 11px 4px;
   }
   .header-contact {
     margin-top: 14px;
-    font-size: 12px;
+    font-size: var(--text-ui);
   }
   .hero {
     grid-template-columns: 1fr;
@@ -1278,14 +1259,12 @@ a.contact-row:hover strong {
     padding-block: 5px;
   }
   .hero h1 {
-    font-size: clamp(41px, 8.5vw, 61px);
+    font-size: clamp(2.5625rem, 8.5vw, 3.8125rem);
   }
   .hero-eyebrow {
-    font-size: 9px;
     margin-bottom: 23px;
   }
   .hero-description {
-    font-size: 14px;
     margin-top: 23px;
     max-width: 490px;
   }
@@ -1294,16 +1273,10 @@ a.contact-row:hover strong {
     margin-top: 26px;
   }
   .hero-actions .button {
-    font-size: 11px;
     padding-inline: 17px;
   }
   .hero-location {
-    max-width: none;
-    font-size: 9px;
     margin-top: 25px;
-  }
-  .hero-location .location-divider {
-    display: inline-block;
   }
   .hero-visual {
     padding-left: 8px;
@@ -1318,17 +1291,13 @@ a.contact-row:hover strong {
     width: 235px;
     height: 235px;
   }
-  .image-index {
-    font-size: 8px;
-  }
   .image-caption p {
-    font-size: 19px;
+    font-size: 1.1875rem;
   }
   .hero-label {
     left: -8px;
     right: 23px;
     padding: 16px 20px;
-    font-size: 7px;
   }
   .scroll-cue {
     bottom: 15px;
@@ -1341,7 +1310,7 @@ a.contact-row:hover strong {
     padding-top: 0;
   }
   .about-copy p.lead {
-    font-size: 18px;
+    font-size: 1.125rem;
   }
   .practice-strip {
     grid-template-columns: 1fr;
@@ -1356,17 +1325,11 @@ a.contact-row:hover strong {
   .practice-strip > div {
     gap: 16px;
   }
-  .practice-strip strong {
-    font-size: 13px;
-  }
-  .practice-strip span span {
-    font-size: 11px;
-  }
   .section-heading .eyebrow {
     margin-bottom: 20px;
   }
   h2 {
-    font-size: clamp(31px, 6vw, 39px);
+    font-size: clamp(1.9375rem, 6vw, 2.4375rem);
   }
   .section-topline {
     flex-direction: column;
@@ -1387,9 +1350,6 @@ a.contact-row:hover strong {
   .expertise-card-top {
     margin-bottom: 24px;
   }
-  .expertise-card h3 {
-    font-size: 23px;
-  }
   .expertise-card > p {
     max-width: none;
   }
@@ -1399,7 +1359,6 @@ a.contact-row:hover strong {
   }
   .training-note > span {
     grid-column: 1;
-    font-size: 13px;
   }
   .training-note p {
     grid-column: 1;
@@ -1418,7 +1377,6 @@ a.contact-row:hover strong {
   }
   .section-description {
     max-width: 440px;
-    font-size: 14px;
   }
   .experience-intro .text-link {
     margin-top: 18px;
@@ -1433,13 +1391,9 @@ a.contact-row:hover strong {
     padding-left: 24px;
   }
   .timeline-item h3 {
-    font-size: 19px;
-  }
-  .timeline-item details li {
-    font-size: 13px;
+    font-size: 1.1875rem;
   }
   .timeline-item summary {
-    font-size: 12px;
     padding-block: 8px;
   }
   .education-grid {
@@ -1452,11 +1406,8 @@ a.contact-row:hover strong {
   .education-card-top {
     margin-bottom: 27px;
   }
-  .education-card-top .eyebrow {
-    font-size: 9px;
-  }
   .education-card h3 {
-    font-size: 22px;
+    font-size: 1.375rem;
     max-width: 320px;
   }
   .institution {
@@ -1478,19 +1429,15 @@ a.contact-row:hover strong {
   .courses-arrow {
     display: none;
   }
-  .course-list strong {
-    font-size: 13px;
-  }
   .contact-layout {
     grid-template-columns: 1fr;
     gap: 24px;
   }
   .contact-intro h2 {
-    font-size: clamp(31px, 6.9vw, 42px);
+    font-size: clamp(1.9375rem, 6.9vw, 2.625rem);
   }
   .contact-intro > p:not(.eyebrow) {
     max-width: 440px;
-    font-size: 14px;
   }
   .contact-details {
     padding-top: 0;
@@ -1499,10 +1446,7 @@ a.contact-row:hover strong {
     gap: 18px;
   }
   .contact-row strong {
-    font-size: 13px;
-  }
-  .contact-row > span > span {
-    font-size: 9px;
+    font-size: var(--text-body);
   }
   .footer-inner {
     flex-wrap: wrap;
@@ -1522,20 +1466,31 @@ a.contact-row:hover strong {
 }
 
 @media (max-width: 370px) {
+  .header-inner {
+    gap: 12px;
+  }
+  .brand {
+    gap: 10px;
+  }
+  .brand img {
+    width: 36px;
+    height: 36px;
+  }
+  .brand > span > span {
+    letter-spacing: 0.04em;
+  }
   .hero-actions {
     gap: 20px;
   }
   .hero h1 {
-    font-size: 38px;
+    font-size: 2.375rem;
   }
   .hero-label {
-    font-size: 6px;
     gap: 6px;
     padding-inline: 12px;
   }
   .hero-location {
-    font-size: 8px;
-    gap: 4px;
+    font-size: var(--text-label);
   }
   .expertise-card {
     padding: 24px;
@@ -1547,7 +1502,7 @@ a.contact-row:hover strong {
     gap: 12px;
   }
   .contact-row strong {
-    font-size: 12px;
+    font-size: var(--text-ui);
   }
 }
 
