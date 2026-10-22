@@ -61,9 +61,9 @@ test('oferece o currículo original e canais de contato válidos', async ({
   const downloadPromise = page.waitForEvent('download');
   await downloadLink.click();
   const download = await downloadPromise;
-  expect(download.suggestedFilename()).toBe('curriculo-amanda-assumpcao.pdf');
+  expect(download.suggestedFilename()).toBe('Amanda-Assumpcao-Curriculo.pdf');
   const response = await request.get(
-    '/documents/curriculo-amanda-assumpcao.pdf',
+    '/documents/Amanda-Assumpcao-Curriculo.pdf',
   );
   expect(response.headers()['content-type']).toContain('application/pdf');
   expect((await response.body()).subarray(0, 5).toString()).toBe('%PDF-');
@@ -138,6 +138,8 @@ test('mantém as rotas antigas úteis e oferece uma página 404', async ({
   const routes = {
     '/story': '/#experiencia',
     '/contact': '/#contato',
+    '/documents/curriculo-amanda-assumpcao.pdf':
+      '/documents/Amanda-Assumpcao-Curriculo.pdf',
     '/services/service-1': '/#atuacao',
     '/projects-3': '/#atuacao',
   };

@@ -6,6 +6,11 @@ const nextConfig = {
     return [
       { source: '/story', destination: '/#experiencia', permanent: true },
       { source: '/contact', destination: '/#contato', permanent: true },
+      {
+        source: '/documents/curriculo-amanda-assumpcao.pdf',
+        destination: '/documents/Amanda-Assumpcao-Curriculo.pdf',
+        permanent: true,
+      },
       { source: '/services/:path*', destination: '/#atuacao', permanent: true },
       { source: '/projects/:path*', destination: '/#atuacao', permanent: true },
       ...[2, 3, 4, 5].map((number) => ({

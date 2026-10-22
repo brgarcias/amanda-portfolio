@@ -45,7 +45,7 @@ O GitHub Actions roda `pnpm check`, `pnpm build` e `pnpm test:e2e` em cada pull 
 - `src/components/`: seções independentes da página e navegação responsiva.
 - `src/styles/globals.css`: cores, tipografia, espaçamento e regras de responsividade.
 - `src/pages/index.tsx`: composição, metadados e dados estruturados da profissional.
-- `public/documents/curriculo-amanda-assumpcao.pdf`: currículo original para download.
+- `public/documents/Amanda-Assumpcao-Curriculo.pdf`: currículo original para download. O endereço antigo, `/documents/curriculo-amanda-assumpcao.pdf`, redireciona para ele.
 - `public/images/amanda-assumpcao.webp`: foto exibida no topo da página.
 - `public/images/og-image.jpg`: imagem de prévia exibida quando o link é compartilhado, com 1200 × 630 px.
 
