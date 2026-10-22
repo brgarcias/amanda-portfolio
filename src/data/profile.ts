@@ -1,7 +1,7 @@
 export const site = {
   url: 'https://arra-portfolio.netlify.app',
   shareImage: '/images/og-image.jpg',
-  googleSiteVerification: 'UQfTWpVprRBLVKKPX5-HYduU6JZc1pwnXqO9F9ry-QI',
+  googleSiteVerification: 'zE-A_JWezHcTY0RPEAiraoj-ORR540i46tyJwSk0T3s',
 } as const;
 
 const phoneNumber = '5511996240704';
