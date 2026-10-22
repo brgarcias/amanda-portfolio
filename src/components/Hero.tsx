@@ -37,8 +37,10 @@ export function Hero() {
           </a>
         </div>
         <p className="hero-location">
-          <MapPin size={15} aria-hidden="true" /> {profile.location}
-          <span className="location-divider" /> Saúde, segurança & meio ambiente
+          <span>
+            <MapPin size={15} aria-hidden="true" /> {profile.location}
+          </span>
+          <span>Saúde, segurança & meio ambiente</span>
         </p>
       </div>
       <div className="hero-visual">

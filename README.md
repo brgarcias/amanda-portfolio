@@ -27,7 +27,7 @@ pnpm start
 
 Os comandos de lint, tipos e formatação também podem ser executados individualmente: `pnpm lint`, `pnpm typecheck` e `pnpm format`. Para aplicar a formatação: `pnpm format:fix`.
 
-Os testes de navegador verificam desktop e celular, navegação por teclado, expansão das experiências, download do PDF, contatos, redirecionamentos, página 404, movimento reduzido, ausência de rolagem horizontal e acessibilidade WCAG AA com axe.
+Os testes de navegador verificam desktop e celular, navegação por teclado, expansão das experiências, download do PDF, contatos, redirecionamentos, página 404, movimento reduzido, ausência de rolagem horizontal, tamanho mínimo de 12 px para textos e acessibilidade WCAG AA com axe.
 
 ```sh
 pnpm exec playwright install chromium
