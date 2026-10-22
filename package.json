@@ -44,7 +44,7 @@
     "typescript": "^5.9.0"
   },
   "lint-staged": {
-    "*.{js,mjs,jsx,ts,tsx,css,json,md,yaml}": "prettier --write"
+    "*.{js,mjs,jsx,ts,tsx,css,json,md,yaml,yml}": "prettier --write"
   },
   "packageManager": "pnpm@11.3.0",
   "engines": {

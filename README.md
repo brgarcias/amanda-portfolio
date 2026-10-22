@@ -37,6 +37,8 @@ pnpm test:e2e
 
 Para usar um Chromium já instalado, defina `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH` com o caminho completo do executável. Capturas de tela e rastros de falhas ficam em `test-results/`, ignorado pelo Git.
 
+O GitHub Actions roda `pnpm check`, `pnpm build` e `pnpm test:e2e` em cada pull request para `main`, no job `quality` de `.github/workflows/ci.yml`. Quando os testes falham, a pasta `test-results/` fica disponível como artefato da execução por sete dias.
+
 ## Atualizar conteúdo
 
 - `src/data/profile.ts`: nome, contatos, currículo, competências, cargos, formações e cursos.
