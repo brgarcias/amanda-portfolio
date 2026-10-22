@@ -37,7 +37,7 @@ export function Header() {
           />
           <span>
             <strong>{profile.name}</strong>
-            <span>ENGENHARIA & SEGURANÇA</span>
+            <span>Engenharia & segurança</span>
           </span>
         </a>
         <button

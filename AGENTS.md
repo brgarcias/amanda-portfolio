@@ -56,6 +56,8 @@ O projeto usa o Pages Router. Não migre para o App Router sem pedido explícito
 - Nomes de código, classes CSS e identificadores ficam em inglês. Classes CSS usam kebab-case, e estados usam o prefixo `is-`, como `is-open` e `is-current`.
 - Estilos ficam em CSS puro, em `src/styles/globals.css`. Use os tokens definidos em `:root` e não adicione frameworks de CSS nem CSS-in-JS.
 - Tamanhos de fonte usam `rem`. Para textos de até 16 px, use os tokens `--text-*` do `:root`.
+- Cores vêm só dos tokens do `:root`, sem valores fixos nas regras. Para transparência, use `color-mix()` com um token.
+- Rótulos em maiúsculas são escritos normalmente no JSX e recebem `text-transform: uppercase` no CSS, para que leitores de tela não soletrem as palavras como siglas.
 - Ícones vêm do `lucide-react`. Ícones decorativos recebem `aria-hidden="true"`.
 - Imagens ficam em WebP dentro de `public/` e são exibidas com `next/image`.
 - Fontes são servidas pelo próprio projeto via Fontsource. Não use CDNs de fontes, estilos ou scripts.

@@ -53,7 +53,7 @@ export function Hero() {
             priority
             className="architecture-image"
           />
-          <span className="image-index">01 / PERSPECTIVAS QUE TRANSFORMAM</span>
+          <span className="image-index">01 / Perspectivas que transformam</span>
           <div className="engineering-orbit" aria-hidden="true">
             <span />
             <ShieldCheck strokeWidth={1} />
@@ -68,7 +68,7 @@ export function Hero() {
           </div>
         </div>
         <div className="hero-label">
-          <span className="status-dot" /> PREVENÇÃO É O PONTO DE PARTIDA{' '}
+          <span className="status-dot" /> Prevenção é o ponto de partida{' '}
           <ArrowUpRight size={16} aria-hidden="true" />
         </div>
         <span className="visual-cross cross-top" aria-hidden="true">

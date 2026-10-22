@@ -38,7 +38,7 @@ export function Contact() {
           <a className="contact-row" href={`mailto:${profile.email}`}>
             <Mail size={21} aria-hidden="true" />
             <span>
-              <span>E-MAIL</span>
+              <span>E-mail</span>
               <strong>{profile.email}</strong>
             </span>
             <ArrowUpRight size={19} aria-hidden="true" />
@@ -46,7 +46,7 @@ export function Contact() {
           <a className="contact-row" href={profile.phoneHref}>
             <Phone size={21} aria-hidden="true" />
             <span>
-              <span>TELEFONE</span>
+              <span>Telefone</span>
               <strong>{profile.phone}</strong>
             </span>
             <ArrowUpRight size={19} aria-hidden="true" />
@@ -54,7 +54,7 @@ export function Contact() {
           <div className="contact-row">
             <MapPin size={21} aria-hidden="true" />
             <span>
-              <span>LOCALIZAÇÃO</span>
+              <span>Localização</span>
               <strong>{profile.location}</strong>
             </span>
           </div>
