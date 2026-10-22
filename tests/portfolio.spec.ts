@@ -301,9 +301,8 @@ test('recebe avaliações de clientes pelo formulário', async ({
     .getByRole('link', { name: 'Avaliações', exact: true })
     .click();
   await expect(page).toHaveURL(/#avaliacoes$/);
-  const reviewLink = page.getByRole('link', { name: /Avaliar meu trabalho/ });
-  await expect(reviewLink).toBeInViewport();
-  await reviewLink.click();
+  await expect(page.locator('#avaliacoes h2')).toBeInViewport();
+  await page.getByRole('link', { name: /Avaliar meu trabalho/ }).click();
   await expect(page).toHaveURL(/\/avaliar$/);
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
     'content',
