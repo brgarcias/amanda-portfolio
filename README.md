@@ -76,6 +76,10 @@ Não use uma segunda branch permanente, como `develop`, para promover alteraçõ
 
 Para assinaturas SSH, a chave pública usada pelo Git deve estar cadastrada no GitHub como **Signing Key**. Uma chave cadastrada apenas para autenticação não basta para verificar a assinatura dos commits.
 
+### Agentes de código
+
+As instruções para agentes de código ficam em `AGENTS.md`. O `CLAUDE.md` importa esse arquivo e acrescenta notas específicas do Claude Code. O `.claude/settings.json` bloqueia comandos destrutivos, como apagar o site no Netlify ou o repositório. Configurações pessoais do Claude Code ficam em `.claude/settings.local.json`, que não é versionado.
+
 ## Créditos
 
 Identidade visual fornecida pelo projeto original. Fontes: Manrope e DM Sans, distribuídas pelo Fontsource. Ícones: Lucide. Fotografia ilustrativa de arquitetura: [Unsplash](https://images.unsplash.com/photo-1486406146926-c627a92ad1ab), sem associação a trabalhos ou clientes da profissional.
