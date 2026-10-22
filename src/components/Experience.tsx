@@ -50,7 +50,7 @@ export function Experience() {
                 <span>{item.company}</span>
                 <span>Presencial</span>
               </p>
-              <details open={item.current}>
+              <details open>
                 <summary>
                   <span>Principais atividades</span>
                   <span className="details-symbol" aria-hidden="true" />

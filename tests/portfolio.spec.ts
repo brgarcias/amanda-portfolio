@@ -37,16 +37,17 @@ test('permite explorar as experiências profissionais', async ({ page }) => {
   await expect(
     currentRole.getByText('Implementação e atualização', { exact: false }),
   ).toBeVisible();
+  await expect(page.locator('.timeline-item details[open]')).toHaveCount(5);
   const previousRole = page.locator('.timeline-item').nth(1);
   const activities = previousRole.getByText(
     'Suporte ao SESMT na consolidação',
     { exact: false },
   );
-  await expect(activities).toBeHidden();
-  await previousRole.getByText('Principais atividades').click();
   await expect(activities).toBeVisible();
-  await previousRole.getByText('Principais atividades').press('Enter');
+  await previousRole.getByText('Principais atividades').click();
   await expect(activities).toBeHidden();
+  await previousRole.getByText('Principais atividades').press('Enter');
+  await expect(activities).toBeVisible();
 });
 
 test('oferece o currículo original e canais de contato válidos', async ({
