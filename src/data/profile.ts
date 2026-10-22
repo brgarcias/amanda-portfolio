@@ -63,7 +63,7 @@ export const expertise = [
 
 export const experience = [
   {
-    role: 'Analista de Segurança do Trabalho',
+    role: 'Especialista de Segurança do Trabalho',
     company: 'Brink’s Segurança e Transporte de Valores Ltda.',
     start: '2024-09',
     period: 'Set. 2024 — atual',
