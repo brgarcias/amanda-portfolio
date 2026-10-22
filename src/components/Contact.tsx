@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import {
   ArrowUpRight,
   BriefcaseBusiness,
@@ -6,16 +7,17 @@ import {
   MapPin,
   MessageCircle,
   Phone,
+  Star,
 } from 'lucide-react';
 import { profile } from '@/data/profile';
 
-export function Contact() {
+export function Contact({ number }: { number: string }) {
   return (
     <section id="contato" className="contact-section section-pad">
       <div className="container contact-layout">
         <div className="contact-intro">
           <p className="eyebrow">
-            <span>05</span> Vamos conversar
+            <span>{number}</span> Vamos conversar
           </p>
           <h2>
             Boas conexões.
@@ -72,10 +74,14 @@ export function Contact() {
               <strong>{profile.location}</strong>
             </span>
           </div>
-          <a className="contact-resume" href={profile.resume} download>
+          <a className="contact-link" href={profile.resume} download>
             <Download size={18} aria-hidden="true" /> Baixar currículo em PDF{' '}
             <ArrowUpRight size={17} aria-hidden="true" />
           </a>
+          <Link className="contact-link" href="/avaliar">
+            <Star size={18} aria-hidden="true" /> Avaliar um serviço prestado{' '}
+            <ArrowUpRight size={17} aria-hidden="true" />
+          </Link>
           <p className="contact-note">
             <MessageCircle size={15} aria-hidden="true" /> Uma boa conversa pode
             ser o começo.

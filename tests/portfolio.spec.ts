@@ -21,7 +21,7 @@ test('apresenta o portfólio sem erros de execução e sem rolagem horizontal', 
     page.getByRole('link', {
       name: /^Amanda Assumpção\s*Engenharia & segurança$/i,
     }),
-  ).toHaveAttribute('href', '#inicio');
+  ).toHaveAttribute('href', '/#inicio');
   await page.evaluate(() => document.fonts.ready);
   await page
     .locator('img')
@@ -176,11 +176,13 @@ test('mantém as rotas antigas úteis e oferece uma página 404', async ({
 test('atende às verificações automáticas de acessibilidade WCAG AA', async ({
   page,
 }) => {
-  await page.goto('/');
-  const result = await new AxeBuilder({ page })
-    .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
-    .analyze();
-  expect(result.violations).toEqual([]);
+  for (const path of ['/', '/avaliar']) {
+    await page.goto(path);
+    const result = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+      .analyze();
+    expect(result.violations, path).toEqual([]);
+  }
 });
 
 test('navega entre as seções e permite fechar o menu com Escape', async ({
@@ -213,25 +215,30 @@ test('preserva o layout em telas estreitas e com movimento reduzido', async ({
 }) => {
   await page.setViewportSize({ width: 320, height: 740 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await page.goto('/');
-  expect(
-    await page.evaluate(
-      () => document.documentElement.scrollWidth <= window.innerWidth,
-    ),
-  ).toBe(true);
-  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  for (const path of ['/', '/avaliar']) {
+    await page.goto(path);
+    expect(
+      await page.evaluate(
+        () => document.documentElement.scrollWidth <= window.innerWidth,
+      ),
+      path,
+    ).toBe(true);
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  }
   await expect(page.locator('html')).toHaveCSS('scroll-behavior', 'auto');
 });
 
 test('mantém todo texto visível com pelo menos 12 px', async ({ page }) => {
-  await page.goto('/');
-  await page.evaluate(() => {
-    for (const details of document.querySelectorAll('details')) {
-      details.open = true;
-    }
-  });
-  for (const width of [320, 820, 1024, 1440]) {
+  for (const [path, width] of ['/', '/avaliar'].flatMap((path) =>
+    [320, 820, 1024, 1440].map((width) => [path, width] as const),
+  )) {
     await page.setViewportSize({ width, height: 900 });
+    await page.goto(path);
+    await page.evaluate(() => {
+      for (const details of document.querySelectorAll('details')) {
+        details.open = true;
+      }
+    });
     const smallTexts = await page.evaluate(() =>
       [...document.querySelectorAll('body *')]
         .filter((element) =>
@@ -246,7 +253,7 @@ test('mantém todo texto visível com pelo menos 12 px', async ({ page }) => {
         )
         .map((element) => element.textContent?.trim()),
     );
-    expect(smallTexts, `largura de ${width} px`).toEqual([]);
+    expect(smallTexts, `${path} com ${width} px`).toEqual([]);
   }
 });
 
@@ -274,4 +281,91 @@ test('aplica os cabeçalhos de segurança sem bloquear a página', async ({
       () => (window as unknown as { cspViolations: string[] }).cspViolations,
     ),
   ).toEqual([]);
+});
+
+test('recebe avaliações de clientes pelo formulário', async ({
+  page,
+  request,
+}) => {
+  let payload: URLSearchParams | undefined;
+  await page.route('**/__forms.html', async (route) => {
+    if (route.request().method() !== 'POST') return route.fallback();
+    payload = new URLSearchParams(route.request().postData() ?? '');
+    await route.fulfill({ status: 200, body: '' });
+  });
+  await page.goto('/');
+  await page.getByRole('link', { name: /Avaliar um serviço prestado/ }).click();
+  await expect(page).toHaveURL(/\/avaliar$/);
+  await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+    'content',
+    'noindex',
+  );
+  await expect(page.getByRole('heading', { level: 1 })).toContainText(
+    'Como foi trabalhar',
+  );
+  const form = page.locator('form.review-form');
+  expect(
+    await form.evaluate((element: HTMLFormElement) => element.checkValidity()),
+  ).toBe(false);
+
+  await form
+    .locator('label')
+    .filter({ has: page.getByRole('radio', { name: '4 estrelas' }) })
+    .click();
+  await expect(page.getByRole('radio', { name: '4 estrelas' })).toBeChecked();
+  await page.getByLabel('Nome', { exact: true }).fill('Cliente de teste');
+  await page.getByLabel(/Cargo e empresa/).fill('Gerente de operações');
+  await page
+    .getByLabel('Serviço prestado')
+    .selectOption('Segurança do trabalho');
+  await page
+    .getByLabel('Depoimento', { exact: true })
+    .fill('Atendimento cuidadoso e documentação muito bem organizada.');
+  await page.getByLabel('E-mail').fill('cliente@example.com');
+  await page.getByLabel(/Autorizo a publicação/).check();
+  await page.getByRole('button', { name: 'Enviar avaliação' }).click();
+
+  await expect(
+    page.getByRole('heading', { name: 'Obrigada pela avaliação!' }),
+  ).toBeFocused();
+  expect(payload?.get('form-name')).toBe('avaliacoes');
+  expect(payload?.get('avaliacao')).toBe('4');
+  expect(payload?.get('nome')).toBe('Cliente de teste');
+  expect(payload?.get('servico')).toBe('Segurança do trabalho');
+  expect(payload?.get('consentimento')).toBe('sim');
+  expect(payload?.get('bot-field')).toBe('');
+  const staticForm = await (await request.get('/__forms.html')).text();
+  expect(staticForm).toContain('name="avaliacoes"');
+  for (const field of payload!.keys()) {
+    expect(staticForm, field).toContain(`name="${field}"`);
+  }
+});
+
+test('avisa quando a avaliação não pode ser enviada', async ({ page }) => {
+  await page.route('**/__forms.html', (route) =>
+    route.request().method() === 'POST'
+      ? route.fulfill({ status: 500, body: '' })
+      : route.fallback(),
+  );
+  await page.goto('/avaliar');
+  await page
+    .locator('form.review-form label')
+    .filter({ has: page.getByRole('radio', { name: '5 estrelas' }) })
+    .click();
+  await page.getByLabel('Nome', { exact: true }).fill('Cliente de teste');
+  await page.getByLabel('Serviço prestado').selectOption('Outro serviço');
+  await page
+    .getByLabel('Depoimento', { exact: true })
+    .fill('Excelente trabalho.');
+  await page.getByLabel('E-mail').fill('cliente@example.com');
+  await page.getByLabel(/Autorizo a publicação/).check();
+  await page.getByRole('button', { name: 'Enviar avaliação' }).click();
+  await expect(
+    page
+      .getByRole('alert')
+      .filter({ hasText: 'Não foi possível enviar agora' }),
+  ).toBeVisible();
+  await expect(
+    page.getByRole('button', { name: 'Enviar avaliação' }),
+  ).toBeEnabled();
 });

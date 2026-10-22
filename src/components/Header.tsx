@@ -1,7 +1,7 @@
-import Image from 'next/image';
 import { ArrowUpRight, Menu, X } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
-import { navigation, profile } from '@/data/profile';
+import { Brand } from '@/components/Brand';
+import { navigation } from '@/data/profile';
 
 export function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -22,19 +22,7 @@ export function Header() {
   return (
     <header className="site-header">
       <div className="container header-inner">
-        <a className="brand" href="#inicio" onClick={() => setMenuOpen(false)}>
-          <Image
-            src="/assets/images/logo/amanda-portfolio-logo-transparency.webp"
-            alt=""
-            width={48}
-            height={48}
-            loading="eager"
-          />
-          <span>
-            <strong>{profile.name}</strong>
-            <span>Engenharia & segurança</span>
-          </span>
-        </a>
+        <Brand href="#inicio" onClick={() => setMenuOpen(false)} />
         <button
           className="menu-toggle"
           type="button"
