@@ -1,5 +1,4 @@
 import {
-  ArrowUpRight,
   Building2,
   ChartNoAxesCombined,
   Files,
@@ -65,7 +64,6 @@ export function Expertise() {
             Experiência no desenvolvimento de materiais de treinamento e no
             apoio às equipes e filiais.
           </p>
-          <ArrowUpRight aria-hidden="true" />
         </div>
       </div>
     </section>

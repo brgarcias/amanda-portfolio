@@ -46,8 +46,8 @@ export function Experience() {
                 )}
               </div>
               <h3>{item.role}</h3>
-              <p className="timeline-company" title={item.companyFull}>
-                {item.company}
+              <p className="timeline-company divided-list">
+                <span>{item.company}</span>
                 <span>Presencial</span>
               </p>
               <details open={item.current}>

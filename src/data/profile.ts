@@ -3,6 +3,8 @@ export const site = {
   shareImage: '/images/og-image.jpg',
 } as const;
 
+const phoneNumber = '5511996240704';
+
 /** Content transcribed and adapted from Amanda's supplied résumé. */
 export const profile = {
   name: 'Amanda Assumpção',
@@ -11,8 +13,9 @@ export const profile = {
   location: 'São Paulo, SP',
   email: 'eng.amandaassumpcao@gmail.com',
   phone: '(11) 99624-0704',
-  phoneHref: 'tel:+5511996240704',
-  whatsapp: 'https://wa.me/5511996240704',
+  phoneE164: `+${phoneNumber}`,
+  phoneHref: `tel:+${phoneNumber}`,
+  whatsapp: `https://wa.me/${phoneNumber}`,
   linkedin: 'https://www.linkedin.com/in/amanda-assump%C3%A7%C3%A3o-285922328',
   photo: '/images/amanda-assumpcao.webp',
   resume: '/documents/curriculo-amanda-assumpcao.pdf',
@@ -59,8 +62,7 @@ export const expertise = [
 export const experience = [
   {
     role: 'Analista de Segurança do Trabalho',
-    company: 'Brink’s',
-    companyFull: 'Brink’s Segurança e Transporte de Valores Ltda.',
+    company: 'Brink’s Segurança e Transporte de Valores Ltda.',
     start: '2024-09',
     period: 'Set. 2024 — atual',
     current: true,
@@ -75,8 +77,7 @@ export const experience = [
   },
   {
     role: 'Assistente de Segurança do Trabalho e Meio Ambiente',
-    company: 'Brink’s',
-    companyFull: 'Brink’s Segurança e Transporte de Valores Ltda.',
+    company: 'Brink’s Segurança e Transporte de Valores Ltda.',
     start: '2023-01',
     period: 'Jan. 2023 — set. 2024',
     current: false,
@@ -87,8 +88,7 @@ export const experience = [
   },
   {
     role: 'Estagiária de Segurança do Trabalho e Meio Ambiente',
-    company: 'Brink’s',
-    companyFull: 'Brink’s Segurança e Transporte de Valores Ltda.',
+    company: 'Brink’s Segurança e Transporte de Valores Ltda.',
     start: '2021-11',
     period: 'Nov. 2021 — dez. 2022',
     current: false,
@@ -99,8 +99,7 @@ export const experience = [
   },
   {
     role: 'Auxiliar de Engenharia',
-    company: 'Inside Engenharia',
-    companyFull: 'Inside Engenharia de Combate a Incêndio Ltda.',
+    company: 'Inside Engenharia de Combate a Incêndio Ltda.',
     start: '2021-03',
     period: 'Mar. 2021 — jun. 2021',
     current: false,
@@ -110,8 +109,7 @@ export const experience = [
   },
   {
     role: 'Estagiária de Construção Civil',
-    company: 'Alves Lacerda',
-    companyFull: 'Alves Lacerda Engenharia e Construtora Ltda.',
+    company: 'Alves Lacerda Engenharia e Construtora Ltda.',
     start: '2020-09',
     period: 'Set. 2020 — mar. 2021',
     current: false,

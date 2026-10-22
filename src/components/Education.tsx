@@ -1,4 +1,4 @@
-import { ArrowUpRight, GraduationCap } from 'lucide-react';
+import { GraduationCap } from 'lucide-react';
 import { courses, education } from '@/data/profile';
 import { SectionHeading } from '@/components/SectionHeading';
 
@@ -51,12 +51,6 @@ export function Education() {
           <div>
             <p className="eyebrow">Aprendizado contínuo</p>
             <h3>Cursos & idiomas</h3>
-            <ArrowUpRight
-              className="courses-arrow"
-              size={36}
-              strokeWidth={1}
-              aria-hidden="true"
-            />
           </div>
           <ul className="course-list">
             {courses.map((course) => (
