@@ -21,7 +21,7 @@ Instruções para agentes de código que trabalham neste repositório. O projeto
 
 `pnpm test:e2e` sobe o servidor com `pnpm start` na porta 4173, então rode `pnpm build` antes. Para instalar o navegador, use `pnpm exec playwright install chromium`. Para usar um Chromium já instalado, defina `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH`.
 
-Antes de considerar uma mudança pronta, rode `pnpm check`, `pnpm build` e `pnpm test:e2e`, e confirme que tudo passa.
+Antes de considerar uma mudança pronta, rode `pnpm check`, `pnpm build` e `pnpm test:e2e`, e confirme que tudo passa. O job `quality` do GitHub Actions, em `.github/workflows/ci.yml`, roda os mesmos comandos em cada PR para `main`.
 
 ## Estrutura
 
@@ -88,6 +88,7 @@ Os testes também procuram textos visíveis, como o título principal, o título
 - Os commits precisam de assinatura verificada pelo GitHub. O hook de pre-commit roda o Prettier nos arquivos preparados. Nunca use `--no-verify` nem desative a assinatura.
 - Abra o PR com destino a `main`. O título segue Conventional Commits, e título e descrição ficam em português.
 - O Netlify gera um Deploy Preview para cada PR, em `https://deploy-preview-<número>--arra-portfolio.netlify.app`. A `main` exige quatro checks do Netlify: `Header rules - arra-portfolio`, `Pages changed - arra-portfolio`, `Redirect rules - arra-portfolio` e `netlify/arra-portfolio/deploy-preview`.
+- O job `quality` do GitHub Actions também roda em cada PR. Só faça o merge com ele aprovado.
 - A `main` exige histórico linear e PR atualizado em relação a ela. Faça merge só com **Squash and merge**, depois que os checks passarem.
 - Nunca faça push direto ou force push em `main` e nunca altere as proteções da branch.
 - Não publique pelo Netlify CLI. A produção só muda por merge em `main`.
