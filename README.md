@@ -42,14 +42,25 @@ O GitHub Actions roda `pnpm check`, `pnpm build` e `pnpm test:e2e` em cada pull 
 ## Atualizar conteúdo
 
 - `src/data/profile.ts`: nome, contatos, currículo, competências, cargos, formações e cursos.
-- `src/components/`: seções independentes da página e navegação responsiva.
+- `src/components/`: seções independentes da página, navegação responsiva e formulário de avaliação.
+- `src/pages/avaliar.tsx`: página de avaliação para clientes.
 - `src/styles/globals.css`: cores, tipografia, espaçamento e regras de responsividade.
 - `src/pages/index.tsx`: composição, metadados e dados estruturados da profissional.
 - `public/documents/Amanda-Assumpcao-Engenheira-de-Seguranca-do-Trabalho.pdf`: currículo original para download, com nome e cargo no nome do arquivo. Os nomes anteriores do arquivo redirecionam para ele.
 - `public/images/amanda-assumpcao.webp`: foto exibida no topo da página.
 - `public/images/og-image.jpg`: imagem de prévia exibida quando o link é compartilhado, com 1200 × 630 px.
 
-Os cargos e o MBA refletem o documento fornecido. Atualize `experience` e `education` quando houver mudanças. Os links de contato abrem WhatsApp, LinkedIn, aplicativo de e-mail ou telefone; não dependem de servidor de formulários nem simulam o envio de mensagens.
+Os cargos e o MBA refletem o documento fornecido. Atualize `experience` e `education` quando houver mudanças. Os links de contato abrem WhatsApp, LinkedIn, aplicativo de e-mail ou telefone.
+
+### Avaliações de clientes
+
+Clientes avaliam o trabalho em `/avaliar`. A página não aparece nos buscadores, mas está no contato e pode ser enviada diretamente. Cada envio chega ao Netlify Forms, no formulário `avaliacoes`, com filtro de spam do Netlify e um campo-armadilha para robôs. Nada é publicado automaticamente:
+
+1. A avaliação chega ao painel do Netlify, em **Forms → avaliacoes**, e também por e-mail, se a notificação estiver configurada em **Site configuration → Notifications → Emails and webhooks → Form submission notifications**.
+2. Se a Amanda aprovar e a pessoa tiver autorizado a publicação, o depoimento entra em `testimonials`, em `src/data/profile.ts`, com o texto como foi recebido e sem o e-mail.
+3. A seção "Depoimentos" aparece na página inicial a partir do primeiro depoimento aprovado.
+
+O formulário envia os dados para `public/__forms.html`, que declara os campos para o Netlify. Ao mudar um campo, atualize os dois arquivos. Para remover um depoimento a pedido do cliente, apague o item de `testimonials` e a submissão no painel.
 
 ## Publicação
 

@@ -28,12 +28,13 @@ Antes de considerar uma mudança pronta, rode `pnpm check`, `pnpm build` e `pnpm
 - `src/pages/index.tsx` monta a página, define título, descrição, Open Graph e os dados estruturados `Person` em JSON-LD. O `getStaticProps` revalida uma vez por dia para atualizar o ano do rodapé.
 - `src/pages/_document.tsx` define `lang="pt-BR"`, a cor de tema e os ícones: `favicon.svg`, `favicon.ico` com 16, 32 e 48 px e `apple-touch-icon.png` com 180 px. Ícones ficam em SVG, ICO ou PNG, os formatos que navegadores e sistemas aceitam. O favicon reproduz o selo do logo. `src/pages/_app.tsx` carrega as fontes e o CSS global.
 - `src/pages/404.tsx` é a página de erro, marcada com `noindex`.
-- `src/components/` tem um componente por seção. `SectionHeading` é o cabeçalho compartilhado das seções numeradas.
+- `src/pages/avaliar.tsx` é a página de avaliação, marcada com `noindex`. A Amanda envia o link para clientes, e a página também é acessível pelo contato.
+- `src/components/` tem um componente por seção. `SectionHeading` é o cabeçalho compartilhado das seções numeradas, `Brand` é a marca usada nos cabeçalhos e `ReviewForm` é o formulário de avaliação.
 - `src/data/profile.ts` concentra os dados da profissional: contatos, navegação, áreas de atuação, experiências, formação e cursos.
 - `src/styles/globals.css` é a única folha de estilos.
 - `next.config.mjs` desliga o `agentRules`, para que o `next dev` não acrescente instruções próprias a este arquivo, e define os redirecionamentos permanentes e os cabeçalhos de segurança, incluindo a Content Security Policy e a `Permissions-Policy`. A CSP só aceita recursos do próprio site. Não carregue scripts, estilos, fontes ou imagens de outros domínios. Se isso for inevitável, ajuste a política e explique o motivo no PR.
 - `tests/portfolio.spec.ts` contém todos os testes de navegador.
-- `public/` guarda logo, foto da profissional, imagem de compartilhamento, favicon, `robots.txt`, `sitemap.xml` e o currículo em PDF.
+- `public/` guarda logo, foto da profissional, imagem de compartilhamento, favicon, `robots.txt`, `sitemap.xml`, o currículo em PDF e `__forms.html`, que declara o formulário de avaliação para o Netlify Forms.
 
 O projeto usa o Pages Router. Não migre para o App Router sem pedido explícito.
 
@@ -43,7 +44,9 @@ O projeto usa o Pages Router. Não migre para o App Router sem pedido explícito
 - Os dados da profissional ficam em `src/data/profile.ts`. Títulos e textos próprios de cada seção ficam no componente da seção.
 - O número de telefone fica só em `phoneNumber`, em `src/data/profile.ts`, e gera o link de ligação, o link do WhatsApp e o telefone dos dados estruturados. O formato exibido na página fica em `profile.phone`.
 - O nome do currículo segue o padrão nome e cargo, sem acentos nem espaços: `Amanda-Assumpcao-Engenheira-de-Seguranca-do-Trabalho.pdf`. Ao trocar o arquivo, mantenha esse nome. Os testes verificam o nome do download e o conteúdo PDF. Se o cargo principal mudar, renomeie o arquivo e acrescente o nome anterior à lista de redirecionamentos do currículo em `next.config.mjs`. O título do documento no Google Docs vira o título do PDF, exibido na aba do navegador, então ele segue o mesmo padrão: "Amanda Assumpção — Engenheira de Segurança do Trabalho".
-- Os contatos abrem WhatsApp, e-mail ou telefone. Não adicione formulários, servidores de envio nem simulações de envio.
+- Os contatos abrem WhatsApp, LinkedIn, e-mail ou telefone.
+- O único formulário é o de avaliação, em `/avaliar`. Ele envia os dados ao Netlify Forms com um `POST` para `public/__forms.html`, o arquivo estático que o Netlify lê no deploy. O Netlify só aceita campos declarados nesse arquivo, então qualquer campo novo ou renomeado em `ReviewForm` precisa ser atualizado lá também. Um teste confere isso. Não adicione outros formulários, servidores de envio nem simulações de envio.
+- Os depoimentos ficam em `testimonials`, em `src/data/profile.ts`. Só entram avaliações recebidas pelo formulário, aprovadas pela Amanda e com a autorização de publicação marcada. Copie o texto como foi recebido e nunca publique o e-mail do cliente. A seção "Depoimentos" só aparece quando a lista tem pelo menos um item.
 - Todo texto visível é em português do Brasil, incluindo `aria-label`, `alt` e títulos de testes.
 - O endereço oficial é <https://arra-portfolio.netlify.app>, definido em `site.url` de `src/data/profile.ts`. Ele alimenta a URL canônica, o Open Graph e os dados estruturados, e também está escrito em `public/robots.txt` e `public/sitemap.xml`. Ao trocar o domínio, atualize os três arquivos.
 - A meta tag `google-site-verification`, com o código em `site.googleSiteVerification`, mantém o site verificado no Google Search Console. Não a remova.
@@ -67,9 +70,9 @@ O projeto usa o Pages Router. Não migre para o App Router sem pedido explícito
 
 ## Seções e âncoras
 
-- As seções usam ids em português: `sobre`, `atuacao`, `experiencia`, `formacao` e `contato`. O topo usa `inicio` e o conteúdo principal usa `conteudo`, alvo do link de pular conteúdo.
+- As seções usam ids em português: `sobre`, `atuacao`, `experiencia`, `formacao`, `depoimentos` e `contato`. O topo usa `inicio` e o conteúdo principal usa `conteudo`, alvo do link de pular conteúdo.
 - Os ids são usados pela navegação em `src/data/profile.ts`, pelos redirecionamentos em `next.config.mjs` e pelos testes. Ao mudar um id, atualize os três.
-- As seções são numeradas de 01 a 05. As quatro primeiras recebem o número pela prop `number` do `SectionHeading`, e a de contato tem o número escrito no próprio componente. Ao incluir ou reordenar seções, renumere todas.
+- As seções são numeradas a partir de 01, e cada uma recebe o número pela prop `number`. Depoimentos é a 05 quando aparece, e o contato vira 06. Sem depoimentos, o contato é a 05. `src/pages/index.tsx` calcula esses dois números. Ao incluir ou reordenar seções, renumere todas.
 
 ## Acessibilidade e layout
 
@@ -78,7 +81,8 @@ Os testes de navegador são o contrato de qualidade do site. Eles exigem:
 - Nenhuma violação do axe nas regras WCAG 2.2 nível AA.
 - Nenhuma rolagem horizontal, inclusive em telas de 320 px.
 - Rolagem suave desativada quando o usuário prefere movimento reduzido.
-- Nenhum texto visível com menos de 12 px, em qualquer largura de tela.
+- Nenhum texto visível com menos de 12 px, em qualquer largura de tela, na página inicial e em `/avaliar`.
+- Formulário de avaliação com campos rotulados, envio real ao Netlify Forms e mensagens de sucesso e de erro.
 - Menu móvel com `aria-expanded`, que fecha com Escape e devolve o foco ao botão.
 - Todas as experiências em `<details>` abertos por padrão, que continuam podendo ser recolhidos pelo clique ou pelo teclado.
 - Nenhum erro de JavaScript no carregamento da página.
