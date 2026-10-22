@@ -27,6 +27,7 @@ export const navigation = [
   { href: '#atuacao', label: 'Atuação' },
   { href: '#experiencia', label: 'Trajetória' },
   { href: '#formacao', label: 'Formação' },
+  { href: '#avaliacoes', label: 'Avaliações' },
 ] as const;
 
 export const expertise = [

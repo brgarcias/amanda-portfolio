@@ -9,7 +9,7 @@ import { Education } from '@/components/Education';
 import { Testimonials } from '@/components/Testimonials';
 import { Contact } from '@/components/Contact';
 import { Footer } from '@/components/Footer';
-import { profile, site, testimonials } from '@/data/profile';
+import { profile, site } from '@/data/profile';
 
 export const getStaticProps = (() => ({
   props: { year: new Date().getFullYear() },
@@ -93,8 +93,8 @@ export default function Home({
           <Expertise />
           <Experience />
           <Education />
-          {testimonials.length > 0 && <Testimonials number="05" />}
-          <Contact number={testimonials.length > 0 ? '06' : '05'} />
+          <Testimonials />
+          <Contact />
         </main>
         <Footer year={year} />
       </div>

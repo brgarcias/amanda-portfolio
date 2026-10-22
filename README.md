@@ -54,11 +54,11 @@ Os cargos e o MBA refletem o documento fornecido. Atualize `experience` e `educa
 
 ### Avaliações de clientes
 
-Clientes avaliam o trabalho em `/avaliar`. A página não aparece nos buscadores, mas está no contato e pode ser enviada diretamente. Cada envio chega ao Netlify Forms, no formulário `avaliacoes`, com filtro de spam do Netlify e um campo-armadilha para robôs. Nada é publicado automaticamente:
+Clientes avaliam o trabalho em `/avaliar`. A página não aparece nos buscadores, mas está no botão da seção "Avaliações", que também fica no menu, e pode ser enviada diretamente. Cada envio chega ao Netlify Forms, no formulário `avaliacoes`, com filtro de spam do Netlify e um campo-armadilha para robôs. Nada é publicado automaticamente:
 
 1. A avaliação chega ao painel do Netlify, em **Forms → avaliacoes**, e também por e-mail, se a notificação estiver configurada em **Site configuration → Notifications → Emails and webhooks → Form submission notifications**.
 2. Se a Amanda aprovar e a pessoa tiver autorizado a publicação, o depoimento entra em `testimonials`, em `src/data/profile.ts`, com o texto como foi recebido e sem o e-mail.
-3. A seção "Depoimentos" aparece na página inicial a partir do primeiro depoimento aprovado.
+3. Os depoimentos aprovados aparecem em cartões na seção "Avaliações" da página inicial, acima do convite para avaliar.
 
 O formulário envia os dados para `public/__forms.html`, que declara os campos para o Netlify. Ao mudar um campo, atualize os dois arquivos. Para remover um depoimento a pedido do cliente, apague o item de `testimonials` e a submissão no painel.
 

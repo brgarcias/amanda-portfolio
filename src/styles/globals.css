@@ -886,6 +886,7 @@ details[open] .details-symbol::after {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 19px;
+  margin-bottom: 19px;
 }
 .testimonial-card {
   height: 100%;
@@ -937,6 +938,38 @@ details[open] .details-symbol::after {
   border-top: 1px solid var(--line);
   color: var(--muted);
   font-size: var(--text-meta);
+}
+.review-invite {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+  padding: 36px 40px;
+  border: 1px solid var(--accent-line);
+  background: var(--accent-surface);
+}
+.review-invite-stars {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 18px;
+  color: var(--accent);
+}
+.review-invite-stars svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
+}
+.review-invite h3 {
+  font-size: 1.5rem;
+  margin-bottom: 6px;
+}
+.review-invite p:not(.review-invite-stars) {
+  max-width: 460px;
+  color: var(--muted);
+  font-size: var(--text-small);
+}
+.review-invite .button {
+  flex-shrink: 0;
 }
 
 /* Review form */
@@ -1243,9 +1276,6 @@ a.contact-row:hover strong {
   margin-top: 25px;
   font-size: var(--text-ui);
 }
-.contact-link + .contact-link {
-  margin-top: 16px;
-}
 .contact-link > svg:last-child {
   margin-left: auto;
 }
@@ -1382,22 +1412,45 @@ a.contact-row:hover strong {
   }
 }
 
-@media (max-width: 900px) {
-  .brand strong {
-    font-size: var(--text-ui);
+/* Five links, the brand and the contact button stop fitting on one line
+   below about 940px, so the menu collapses before that. */
+@media (max-width: 960px) {
+  .menu-toggle {
+    display: block;
+  }
+  .menu-toggle > svg {
+    width: 20px;
+    height: 20px;
   }
   .main-navigation {
-    gap: 17px;
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    align-items: stretch;
+    padding: 16px 36px 24px;
+    background: var(--canvas);
+    border-bottom: 1px solid var(--line);
+    box-shadow: 0 15px 20px color-mix(in srgb, var(--ink) 5%, transparent);
+    gap: 0;
+  }
+  .main-navigation.is-open {
+    display: flex;
+    flex-direction: column;
   }
   .main-navigation > a:not(.button) {
-    font-size: var(--text-meta);
+    font-size: var(--text-body);
+    padding: 11px 4px;
   }
   .header-contact {
-    font-size: var(--text-label);
-    padding-inline: 12px;
-    gap: 10px;
+    margin-top: 14px;
     margin-left: 0;
+    font-size: var(--text-ui);
   }
+}
+
+@media (max-width: 900px) {
   .header-inner {
     min-height: 82px;
   }
@@ -1473,37 +1526,8 @@ a.contact-row:hover strong {
   .brand strong {
     font-size: var(--text-small);
   }
-  .menu-toggle {
-    display: block;
-  }
-  .menu-toggle > svg {
-    width: 20px;
-    height: 20px;
-  }
   .main-navigation {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    align-items: stretch;
-    padding: 16px 20px 24px;
-    background: var(--canvas);
-    border-bottom: 1px solid var(--line);
-    box-shadow: 0 15px 20px color-mix(in srgb, var(--ink) 5%, transparent);
-    gap: 0;
-  }
-  .main-navigation.is-open {
-    display: flex;
-    flex-direction: column;
-  }
-  .main-navigation > a:not(.button) {
-    font-size: var(--text-body);
-    padding: 11px 4px;
-  }
-  .header-contact {
-    margin-top: 14px;
-    font-size: var(--text-ui);
+    padding-inline: 20px;
   }
   .hero {
     grid-template-columns: 1fr;
@@ -1677,6 +1701,18 @@ a.contact-row:hover strong {
   }
   .testimonial-card {
     padding: 24px;
+  }
+  .review-invite {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 26px;
+    padding: 28px 24px;
+  }
+  .review-invite h3 {
+    font-size: 1.25rem;
+  }
+  .review-invite .button {
+    justify-content: space-between;
   }
   .back-link {
     padding: 10px;

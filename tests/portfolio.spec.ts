@@ -286,6 +286,7 @@ test('aplica os cabeçalhos de segurança sem bloquear a página', async ({
 test('recebe avaliações de clientes pelo formulário', async ({
   page,
   request,
+  isMobile,
 }) => {
   let payload: URLSearchParams | undefined;
   await page.route('**/__forms.html', async (route) => {
@@ -294,7 +295,15 @@ test('recebe avaliações de clientes pelo formulário', async ({
     await route.fulfill({ status: 200, body: '' });
   });
   await page.goto('/');
-  await page.getByRole('link', { name: /Avaliar um serviço prestado/ }).click();
+  if (isMobile) await page.getByRole('button', { name: 'Abrir menu' }).click();
+  await page
+    .getByRole('navigation')
+    .getByRole('link', { name: 'Avaliações', exact: true })
+    .click();
+  await expect(page).toHaveURL(/#avaliacoes$/);
+  const reviewLink = page.getByRole('link', { name: /Avaliar meu trabalho/ });
+  await expect(reviewLink).toBeInViewport();
+  await reviewLink.click();
   await expect(page).toHaveURL(/\/avaliar$/);
   await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
     'content',
