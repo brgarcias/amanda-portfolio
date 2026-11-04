@@ -228,17 +228,22 @@ test('atende às verificações automáticas de acessibilidade WCAG AA', async (
   for (const path of ['/', '/avaliar', '/painel']) {
     await page.goto(path);
     // The first screen fades in. axe reads the colors as they are, so it
-    // waits for every finite animation to settle; only the pulses loop.
+    // waits for the finite, time-based animations to settle. The pulses
+    // loop, and the timeline rail follows the scroll, so they never finish.
     await page.evaluate(() =>
-      Promise.all(
-        document
-          .getAnimations()
-          .filter(
-            (animation) =>
-              animation.effect?.getTiming().iterations !== Infinity,
-          )
-          .map((animation) => animation.finished.catch(() => undefined)),
-      ),
+      Promise.race([
+        Promise.all(
+          document
+            .getAnimations()
+            .filter(
+              (animation) =>
+                animation.timeline === document.timeline &&
+                animation.effect?.getTiming().iterations !== Infinity,
+            )
+            .map((animation) => animation.finished.catch(() => undefined)),
+        ),
+        new Promise((resolve) => setTimeout(resolve, 3000)),
+      ]),
     );
     const result = await new AxeBuilder({ page }).withTags(wcagTags).analyze();
     expect(result.violations, path).toEqual([]);
