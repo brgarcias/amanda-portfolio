@@ -1,23 +1,29 @@
-import { ArrowUpRight, HardHat, Leaf, ShieldCheck } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { SectionHeading } from '@/components/SectionHeading';
+import { facts } from '@/data/profile';
 
 export function About() {
   return (
-    <section id="sobre" className="about-section section-pad">
+    <section
+      id="sobre"
+      className="about-section section-pad"
+      aria-labelledby="sobre-titulo"
+    >
       <div className="container">
+        <SectionHeading
+          number="01"
+          label="Sobre mim"
+          id="sobre-titulo"
+          title={
+            <>
+              Técnica na prática,
+              <br />
+              cuidado em cada decisão.
+            </>
+          }
+        />
         <div className="about-layout">
-          <SectionHeading
-            number="01"
-            label="Sobre mim"
-            title={
-              <>
-                Técnica na prática.
-                <br />
-                <span className="muted-heading">Cuidado em cada escolha.</span>
-              </>
-            }
-          />
-          <div className="about-copy">
+          <div className="about-copy" data-reveal>
             <p className="lead">
               Acredito que a boa engenharia começa com um compromisso: proteger
               as pessoas e o ambiente em que elas trabalham.
@@ -35,33 +41,18 @@ export function About() {
               USP/Esalq.
             </p>
             <a className="text-link" href="#atuacao">
-              Como essa experiência se traduz na prática{' '}
+              Como isso se traduz na prática{' '}
               <ArrowUpRight size={17} aria-hidden="true" />
             </a>
           </div>
-        </div>
-        <div className="practice-strip">
-          <div>
-            <ShieldCheck aria-hidden="true" />
-            <span>
-              <strong>Segurança do trabalho</strong>
-              <span>Prevenção e gestão de riscos</span>
-            </span>
-          </div>
-          <div>
-            <HardHat aria-hidden="true" />
-            <span>
-              <strong>Engenharia civil</strong>
-              <span>Do planejamento ao campo</span>
-            </span>
-          </div>
-          <div>
-            <Leaf aria-hidden="true" />
-            <span>
-              <strong>Meio ambiente & ESG</strong>
-              <span>Uma perspectiva sustentável</span>
-            </span>
-          </div>
+          <dl className="fact-sheet" data-reveal>
+            {facts.map((fact) => (
+              <div key={fact.term}>
+                <dt>{fact.term}</dt>
+                <dd>{fact.description}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </div>
     </section>

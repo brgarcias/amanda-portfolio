@@ -1,70 +1,47 @@
-import {
-  Building2,
-  ChartNoAxesCombined,
-  Files,
-  ShieldCheck,
-} from 'lucide-react';
-import { expertise } from '@/data/profile';
 import { SectionHeading } from '@/components/SectionHeading';
+import { expertise } from '@/data/profile';
 
-const icons = {
-  shield: ShieldCheck,
-  files: Files,
-  chart: ChartNoAxesCombined,
-  building: Building2,
-};
-
+// A line per area, not cards: the area, what Amanda does in it, the tools and
+// methods in passing and, on the side, where she has done it.
 export function Expertise() {
   return (
-    <section id="atuacao" className="expertise-section section-pad">
+    <section
+      id="atuacao"
+      className="expertise-section section-pad"
+      aria-labelledby="atuacao-titulo"
+    >
       <div className="container">
-        <div className="section-topline">
-          <SectionHeading
-            number="02"
-            label="Áreas de atuação"
-            title={
-              <>
-                Conhecimento que
-                <br />
-                se transforma em cuidado.
-              </>
-            }
-          />
-          <p className="section-aside">
-            Competências que se complementam para uma atuação integrada, da
-            prevenção à melhoria contínua.
-          </p>
-        </div>
-        <div className="expertise-grid">
-          {expertise.map((item, index) => {
-            const Icon = icons[item.icon];
-            return (
-              <article className="expertise-card" key={item.title}>
-                <div className="expertise-card-top">
-                  <Icon size={30} strokeWidth={1.4} aria-hidden="true" />
-                  <span>0{index + 1}</span>
-                </div>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
-                <ul
-                  className="tags"
-                  aria-label={`Competências em ${item.title}`}
-                >
-                  {item.tags.map((tag) => (
-                    <li key={tag}>{tag}</li>
-                  ))}
-                </ul>
-              </article>
-            );
-          })}
-        </div>
-        <div className="training-note">
-          <span>Compartilhar conhecimento também é prevenir.</span>
-          <p>
-            Experiência no desenvolvimento de materiais de treinamento e no
-            apoio às equipes e filiais.
-          </p>
-        </div>
+        <SectionHeading
+          number="02"
+          label="Áreas de atuação"
+          id="atuacao-titulo"
+          title={
+            <>
+              Conhecimento que
+              <br />
+              se transforma em cuidado.
+            </>
+          }
+          description="O que faço, por área, com as ferramentas e os métodos de cada frente e onde já fiz."
+        />
+        <ul className="ledger" role="list">
+          {expertise.map((area, index) => (
+            <li className="ledger-row" key={area.title} data-reveal>
+              <div className="ledger-head">
+                <span className="ledger-index">0{index + 1}</span>
+                <h3>{area.title}</h3>
+              </div>
+              <div className="ledger-body">
+                <p>{area.summary}</p>
+                <p className="ledger-tools">{area.tools.join(' · ')}</p>
+              </div>
+              <div className="ledger-side">
+                <span className="ledger-side-label">Onde</span>
+                <p>{area.where.join(', ')}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
       </div>
     </section>
   );

@@ -27,7 +27,7 @@ pnpm start
 
 Os comandos de lint, tipos e formatação também podem ser executados individualmente: `pnpm lint`, `pnpm typecheck` e `pnpm format`. Para aplicar a formatação: `pnpm format:fix`.
 
-Os testes de navegador verificam desktop e celular, navegação por teclado, expansão das experiências, download do PDF, contatos, redirecionamentos, página 404, movimento reduzido, ausência de rolagem horizontal, tamanho mínimo de 12 px para textos e acessibilidade WCAG AA com axe.
+Os testes de navegador verificam desktop e celular, navegação por teclado, a seção atual marcada no menu, a revelação dos blocos ao rolar, expansão das experiências, download do PDF, contatos, redirecionamentos, página 404, movimento reduzido, ausência de rolagem horizontal, tamanho mínimo de 12 px para textos e acessibilidade WCAG AA com axe.
 
 ```sh
 pnpm exec playwright install chromium
@@ -42,10 +42,11 @@ O GitHub Actions roda `pnpm check`, `pnpm build` e `pnpm test:e2e` em cada pull 
 ## Atualizar conteúdo
 
 - `src/data/profile.ts`: nome, contatos, currículo, competências, cargos, formações e cursos.
-- `src/components/`: seções independentes da página, navegação responsiva e formulário de avaliação.
+- `src/components/`: seções independentes da página, navegação responsiva com a seção atual marcada, diagramas de etapas (`Flow`), canais de contato (`SocialLinks`) e formulário de avaliação.
+- `src/lib/dates.ts` e `src/lib/use-reveal.ts`: duração das funções e revelação dos blocos ao rolar.
 - `src/pages/avaliar.tsx`: página de avaliação para clientes.
 - `src/pages/painel.tsx`: painel onde a Amanda publica as avaliações.
-- `src/styles/globals.css`: cores, tipografia, espaçamento e regras de responsividade.
+- `src/styles/globals.css`: tokens de cor, tipografia, espaçamento e movimento em `:root`, estilos de cada seção e regras de responsividade.
 - `src/pages/index.tsx`: composição, metadados e dados estruturados da profissional.
 - `public/documents/Amanda-Assumpcao-Engenheira-de-Seguranca-do-Trabalho.pdf`: currículo original para download, com nome e cargo no nome do arquivo. Os nomes anteriores do arquivo redirecionam para ele.
 - `public/images/amanda-assumpcao.webp`: foto exibida no topo da página.
@@ -102,4 +103,4 @@ As instruções para agentes de código ficam em `AGENTS.md`. O `CLAUDE.md` impo
 
 ## Créditos
 
-Identidade visual fornecida pelo projeto original. Fontes: Manrope e DM Sans, distribuídas pelo Fontsource. Ícones: Lucide. Fotografia fornecida pela profissional.
+Logo fornecido pelo projeto original. Fontes: Fraunces, DM Sans e DM Mono, distribuídas pelo Fontsource. Ícones: Lucide. Fotografia fornecida pela profissional.

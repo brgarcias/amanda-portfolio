@@ -47,7 +47,7 @@ test('apresenta o portfólio sem erros de execução e sem rolagem horizontal', 
   expect(response?.status()).toBe(200);
   await expect(page).toHaveTitle(/Amanda Assumpção.*Engenharia/);
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(
-    /Cuidar de pessoas.*Construir um.*futuro seguro\./,
+    /Segurança do trabalho.*com rigor de engenharia\./,
   );
   await expect(page.locator('html')).toHaveAttribute('lang', 'pt-BR');
   await expect(page.locator('img.hero-photo')).toHaveAttribute(
@@ -119,18 +119,25 @@ test('oferece o currículo original e canais de contato válidos', async ({
   await expect(
     page.getByRole('link', { name: /Conversar no WhatsApp/ }),
   ).toHaveAttribute('href', 'https://wa.me/5511996240704');
-  await expect(page.locator('a[href^="mailto:"]')).toHaveAttribute(
-    'href',
-    'mailto:eng.amandaassumpcao@gmail.com',
-  );
-  await expect(page.locator('a[href^="tel:"]')).toHaveAttribute(
-    'href',
-    'tel:+5511996240704',
-  );
-  await expect(page.getByRole('link', { name: /LinkedIn/ })).toHaveAttribute(
-    'href',
-    'https://www.linkedin.com/in/amanda-assump%C3%A7%C3%A3o-285922328',
-  );
+  // The channels repeat on the first screen, in the contact section and in
+  // the footer, and every copy must point to the same place.
+  const channels = {
+    'a[href^="mailto:"]': 'mailto:eng.amandaassumpcao@gmail.com',
+    'a[href^="tel:"]': 'tel:+5511996240704',
+    'a[href*="linkedin.com"]':
+      'https://www.linkedin.com/in/amanda-assump%C3%A7%C3%A3o-285922328',
+  };
+  for (const [selector, href] of Object.entries(channels)) {
+    const links = page.locator(selector);
+    expect(await links.count(), selector).toBeGreaterThan(0);
+    const values = await links.evaluateAll((elements) =>
+      elements.map((element) => element.getAttribute('href')),
+    );
+    expect(values, selector).toEqual(values.map(() => href));
+  }
+  await expect(
+    page.getByRole('link', { name: /LinkedIn/ }).first(),
+  ).toHaveAttribute('href', channels['a[href*="linkedin.com"]']);
 });
 
 test('publica os metadados de busca e compartilhamento', async ({
@@ -211,7 +218,7 @@ test('mantém as rotas antigas úteis e oferece uma página 404', async ({
   expect(response?.status()).toBe(404);
   await page.getByRole('link', { name: 'Voltar ao portfólio' }).click();
   await expect(page.getByRole('heading', { level: 1 })).toContainText(
-    'Cuidar de pessoas.',
+    'Segurança do trabalho',
   );
 });
 
@@ -245,9 +252,28 @@ test('navega entre as seções e permite fechar o menu com Escape', async ({
     .click();
   await expect(page).toHaveURL(/#formacao$/);
   await expect(
-    page.getByRole('heading', { name: /Aprender para.*ir além/ }),
+    page.getByRole('heading', { name: /Engenharia na base.*ESG no horizonte/ }),
   ).toBeInViewport();
   if (isMobile) await expect(menu).toHaveAttribute('aria-expanded', 'false');
+  // The bar marks the section crossing the middle of the screen.
+  await expect(page.locator('.nav-link[aria-current="location"]')).toHaveText(
+    'Formação',
+  );
+});
+
+test('revela os blocos conforme a página rola', async ({ page }) => {
+  await page.goto('/');
+  const lastBlock = page.locator('#contato [data-reveal]').first();
+  // Far below the first screen, a block waits for its turn.
+  await expect(lastBlock).toHaveCSS('opacity', '0');
+  const height = await page.evaluate(() => document.body.scrollHeight);
+  for (let top = 0; top <= height; top += 300) {
+    await page.evaluate((y) => window.scrollTo(0, y), top);
+    await page.waitForTimeout(50);
+  }
+  await expect(page.locator('[data-reveal]:not(.is-visible)')).toHaveCount(0);
+  await expect(lastBlock).toHaveCSS('opacity', '1');
+  await expect(page.locator('#pratica .flow')).toHaveCount(5);
 });
 
 test('preserva o layout em telas estreitas e com movimento reduzido', async ({
@@ -264,6 +290,13 @@ test('preserva o layout em telas estreitas e com movimento reduzido', async ({
       path,
     ).toBe(true);
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    // With reduced motion, nothing waits to be revealed.
+    if (path === '/') {
+      await expect(page.locator('#contato [data-reveal]').first()).toHaveCSS(
+        'opacity',
+        '1',
+      );
+    }
   }
   await expect(page.locator('html')).toHaveCSS('scroll-behavior', 'auto');
 });
@@ -365,11 +398,11 @@ test('recebe avaliações de clientes pelo formulário', async ({
   await page.getByLabel(/Cargo e empresa/).fill('Gerente de operações');
   await page
     .getByLabel('Serviço prestado')
-    .selectOption('Segurança do trabalho');
+    .selectOption('Segurança do trabalho e prevenção');
   await page
     .getByLabel('Depoimento', { exact: true })
     .fill('Atendimento cuidadoso e documentação muito bem organizada.');
-  await page.getByLabel('E-mail').fill('cliente@example.com');
+  await page.getByLabel('E-mail', { exact: true }).fill('cliente@example.com');
   await page.getByLabel(/Autorizo a publicação/).check();
   await page.getByRole('button', { name: 'Enviar avaliação' }).click();
 
@@ -379,7 +412,7 @@ test('recebe avaliações de clientes pelo formulário', async ({
   expect(payload?.get('form-name')).toBe('avaliacoes');
   expect(payload?.get('avaliacao')).toBe('4');
   expect(payload?.get('nome')).toBe('Cliente de teste');
-  expect(payload?.get('servico')).toBe('Segurança do trabalho');
+  expect(payload?.get('servico')).toBe('Segurança do trabalho e prevenção');
   expect(payload?.get('consentimento')).toBe('sim');
   expect(payload?.get('subject')).toBe(
     'Nova avaliação: 4 estrelas, de Cliente de teste',
@@ -408,7 +441,7 @@ test('avisa quando a avaliação não pode ser enviada', async ({ page }) => {
   await page
     .getByLabel('Depoimento', { exact: true })
     .fill('Excelente trabalho.');
-  await page.getByLabel('E-mail').fill('cliente@example.com');
+  await page.getByLabel('E-mail', { exact: true }).fill('cliente@example.com');
   await page.getByLabel(/Autorizo a publicação/).check();
   await page.getByRole('button', { name: 'Enviar avaliação' }).click();
   await expect(
