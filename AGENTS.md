@@ -25,16 +25,16 @@ Antes de considerar uma mudança pronta, rode `pnpm check`, `pnpm build` e `pnpm
 
 ## Estrutura
 
-- `src/pages/index.tsx` monta a página, define título, descrição, Open Graph e os dados estruturados `Person` em JSON-LD. O `getStaticProps` lê os depoimentos publicados e revalida a cada minuto. O painel também pede uma revalidação a cada mudança.
+- `src/pages/index.tsx` monta a página, define título, descrição, Open Graph e os dados estruturados `Person` em JSON-LD. O `getStaticProps` lê os depoimentos publicados, informa o mês atual (que define a duração da função atual) e revalida a cada minuto. O painel também pede uma revalidação a cada mudança. A página chama `useReveal`, de `src/lib/use-reveal.ts`, que revela os blocos marcados com `data-reveal` conforme entram na tela.
 - `src/pages/_document.tsx` define `lang="pt-BR"`, a cor de tema e os ícones: `favicon.svg`, `favicon.ico` com 16, 32 e 48 px e `apple-touch-icon.png` com 180 px. Ícones ficam em SVG, ICO ou PNG, os formatos que navegadores e sistemas aceitam. O favicon reproduz o selo do logo. `src/pages/_app.tsx` carrega as fontes e o CSS global.
 - `src/pages/404.tsx` é a página de erro, marcada com `noindex`.
 - `src/pages/avaliar.tsx` é a página de avaliação, marcada com `noindex`. A Amanda envia o link para clientes, e a página também é acessível pelo botão da seção de avaliações.
 - `src/pages/painel.tsx` é o painel de avaliações, protegido por usuário e senha e marcado com `noindex`. As rotas de login, saída e ações ficam em `src/pages/api/panel/`.
-- `src/components/` tem um componente por seção. `SectionHeading` é o cabeçalho compartilhado das seções numeradas, `Brand` é a marca usada nos cabeçalhos, `ReviewForm` é o formulário de avaliação, e `PanelLogin` e `ReviewPanel` formam o painel.
-- `src/lib/reviews.ts` guarda e lê as avaliações no Netlify Blobs. `src/lib/panel-auth.ts` cuida do login, da sessão e do limite de tentativas.
+- `src/components/` tem um componente por seção. `SectionHeading` é o cabeçalho compartilhado das seções numeradas (índice, régua e rótulo em monoespaçada, título e descrição ao lado), `Brand` é a marca usada nos cabeçalhos, `SocialLinks` são os canais de contato em ícones, usados no topo e no rodapé, `Flow` desenha um processo em etapas (lista ordenada com setas) para a seção "Na prática", `ReviewForm` é o formulário de avaliação, e `PanelLogin` e `ReviewPanel` formam o painel.
+- `src/lib/reviews.ts` guarda e lê as avaliações no Netlify Blobs. `src/lib/panel-auth.ts` cuida do login, da sessão e do limite de tentativas. `src/lib/dates.ts` formata meses e calcula a duração de cada função, e `src/lib/use-reveal.ts` é o hook que revela os blocos ao rolar.
 - `netlify/functions/review-submitted.ts` recebe cada envio do formulário que passa pelo filtro de spam do Netlify e o guarda como avaliação pendente.
-- `src/data/profile.ts` concentra os dados da profissional: contatos, navegação, áreas de atuação, experiências, formação e cursos.
-- `src/styles/globals.css` é a única folha de estilos.
+- `src/data/profile.ts` concentra os dados da profissional: contatos, navegação, as disciplinas anotadas em volta do retrato, a ficha técnica da seção "Sobre", as áreas de atuação (com ferramentas e onde foram exercidas), as frentes de trabalho da seção "Na prática" (cada etapa cita algo descrito no currículo), experiências (com `start`, `end` e `companyShort`), formação e cursos.
+- `src/styles/globals.css` é a única folha de estilos. Os tokens ficam em `:root`: cores (papel quente como fundo, ferrugem do logo como destaque, verde-musgo para o que é sustentabilidade, semânticas `--moss` e `--danger`), fontes, escala tipográfica, largura do contêiner, respiro das seções e curvas de movimento.
 - `next.config.mjs` desliga o `agentRules`, para que o `next dev` não acrescente instruções próprias a este arquivo, e define os redirecionamentos permanentes e os cabeçalhos de segurança, incluindo a Content Security Policy, a `Permissions-Policy` e o `X-Robots-Tag` do painel e das rotas de API. A CSP só aceita recursos do próprio site. Não carregue scripts, estilos, fontes ou imagens de outros domínios. Se isso for inevitável, ajuste a política e explique o motivo no PR.
 - `tests/portfolio.spec.ts` contém todos os testes de navegador. `tests/blobs-server.mjs` sobe um Netlify Blobs local, numa pasta temporária, e `tests/panel-environment.ts` tem as credenciais usadas só nos testes.
 - `public/` guarda logo, foto da profissional, imagem de compartilhamento, favicon, `robots.txt`, `sitemap.xml`, o currículo em PDF, o arquivo de verificação do Google e `__forms.html`, que declara o formulário de avaliação para o Netlify Forms.
@@ -66,11 +66,18 @@ O projeto usa o Pages Router. Não migre para o App Router sem pedido explícito
 - Tamanhos de fonte usam `rem`. Para textos de até 16 px, use os tokens `--text-*` do `:root`.
 - Cores vêm só dos tokens do `:root`, sem valores fixos nas regras. Para transparência, use `color-mix()` com um token.
 - Rótulos em maiúsculas são escritos normalmente no JSX e recebem `text-transform: uppercase` no CSS, para que leitores de tela não soletrem as palavras como siglas.
-- Ícones vêm do `lucide-react`. Ícones decorativos recebem `aria-hidden="true"`.
+- Ícones vêm do `lucide-react`. Ícones decorativos recebem `aria-hidden="true"`. A exceção é o ícone do LinkedIn, um SVG embutido em `SocialLinks`, porque o Lucide não distribui marcas.
 - Imagens ficam em WebP dentro de `public/` e são exibidas com `next/image`. A exceção é a imagem de compartilhamento, `public/images/og-image.jpg`, que fica em JPEG com 1200 × 630 px, porque nem todas as plataformas aceitam WebP. Remova metadados, como localização, de qualquer foto antes de publicá-la.
-- Fontes são servidas pelo próprio projeto via Fontsource. Não use CDNs de fontes, estilos ou scripts.
+- Fontes são servidas pelo próprio projeto via Fontsource. Não use CDNs de fontes, estilos ou scripts. São três famílias, cada uma com um papel: Fraunces (`--font-display`) para títulos e frases curtas, DM Sans (`--font-body`) para leitura e interface, e DM Mono (`--font-mono`) para as anotações técnicas: índices, datas, ferramentas, legendas e rótulos em maiúsculas. Não troque os papéis nem acrescente outra família.
 - O projeto tem poucas dependências de produção. Evite adicionar novas e justifique no PR quando for necessário.
 - Não edite `next-env.d.ts`, que é gerado pelo Next.js. Não versione `.next/`, `test-results/`, `playwright-report/` nem `tsconfig.tsbuildinfo`.
+
+## Identidade visual e movimento
+
+- A identidade é a de uma prancha técnica editorial: fundo de papel, linhas finas no lugar de cartões, anotações em monoespaçada, uma grade de desenho sutil atrás da primeira tela e o retrato como figura numerada, com marcas de registro e chamadas ligando as quatro disciplinas a pontos da foto. Novas seções seguem o mesmo vocabulário: cabeçalho numerado, réguas, pouca cor e nenhum cartão arredondado.
+- Cada seção tem uma composição própria: "Sobre" com narrativa e ficha técnica, "Atuação" como um livro-razão de linhas, "Na prática" com diagramas de etapas, "Trajetória" com trilho e nós, "Formação" com a formação ao lado dos cursos. Não repita o mesmo cartão em todas as seções.
+- O movimento tem três fontes, todas em CSS: a entrada da primeira tela, os blocos com `data-reveal`, que o hook `useReveal` revela ao entrar na tela, e o trilho da trajetória, que se desenha com a rolagem onde o navegador aceita `animation-timeline`. Sem JavaScript, ou com `prefers-reduced-motion`, tudo aparece de imediato. Não acrescente bibliotecas de animação.
+- O menu marca com `aria-current="location"` a seção que cruza o meio da tela, e o cabeçalho ganha a classe `is-scrolled` depois da primeira rolagem.
 
 ## Painel de avaliações
 
@@ -82,9 +89,9 @@ O projeto usa o Pages Router. Não migre para o App Router sem pedido explícito
 
 ## Seções e âncoras
 
-- As seções usam ids em português: `sobre`, `atuacao`, `experiencia`, `formacao`, `avaliacoes` e `contato`. O topo usa `inicio` e o conteúdo principal usa `conteudo`, alvo do link de pular conteúdo.
+- As seções usam ids em português: `sobre`, `atuacao`, `pratica`, `experiencia`, `formacao`, `avaliacoes` e `contato`. A primeira tela usa `apresentacao`, o topo usa `inicio` e o conteúdo principal usa `conteudo`, alvo do link de pular conteúdo.
 - Os ids são usados pela navegação em `src/data/profile.ts`, pelos redirecionamentos em `next.config.mjs` e pelos testes. Ao mudar um id, atualize os três.
-- As seções são numeradas a partir de 01, e cada uma recebe o número pela prop `number`. Avaliações é a 05 e o contato é a 06. Ao incluir ou reordenar seções, renumere todas.
+- As seções são numeradas a partir de 01, e cada uma recebe o número pela prop `number`. Na prática é a 03, avaliações é a 06 e o contato é a 07. Ao incluir ou reordenar seções, renumere todas.
 
 ## Acessibilidade e layout
 
@@ -96,7 +103,8 @@ Os testes de navegador são o contrato de qualidade do site. Eles exigem:
 - Nenhum texto visível com menos de 12 px, em qualquer largura de tela, na página inicial, em `/avaliar` e em `/painel`.
 - Formulário de avaliação com campos rotulados, envio real ao Netlify Forms e mensagens de sucesso e de erro.
 - Painel que só abre com login, recusa pedidos de outros sites, bloqueia tentativas repetidas e publica, retira e exclui avaliações com efeito imediato na página inicial.
-- Menu móvel com `aria-expanded`, que fecha com Escape e devolve o foco ao botão.
+- Menu móvel com `aria-expanded`, que fecha com Escape e devolve o foco ao botão. Ele aparece até 1040 px, porque seis links, a marca e dois botões não cabem numa linha abaixo disso.
+- Menu que marca a seção atual, e blocos com `data-reveal` que ficam visíveis depois da rolagem e, com movimento reduzido, desde o início.
 - Todas as experiências em `<details>` abertos por padrão, que continuam podendo ser recolhidos pelo clique ou pelo teclado.
 - Nenhum erro de JavaScript no carregamento da página.
 - Nenhuma violação da Content Security Policy.

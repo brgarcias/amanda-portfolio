@@ -4,31 +4,42 @@ import { Header } from '@/components/Header';
 import { Hero } from '@/components/Hero';
 import { About } from '@/components/About';
 import { Expertise } from '@/components/Expertise';
+import { Practice } from '@/components/Practice';
 import { Experience } from '@/components/Experience';
 import { Education } from '@/components/Education';
 import { Testimonials } from '@/components/Testimonials';
 import { Contact } from '@/components/Contact';
 import { Footer } from '@/components/Footer';
-import { profile, site } from '@/data/profile';
+import { education, experience, profile, site } from '@/data/profile';
+import { currentMonth } from '@/lib/dates';
 import { listTestimonials, type Testimonial } from '@/lib/reviews';
+import { useReveal } from '@/lib/use-reveal';
+
+type HomeProps = { year: number; today: string; testimonials: Testimonial[] };
 
 // The panel rebuilds this page when a review changes. The short interval
-// also brings published reviews back soon after a deploy.
+// also brings published reviews back soon after a deploy, and keeps the
+// duration of the current role up to date.
 export const getStaticProps = (async () => ({
   props: {
     year: new Date().getFullYear(),
+    today: currentMonth(),
     testimonials: await listTestimonials(),
   },
   revalidate: 60,
-})) satisfies GetStaticProps<{ year: number; testimonials: Testimonial[] }>;
+})) satisfies GetStaticProps<HomeProps>;
+
+const currentRole = experience.find((item) => item.current);
 
 export default function Home({
   year,
+  today,
   testimonials,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  const title = `${profile.name} | Engenharia de Segurança do Trabalho`;
+  useReveal();
+  const title = `${profile.name} — Engenharia de Segurança do Trabalho e Engenharia Civil`;
   const description =
-    'Conheça a trajetória de Amanda Assumpção, engenheira de segurança do trabalho e engenheira civil em São Paulo. Experiência em SSMA, gestão de riscos, indicadores e sustentabilidade.';
+    'Amanda Assumpção é engenheira de segurança do trabalho e engenheira civil em São Paulo, especialista de segurança do trabalho na Brink’s. Experiência em SSMA, gestão de riscos, documentação legal, indicadores e sustentabilidade.';
   const pageUrl = `${site.url}/`;
   const structuredData = {
     '@context': 'https://schema.org',
@@ -47,12 +58,21 @@ export default function Home({
       addressRegion: 'SP',
       addressCountry: 'BR',
     },
+    worksFor: currentRole && {
+      '@type': 'Organization',
+      name: currentRole.company,
+    },
+    alumniOf: education.map((item) => ({
+      '@type': 'EducationalOrganization',
+      name: item.institution,
+    })),
     knowsAbout: [
       'Segurança do trabalho',
       'Engenharia civil',
       'SSMA',
       'Gestão de riscos',
       'Sustentabilidade',
+      'ESG',
     ],
   };
 
@@ -98,7 +118,8 @@ export default function Home({
           <Hero />
           <About />
           <Expertise />
-          <Experience />
+          <Practice />
+          <Experience today={today} />
           <Education />
           <Testimonials testimonials={testimonials} />
           <Contact />

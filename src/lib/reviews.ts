@@ -1,4 +1,5 @@
 import { getStore } from '@netlify/blobs';
+import { monthNames } from './dates';
 
 // Shared with netlify/functions/review-submitted.ts, so this module only uses
 // relative imports.
@@ -27,20 +28,6 @@ export type Testimonial = Pick<
 
 // Field limits from the review form. Longer values did not come from it.
 const limits = { name: 80, role: 100, service: 80, quote: 600, email: 254 };
-const months = [
-  'Jan.',
-  'Fev.',
-  'Mar.',
-  'Abr.',
-  'Mai.',
-  'Jun.',
-  'Jul.',
-  'Ago.',
-  'Set.',
-  'Out.',
-  'Nov.',
-  'Dez.',
-];
 
 function readText(value: string | undefined, limit: number) {
   // Browsers send textarea line breaks as CRLF but count them as one
@@ -121,7 +108,7 @@ function formatMonth(isoDate: string) {
   })
     .format(new Date(isoDate))
     .split('-');
-  return `${months[Number(month) - 1]} ${year}`;
+  return `${monthNames[Number(month) - 1]} ${year}`;
 }
 
 function hasBlobsContext() {
