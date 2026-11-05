@@ -1,4 +1,9 @@
-import { createHash, createHmac, timingSafeEqual } from 'node:crypto';
+import {
+  createHash,
+  createHmac,
+  scryptSync,
+  timingSafeEqual,
+} from 'node:crypto';
 import type { IncomingMessage } from 'node:http';
 import { getStore } from '@netlify/blobs';
 
@@ -27,34 +32,56 @@ export function isPanelConfigured() {
   return panelConfig() !== null;
 }
 
+type PanelConfig = NonNullable<ReturnType<typeof panelConfig>>;
+
+const keyLength = 32;
+
 function digest(value: string) {
   return createHash('sha256').update(value).digest();
+}
+
+// The password goes through scrypt, so each comparison costs real work and,
+// with the rate limit, brute force gains nothing. The salt ties the
+// derivation to this site's secret; nothing derived here is ever stored.
+function derivePassword(password: string, config: PanelConfig) {
+  return scryptSync(password, config.secret, keyLength);
 }
 
 export function credentialsMatch(username: string, password: string) {
   const config = panelConfig();
   if (!config) return false;
-  // Equal-length digests keep the comparison time independent of the input.
+  // Equal-length values keep the comparison time independent of the input.
   const usernameMatches = timingSafeEqual(
     digest(username),
     digest(config.username),
   );
   const passwordMatches = timingSafeEqual(
-    digest(password),
-    digest(config.password),
+    derivePassword(password, config),
+    derivePassword(config.password, config),
   );
   return usernameMatches && passwordMatches;
 }
 
-// The credentials are part of the key, so changing the password ends every
-// open session.
+// The signing key is derived from the secret and the credentials, so
+// changing the password ends every open session. It is derived once per
+// process, as scrypt is slow on purpose.
+let signingKey: { source: string; key: Buffer } | undefined;
+
+function sessionKey(config: PanelConfig) {
+  const source = `${config.secret}\n${config.username}\n${config.password}`;
+  if (signingKey?.source !== source) {
+    signingKey = {
+      source,
+      key: scryptSync(source, 'panel-session', keyLength),
+    };
+  }
+  return signingKey.key;
+}
+
 function sign(payload: string) {
   const config = panelConfig();
   if (!config) return null;
-  return createHmac(
-    'sha256',
-    `${config.secret}:${config.username}:${config.password}`,
-  )
+  return createHmac('sha256', sessionKey(config))
     .update(payload)
     .digest('base64url');
 }
