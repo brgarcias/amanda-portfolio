@@ -1,0 +1,9 @@
+# Política de segurança do portfólio de Amanda Assumpção (RFC 9116).
+# Mantenha este arquivo igual ao SECURITY.md do repositório e renove a
+# data de validade todo ano; um teste do projeto falha quando ela passa.
+Contact: https://github.com/brgarcias/amanda-portfolio/security/advisories/new
+Contact: mailto:bruno-151299@hotmail.com
+Expires: 2027-11-01T00:00:00.000Z
+Preferred-Languages: pt-BR, en
+Canonical: https://arra-portfolio.netlify.app/.well-known/security.txt
+Policy: https://github.com/brgarcias/amanda-portfolio/blob/main/SECURITY.md
