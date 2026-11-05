@@ -51,7 +51,7 @@ Peço que a divulgação pública espere a correção estar publicada. Este é u
 Para orientar a pesquisa, o que o projeto já faz:
 
 - Content Security Policy restrita ao próprio domínio, `X-Frame-Options`, `X-Content-Type-Options`, `Referrer-Policy` e `Permissions-Policy` em todas as respostas.
-- Painel protegido por usuário e senha guardados só nas variáveis de ambiente do Netlify, com sessão assinada por HMAC em cookie `HttpOnly`, `Secure` e `SameSite=Strict`, limite de 5 tentativas por usuário a cada 15 minutos e de 100 por hora no site inteiro, e ações aceitas só em pedidos JSON vindos da própria origem.
+- Painel protegido por usuário e senha guardados só nas variáveis de ambiente do Netlify, com a senha comparada em tempo constante por chaves derivadas com scrypt, sessão assinada por HMAC com chave também derivada com scrypt, em cookie `HttpOnly`, `Secure` e `SameSite=Strict`, limite de 5 tentativas por usuário a cada 15 minutos e de 100 por hora no site inteiro, e ações aceitas só em pedidos JSON vindos da própria origem.
 - Formulário de avaliação com campo-armadilha, filtro de spam do Netlify Forms, validação no navegador e no servidor, consentimento registrado e e-mail de quem avaliou visível só no painel.
 - Nenhum script, estilo, fonte ou imagem de terceiros, e nenhum rastreador.
 - Commits assinados, branch `main` protegida, CI com lint, tipos, build e testes de navegador, Dependabot e CodeQL.
