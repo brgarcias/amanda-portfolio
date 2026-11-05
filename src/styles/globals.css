@@ -1040,25 +1040,64 @@ html.js-reveal [data-reveal].is-visible {
 }
 .practice-item {
   display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
   gap: 1.5rem clamp(2rem, 5vw, 6rem);
-  align-items: center;
+  align-items: start;
   padding-block: clamp(2rem, 4vw, 3rem);
   border-bottom: 1px solid var(--line);
 }
 .practice-copy {
-  max-width: 32rem;
+  max-width: 38rem;
+}
+.practice-item .flow {
+  position: sticky;
+  top: calc(var(--header-height) + 1.5rem);
 }
 .practice-index {
-  display: block;
+  display: flex;
+  gap: 0.85rem;
   margin-bottom: 0.85rem;
+}
+.practice-index > span {
+  color: var(--accent);
 }
 .practice-item h3 {
   margin-bottom: 0.75rem;
   font-size: var(--text-h3);
 }
-.practice-copy > p:not(.practice-tools) {
+.practice-context {
   color: var(--ink-soft);
+}
+/* The experience as a sheet: her part, how she works, what it brings. */
+.practice-sheet {
+  margin: 1.25rem 0 0;
+  border-top: 1px solid var(--line);
+}
+.practice-sheet > div {
+  display: grid;
+  grid-template-columns: 7.5rem minmax(0, 1fr);
+  gap: 0.5rem 1rem;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid var(--line);
+}
+.practice-sheet dt {
+  padding-top: 0.2rem;
+  color: var(--muted);
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: 0.1em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+.practice-sheet dd {
+  margin: 0;
+  color: var(--ink-soft);
+  font-size: var(--text-small);
+  line-height: 1.65;
+}
+.practice-sheet .practice-tools {
+  display: block;
+  margin-top: 0.4rem;
 }
 
 /* A process as a diagram: the steps stacked, joined by arrows, with a pulse
@@ -1326,6 +1365,12 @@ html.js-reveal [data-reveal].is-visible {
   font-size: var(--text-label);
   letter-spacing: 0.06em;
   text-transform: uppercase;
+}
+.timeline-summary {
+  margin-top: 0.85rem;
+  color: var(--ink-soft);
+  font-size: var(--text-small);
+  line-height: 1.65;
 }
 .timeline-card details {
   margin-top: 1rem;
@@ -1951,14 +1996,14 @@ a.contact-row:hover > svg {
 }
 .consent-field input {
   flex-shrink: 0;
-  width: 20px;
-  height: 20px;
-  margin: 2px 0 0;
+  width: 24px;
+  height: 24px;
+  margin: 0;
   accent-color: var(--accent);
 }
 .consent-field + .form-hint {
   margin-top: -1.1rem;
-  padding-left: 2rem;
+  padding-left: 2.25rem;
 }
 .form-error {
   padding: 0.85rem 1rem;
@@ -2343,6 +2388,9 @@ a.contact-row:hover > svg {
     gap: 1.5rem;
     align-items: start;
   }
+  .practice-item .flow {
+    position: static;
+  }
   .practice-copy {
     max-width: 38rem;
   }
@@ -2501,7 +2549,8 @@ a.contact-row:hover > svg {
   .hero-actions .button {
     flex: 1 1 100%;
   }
-  .fact-sheet > div {
+  .fact-sheet > div,
+  .practice-sheet > div {
     grid-template-columns: minmax(0, 1fr);
     gap: 0.25rem;
   }

@@ -102,6 +102,9 @@ export default function Home({
           content={`${profile.name}, ${profile.title.toLowerCase()} e ${profile.secondaryTitle.toLowerCase()}, em um retrato emoldurado sobre uma prancha de desenho`}
         />
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={title} />
+        <meta name="twitter:description" content={description} />
+        <meta name="twitter:image" content={`${site.url}${site.shareImage}`} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
