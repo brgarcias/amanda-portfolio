@@ -2087,7 +2087,14 @@ a.contact-row:hover > svg {
 
 /* ─── Not found ─────────────────────────────────────────── */
 .not-found {
+  position: relative;
   padding-block: 15vh;
+}
+.not-found > .hero-backdrop {
+  inset: 0 calc(-1 * var(--gutter));
+}
+.not-found > :not(.hero-backdrop) {
+  position: relative;
 }
 .not-found h1 {
   margin-block: 1.5rem;
@@ -2489,6 +2496,114 @@ a.contact-row:hover > svg {
   }
   .hero-callout {
     white-space: normal;
+  }
+}
+
+/* ─── Print ─────────────────────────────────────────────── */
+/* On paper the page becomes a plain document: no bar, no decoration, every
+   block visible, the dark sections in ink on white. */
+@media print {
+  :root {
+    --canvas: #fff;
+    --surface: #fff;
+    --paper: #fff;
+    --section-pad: 2rem;
+  }
+  html {
+    scroll-padding-top: 0;
+  }
+  .skip-link,
+  .site-header,
+  .hero-backdrop,
+  .hero-leaders,
+  .hero-callouts,
+  .hero-actions,
+  .hero-links,
+  .hero-proof,
+  .contact-actions,
+  .contact-row > svg,
+  .review-invite,
+  .footer-social,
+  .back-to-top,
+  .timeline-rail,
+  .details-symbol,
+  .flow-pulse,
+  .about-copy .text-link {
+    display: none !important;
+  }
+  html.js-reveal [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .hero-copy > *,
+  .hero-visual {
+    animation: none !important;
+  }
+  .hero {
+    padding-top: 0;
+  }
+  .hero-inner {
+    grid-template-columns: minmax(0, 1fr) 11rem;
+    align-items: start;
+  }
+  .hero-visual {
+    max-width: none;
+    aspect-ratio: auto;
+  }
+  .hero-figure {
+    position: static;
+  }
+  .hero-frame {
+    flex: none;
+    aspect-ratio: 4 / 5;
+  }
+  .section-heading,
+  h2,
+  h3,
+  h4 {
+    break-after: avoid;
+  }
+  .ledger-row,
+  .practice-item,
+  .timeline-item,
+  .degree,
+  .course-list > li,
+  .testimonial-card,
+  .flow-node {
+    break-inside: avoid;
+  }
+  .timeline-card,
+  .flow-node,
+  .testimonial-card,
+  .is-current .timeline-card {
+    border-color: var(--line-strong);
+    box-shadow: none;
+  }
+  .timeline-node {
+    box-shadow: none;
+  }
+  .contact-section,
+  .site-footer {
+    background: none;
+    color: var(--ink);
+  }
+  .contact-section .eyebrow,
+  .contact-intro .eyebrow-index,
+  .contact-intro h2 > span,
+  .contact-intro > p:not(.eyebrow),
+  .contact-label,
+  .footer-brand p,
+  .copyright {
+    color: var(--muted);
+  }
+  .contact-section .eyebrow::before {
+    background: var(--accent);
+  }
+  .contact-list,
+  .contact-row,
+  .site-footer {
+    border-color: var(--line);
   }
 }
 

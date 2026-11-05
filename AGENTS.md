@@ -38,6 +38,7 @@ Antes de considerar uma mudança pronta, rode `pnpm check`, `pnpm build` e `pnpm
 - `next.config.mjs` desliga o `agentRules`, para que o `next dev` não acrescente instruções próprias a este arquivo, e define os redirecionamentos permanentes e os cabeçalhos de segurança, incluindo a Content Security Policy, a `Permissions-Policy` e o `X-Robots-Tag` do painel e das rotas de API. A CSP só aceita recursos do próprio site. Não carregue scripts, estilos, fontes ou imagens de outros domínios. Se isso for inevitável, ajuste a política e explique o motivo no PR.
 - `tests/portfolio.spec.ts` contém todos os testes de navegador. `tests/blobs-server.mjs` sobe um Netlify Blobs local, numa pasta temporária, e `tests/panel-environment.ts` tem as credenciais usadas só nos testes.
 - `public/` guarda logo, foto da profissional, imagem de compartilhamento, favicon, `robots.txt`, `sitemap.xml`, o currículo em PDF, o arquivo de verificação do Google e `__forms.html`, que declara o formulário de avaliação para o Netlify Forms.
+- `scripts/share-image.mjs` gera `public/images/og-image.jpg` a partir de `scripts/share-image.html`, com as fontes do projeto, o retrato e os dados de `src/data/profile.ts`. Rode `node scripts/share-image.mjs` depois de mudar nome, cargo ou foto, e confira a imagem antes de versionar. Não edite o JPEG à mão.
 
 O projeto usa o Pages Router. Não migre para o App Router sem pedido explícito.
 
@@ -78,6 +79,7 @@ O projeto usa o Pages Router. Não migre para o App Router sem pedido explícito
 - Cada seção tem uma composição própria: "Sobre" com narrativa e ficha técnica, "Atuação" como um livro-razão de linhas, "Na prática" com diagramas de etapas, "Trajetória" com trilho e nós, "Formação" com a formação ao lado dos cursos. Não repita o mesmo cartão em todas as seções.
 - O movimento tem três fontes, todas em CSS: a entrada da primeira tela, os blocos com `data-reveal`, que o hook `useReveal` revela ao entrar na tela, e o trilho da trajetória, que se desenha com a rolagem onde o navegador aceita `animation-timeline`. Sem JavaScript, ou com `prefers-reduced-motion`, tudo aparece de imediato. Não acrescente bibliotecas de animação.
 - O menu marca com `aria-current="location"` a seção que cruza o meio da tela, e o cabeçalho ganha a classe `is-scrolled` depois da primeira rolagem.
+- Em `@media print`, a página vira um documento: sem menu, sem grade, sem chamadas nem animações, com todos os blocos visíveis e as seções escuras em tinta sobre branco. Ao criar um elemento decorativo, esconda-o ali também.
 
 ## Painel de avaliações
 

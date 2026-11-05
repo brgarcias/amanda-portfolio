@@ -99,7 +99,7 @@ export default function Home({
         <meta property="og:image:height" content="630" />
         <meta
           property="og:image:alt"
-          content={`${profile.name}, ${profile.title.toLowerCase()}`}
+          content={`${profile.name}, ${profile.title.toLowerCase()} e ${profile.secondaryTitle.toLowerCase()}, em um retrato emoldurado sobre uma prancha de desenho`}
         />
         <meta name="twitter:card" content="summary_large_image" />
         <script
