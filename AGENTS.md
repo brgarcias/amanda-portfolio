@@ -124,6 +124,7 @@ Os testes também procuram textos visíveis, como o título principal, o título
 - Abra o PR com destino a `main`. O título segue Conventional Commits, e título e descrição ficam em português.
 - O Netlify gera um Deploy Preview para cada PR, em `https://deploy-preview-<número>--arra-portfolio.netlify.app`. A `main` exige quatro checks do Netlify: `Header rules - arra-portfolio`, `Pages changed - arra-portfolio`, `Redirect rules - arra-portfolio` e `netlify/arra-portfolio/deploy-preview`.
 - O job `quality` do GitHub Actions também roda em cada PR. Só faça o merge com ele aprovado.
+- `.github/dependabot.yml` liga as atualizações de versão do Dependabot: toda segunda-feira, um PR agrupa as versões menores e de correção dos pacotes npm, cada versão maior vem num PR próprio, e as actions dos workflows seguem o mesmo esquema. Cada versão precisa ter uma semana de publicação antes de ser proposta. As versões maiores de `@types/node` são ignoradas, porque os tipos acompanham o Node do `.nvmrc`. Esses PRs têm título e descrição em inglês, a única exceção à regra do português, e seguem a mesma regra de merge: squash depois que todos os checks passarem. Um PR de versão maior que quebre o `quality` fica aberto até alguém ajustar o projeto ou fechá-lo.
 - A `main` exige histórico linear e PR atualizado em relação a ela. Faça merge só com **Squash and merge**, depois que os checks passarem.
 - Nunca faça push direto ou force push em `main` e nunca altere as proteções da branch.
 - Não publique pelo Netlify CLI. A produção só muda por merge em `main`.
