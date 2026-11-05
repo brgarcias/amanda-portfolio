@@ -92,6 +92,7 @@ export function Experience({ today }: { today: string }) {
                       <div className="timeline-card" data-reveal>
                         <h4>{role.role}</h4>
                         <p className="timeline-mode">Presencial</p>
+                        <p className="timeline-summary">{role.summary}</p>
                         <details open>
                           <summary>
                             <span>Principais atividades</span>
