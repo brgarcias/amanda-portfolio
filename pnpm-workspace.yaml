@@ -9,3 +9,10 @@ peerDependencyRules:
     'eslint-plugin-import>eslint': '10'
     'eslint-plugin-jsx-a11y>eslint': '10'
     'eslint-plugin-react>eslint': '10'
+
+# minimatch 10 carries a moderate advisory (GHSA-g3hv-75wg-m249), and eslint,
+# @eslint/config-array and @typescript-eslint/typescript-estree still ask for
+# it. They only use minimatch(), new Minimatch() and match(), which 11 keeps.
+# Remove the override once those packages depend on minimatch 11 themselves.
+overrides:
+  'minimatch@>=7 <11.0.1': '^11.0.1'
