@@ -119,11 +119,16 @@ if (process.env.RESUME_PREVIEW) {
   await page.emulateMedia({ media: 'print' });
   await page.screenshot({ path: process.env.RESUME_PREVIEW, fullPage: true });
 }
+// Tagged, the PDF keeps the headings, lists and reading order for screen
+// readers and for the parsers recruiters use, and the outline lets a reader
+// jump between sections.
 await page.pdf({
   path: output,
   format: 'A4',
   printBackground: true,
   preferCSSPageSize: true,
+  tagged: true,
+  outline: true,
 });
 await browser.close();
 console.log(`Currículo gravado em ${path.relative(root, output)}`);
