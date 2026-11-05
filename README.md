@@ -98,6 +98,10 @@ Não use uma segunda branch permanente, como `develop`, para promover alteraçõ
 
 Para assinaturas SSH, a chave pública usada pelo Git deve estar cadastrada no GitHub como **Signing Key**. Uma chave cadastrada apenas para autenticação não basta para verificar a assinatura dos commits.
 
+## Segurança
+
+Vulnerabilidades devem ser relatadas em privado, pelo [relato de vulnerabilidade do GitHub](https://github.com/brgarcias/amanda-portfolio/security/advisories/new) ou pelo e-mail indicado em [SECURITY.md](SECURITY.md), que descreve o escopo, os prazos de resposta e as medidas já em vigor. O site publica os mesmos canais em `/.well-known/security.txt`, no formato da RFC 9116.
+
 ### Agentes de código
 
 As instruções para agentes de código ficam em `AGENTS.md`. O `CLAUDE.md` importa esse arquivo e acrescenta notas específicas do Claude Code. O `.claude/settings.json` bloqueia comandos destrutivos, como apagar o site no Netlify ou o repositório. Configurações pessoais do Claude Code ficam em `.claude/settings.local.json`, que não é versionado.

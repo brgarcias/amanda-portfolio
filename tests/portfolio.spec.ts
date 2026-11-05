@@ -183,6 +183,15 @@ test('publica os metadados de busca e compartilhamento', async ({
   expect(await sitemap.text()).toContain(`<loc>${siteUrl}/</loc>`);
   const robots = await (await request.get('/robots.txt')).text();
   expect(robots).toContain(`Sitemap: ${siteUrl}/sitemap.xml`);
+  // The security policy's reporting channels, as RFC 9116 asks, still valid.
+  const securityFile = await request.get('/.well-known/security.txt');
+  expect(securityFile.status()).toBe(200);
+  expect(securityFile.headers()['content-type']).toContain('text/plain');
+  const security = await securityFile.text();
+  expect(security).toMatch(/^Contact: /m);
+  expect(security).toContain('/SECURITY.md');
+  const expires = security.match(/^Expires: (.+)$/m)?.[1];
+  expect(new Date(expires ?? 0).getTime()).toBeGreaterThan(Date.now());
   for (const [icon, type] of [
     ['/favicon.ico', 'image/'],
     ['/favicon.svg', 'image/svg+xml'],
