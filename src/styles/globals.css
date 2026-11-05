@@ -33,10 +33,14 @@
   --shadow-ink: color-mix(in srgb, var(--ink) 35%, transparent);
 
   /* Fraunces for what is said in a few words, DM Sans for reading and DM Mono
-     for the technical annotations: indexes, dates, tools and labels. */
-  --font-display: 'Fraunces Variable', Georgia, 'Times New Roman', serif;
-  --font-body: 'DM Sans Variable', system-ui, -apple-system, sans-serif;
-  --font-mono: 'DM Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+     for the technical annotations: indexes, dates, tools and labels. Each
+     stack names its adjusted fallback (below) before the generic family. */
+  --font-display:
+    'Fraunces Variable', 'Fraunces Fallback', Georgia, 'Times New Roman', serif;
+  --font-body:
+    'DM Sans Variable', 'DM Sans Fallback', system-ui, -apple-system, sans-serif;
+  --font-mono:
+    'DM Mono', 'DM Mono Fallback', ui-monospace, 'SF Mono', Menlo, monospace;
 
   --text-label: 0.75rem;
   --text-meta: 0.8125rem;
@@ -105,6 +109,36 @@
   :root {
     --header-height: 4.5rem;
   }
+}
+
+/* ─── Fallback fonts ────────────────────────────────────── */
+/* While a web font loads, its text shows in a system font scaled to the same
+   width and height, so the swap moves nothing. The numbers come from
+   measuring both fonts in Chromium: average glyph width, ascent and descent,
+   with the overrides divided by the size adjustment, as next/font does. */
+@font-face {
+  font-family: 'Fraunces Fallback';
+  src: local('Georgia');
+  size-adjust: 107.18%;
+  ascent-override: 91.43%;
+  descent-override: 24.26%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'DM Sans Fallback';
+  src: local('Arial'), local('Helvetica');
+  size-adjust: 103.32%;
+  ascent-override: 95.82%;
+  descent-override: 30%;
+  line-gap-override: 0%;
+}
+@font-face {
+  font-family: 'DM Mono Fallback';
+  src: local('Menlo'), local('Courier New');
+  size-adjust: 99.98%;
+  ascent-override: 99.02%;
+  descent-override: 31.01%;
+  line-gap-override: 0%;
 }
 
 /* ─── Base ──────────────────────────────────────────────── */
@@ -2496,6 +2530,33 @@ a.contact-row:hover > svg {
   }
   .hero-callout {
     white-space: normal;
+  }
+}
+
+/* ─── Forced colors ─────────────────────────────────────── */
+/* In Windows high-contrast modes, backgrounds go away: the marks drawn with
+   them get a border or an underline instead. */
+@media (forced-colors: active) {
+  .nav-link[aria-current] {
+    text-decoration: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.3em;
+  }
+  .status-dot,
+  .hero-callout::before,
+  .timeline-node::before,
+  .degree::before,
+  .timeline-card details li::before {
+    border: 2px solid CanvasText;
+  }
+  .eyebrow::before,
+  .timeline-rail {
+    border-top: 1px solid CanvasText;
+  }
+  .button,
+  .social-links a,
+  .back-to-top {
+    border: 1px solid ButtonText;
   }
 }
 
