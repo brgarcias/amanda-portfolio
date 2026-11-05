@@ -50,7 +50,8 @@ O GitHub Actions roda `pnpm check`, `pnpm build` e `pnpm test:e2e` em cada pull 
 - `src/pages/index.tsx`: composição, metadados e dados estruturados da profissional.
 - `public/documents/Amanda-Assumpcao-Engenheira-de-Seguranca-do-Trabalho.pdf`: currículo original para download, com nome e cargo no nome do arquivo. Os nomes anteriores do arquivo redirecionam para ele.
 - `public/images/amanda-assumpcao.webp`: foto exibida no topo da página.
-- `public/images/og-image.jpg`: imagem de prévia exibida quando o link é compartilhado, com 1200 × 630 px.
+- `public/images/og-image.jpg`: imagem de prévia exibida quando o link é compartilhado, com 1200 × 630 px. Ela é gerada por `node scripts/share-image.mjs`, que renderiza `scripts/share-image.html` com as fontes, o retrato e os dados de `src/data/profile.ts`. Rode o comando de novo depois de mudar nome, cargo ou foto.
+- A página tem uma versão para impressão: sem menu, sem decoração e com as seções escuras em tinta sobre branco.
 
 Os cargos e o MBA refletem o documento fornecido. Atualize `experience` e `education` quando houver mudanças. Os links de contato abrem WhatsApp, LinkedIn, aplicativo de e-mail ou telefone.
 

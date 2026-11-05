@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <title>Imagem de compartilhamento</title>
+    <style>
+      @font-face {
+        font-family: 'Fraunces';
+        font-weight: 100 900;
+        src: url('../node_modules/@fontsource-variable/fraunces/files/fraunces-latin-wght-normal.woff2')
+          format('woff2-variations');
+      }
+      @font-face {
+        font-family: 'DM Sans';
+        font-weight: 100 1000;
+        src: url('../node_modules/@fontsource-variable/dm-sans/files/dm-sans-latin-wght-normal.woff2')
+          format('woff2-variations');
+      }
+      @font-face {
+        font-family: 'DM Mono';
+        font-weight: 400;
+        src: url('../node_modules/@fontsource/dm-mono/files/dm-mono-latin-400-normal.woff2')
+          format('woff2');
+      }
+      :root {
+        --canvas: #f7f6f1;
+        --paper: #ffffff;
+        --surface: #efede6;
+        --ink: #1d2320;
+        --muted: #5c635b;
+        --line-strong: #b6bcb2;
+        --accent: #b23a12;
+        --grid-line: rgb(29 35 32 / 0.07);
+        --grid-line-strong: rgb(29 35 32 / 0.12);
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        position: relative;
+        width: 1200px;
+        height: 630px;
+        margin: 0;
+        overflow: hidden;
+        background: var(--canvas);
+        color: var(--ink);
+        font-family: 'DM Sans', sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+      .grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(var(--grid-line-strong) 1px, transparent 1px),
+          linear-gradient(90deg, var(--grid-line-strong) 1px, transparent 1px),
+          linear-gradient(var(--grid-line) 1px, transparent 1px),
+          linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+        background-size:
+          240px 240px,
+          240px 240px,
+          48px 48px,
+          48px 48px;
+        -webkit-mask-image: radial-gradient(
+          70% 95% at 72% 45%,
+          #000 15%,
+          transparent 75%
+        );
+        mask-image: radial-gradient(
+          70% 95% at 72% 45%,
+          #000 15%,
+          transparent 75%
+        );
+      }
+      .copy {
+        position: absolute;
+        top: 78px;
+        left: 80px;
+        width: 600px;
+      }
+      .eyebrow {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin: 0;
+        color: var(--accent);
+        font-family: 'DM Mono', monospace;
+        font-size: 16px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+      .eyebrow::before {
+        content: '';
+        width: 40px;
+        height: 1px;
+        background: var(--accent);
+      }
+      h1 {
+        margin: 30px 0 0;
+        font-family: 'Fraunces', serif;
+        font-size: 92px;
+        font-weight: 500;
+        letter-spacing: -0.02em;
+        line-height: 1;
+      }
+      h1 span {
+        display: block;
+        color: var(--accent);
+      }
+      .role {
+        max-width: 520px;
+        margin: 30px 0 0;
+        color: var(--muted);
+        font-size: 27px;
+        line-height: 1.4;
+      }
+      .footer {
+        position: absolute;
+        bottom: 70px;
+        left: 80px;
+        display: flex;
+        gap: 28px;
+        color: var(--muted);
+        font-family: 'DM Mono', monospace;
+        font-size: 16px;
+        letter-spacing: 0.04em;
+      }
+      .footer span + span::before {
+        content: '·';
+        margin-right: 28px;
+      }
+      .figure {
+        position: absolute;
+        top: 64px;
+        right: 96px;
+        width: 352px;
+        height: 468px;
+        border: 1.5px solid var(--line-strong);
+        background: var(--surface);
+      }
+      .figure img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: 50% 14%;
+      }
+      .mark {
+        position: absolute;
+        width: 21px;
+        height: 21px;
+      }
+      .mark::before,
+      .mark::after {
+        content: '';
+        position: absolute;
+        background: var(--ink);
+      }
+      .mark::before {
+        top: 10px;
+        left: 0;
+        width: 21px;
+        height: 1.5px;
+      }
+      .mark::after {
+        top: 0;
+        left: 10px;
+        width: 1.5px;
+        height: 21px;
+      }
+      .mark.tl {
+        top: -11px;
+        left: -11px;
+      }
+      .mark.tr {
+        top: -11px;
+        right: -11px;
+      }
+      .mark.bl {
+        bottom: -11px;
+        left: -11px;
+      }
+      .mark.br {
+        bottom: -11px;
+        right: -11px;
+      }
+      .caption {
+        position: absolute;
+        top: 548px;
+        right: 96px;
+        width: 352px;
+        margin: 0;
+        color: var(--muted);
+        font-family: 'DM Mono', monospace;
+        font-size: 15px;
+        letter-spacing: 0.04em;
+      }
+      .caption b {
+        margin-right: 16px;
+        color: var(--accent);
+        font-weight: 400;
+      }
+      .callout {
+        position: absolute;
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 8px 12px;
+        border: 1.5px solid var(--line-strong);
+        background: var(--paper);
+        box-shadow: 0 18px 32px -22px rgb(29 35 32 / 0.5);
+        font-family: 'DM Mono', monospace;
+        font-size: 16px;
+        letter-spacing: 0.04em;
+        white-space: nowrap;
+      }
+      .callout::before {
+        content: '';
+        width: 7px;
+        height: 7px;
+        background: var(--accent);
+      }
+      .callout.one {
+        top: 40px;
+        right: 300px;
+      }
+      .callout.two {
+        top: 470px;
+        right: 60px;
+      }
+      .leader {
+        position: absolute;
+        inset: 0;
+        width: 1200px;
+        height: 630px;
+        fill: none;
+        stroke: var(--accent);
+        stroke-width: 1.5;
+      }
+      .leader circle {
+        fill: var(--accent);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid"></div>
+    <svg class="leader" viewBox="0 0 1200 630">
+      <path d="M815 58 V 150 H 870" />
+      <circle cx="870" cy="150" r="4.5" />
+      <path d="M1080 486 V 430 H 1026" />
+      <circle cx="1026" cy="430" r="4.5" />
+    </svg>
+    <div class="copy">
+      <p class="eyebrow" id="eyebrow">Engenharia &amp; segurança do trabalho</p>
+      <h1>
+        <span id="first-name" style="color: inherit">Amanda</span>
+        <span id="last-name">Assumpção</span>
+      </h1>
+      <p class="role" id="role">
+        Engenheira de segurança do trabalho e engenheira civil.
+      </p>
+    </div>
+    <div class="footer">
+      <span id="location">São Paulo, SP</span>
+      <span id="url">arra-portfolio.netlify.app</span>
+    </div>
+    <div class="figure">
+      <img src="../public/images/amanda-assumpcao.webp" alt="" />
+      <span class="mark tl"></span>
+      <span class="mark tr"></span>
+      <span class="mark bl"></span>
+      <span class="mark br"></span>
+    </div>
+    <p class="caption">
+      <b>Fig. 01</b><span id="caption">Amanda Assumpção</span>
+    </p>
+    <span class="callout one" id="callout-one">Segurança do trabalho</span>
+    <span class="callout two" id="callout-two">ESG</span>
+  </body>
+</html>

@@ -10,6 +10,7 @@ export default function NotFound() {
         <meta name="robots" content="noindex" />
       </Head>
       <main className="not-found container">
+        <div className="hero-backdrop" aria-hidden="true" />
         <p className="eyebrow">Erro 404</p>
         <h1>
           Vamos encontrar
