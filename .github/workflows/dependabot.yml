@@ -1,0 +1,79 @@
+# Keeps Dependabot's pull requests moving without a person. Minor and patch
+# releases of the npm packages, and every update of the workflow actions, get
+# auto-merge (squash) as soon as the required checks pass. A pull request that
+# fell behind main after another merge is sent back to Dependabot for a
+# rebase, because main requires up-to-date branches. Major releases of npm
+# packages wait for a person.
+name: Dependabot
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  schedule:
+    # A merge made by auto-merge does not trigger the push job (events caused
+    # by GITHUB_TOKEN never start workflows), so the rebase job also runs
+    # every hour.
+    - cron: '23 * * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  auto-merge:
+    name: auto-merge
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: github.event_name == 'pull_request' && github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == 'brgarcias/amanda-portfolio'
+    steps:
+      - id: metadata
+        uses: dependabot/fetch-metadata@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - if: steps.metadata.outputs.update-type != 'version-update:semver-major' || startsWith(github.event.pull_request.head.ref, 'dependabot/github_actions/')
+        run: |
+          if [ "$(gh pr view "$PR_URL" --json autoMergeRequest --jq '.autoMergeRequest != null')" = "true" ]; then
+            echo "Auto-merge is already enabled."
+            exit 0
+          fi
+          # When the checks have already finished, auto-merge has nothing to
+          # wait for and GitHub refuses it, so the PR is merged directly.
+          gh pr merge --auto --squash "$PR_URL" || gh pr merge --squash "$PR_URL"
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  rebase:
+    name: rebase
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    if: github.event_name != 'pull_request' && github.repository == 'brgarcias/amanda-portfolio'
+    steps:
+      - run: |
+          numbers=$(gh pr list --author app/dependabot --state open --json number --jq '.[].number')
+          if [ -z "$numbers" ]; then
+            echo "No open Dependabot pull request."
+            exit 0
+          fi
+          for number in $numbers; do
+            range=$(gh pr view "$number" --json baseRefName,headRefOid --jq '"\(.baseRefName)...\(.headRefOid)"')
+            behind=$(gh api "repos/$GH_REPO/compare/$range" --jq .behind_by)
+            if [ "$behind" -eq 0 ]; then
+              echo "#$number is up to date."
+              continue
+            fi
+            # One request per head commit, so a slow Dependabot is not spammed.
+            head_date=$(gh pr view "$number" --json commits --jq '.commits[-1].committedDate')
+            asked=$(gh api "repos/$GH_REPO/issues/$number/comments" --jq '[.[] | select(.user.login == "github-actions[bot]" and (.body | contains("@dependabot rebase"))) | .created_at] | max // ""')
+            if [ -n "$asked" ] && [[ "$asked" > "$head_date" ]]; then
+              echo "#$number: rebase already requested at $asked."
+              continue
+            fi
+            gh pr comment "$number" --body "@dependabot rebase"
+            echo "#$number: rebase requested, $behind commit(s) behind."
+          done
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
