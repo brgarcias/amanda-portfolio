@@ -48,7 +48,7 @@ O GitHub Actions roda `pnpm check`, `pnpm build` e `pnpm test:e2e` em cada pull 
 - `src/pages/painel.tsx`: painel onde a Amanda publica as avaliações.
 - `src/styles/globals.css`: tokens de cor, tipografia, espaçamento e movimento em `:root`, estilos de cada seção e regras de responsividade.
 - `src/pages/index.tsx`: composição, metadados e dados estruturados da profissional.
-- `public/documents/Amanda-Assumpcao-Engenheira-de-Seguranca-do-Trabalho.pdf`: currículo para download, gerado de `src/data/profile.ts` por `node scripts/resume.mjs`, com nome e cargo no nome do arquivo. Rode o comando depois de mudar os dados e versione o PDF novo. Os nomes anteriores do arquivo redirecionam para ele.
+- `public/documents/Amanda-Assumpcao-Engenheira-de-Seguranca-do-Trabalho.pdf`: currículo para download, gerado de `src/data/profile.ts` por `node scripts/resume.mjs`, etiquetado para leitores de tela e com nome e cargo no nome do arquivo. Rode o comando depois de mudar os dados e versione o PDF novo. Os nomes anteriores do arquivo redirecionam para ele.
 - `public/images/amanda-assumpcao.webp`: foto exibida no topo da página.
 - `public/images/og-image.jpg`: imagem de prévia exibida quando o link é compartilhado, com 1200 × 630 px. Ela é gerada por `node scripts/share-image.mjs`, que renderiza `scripts/share-image.html` com as fontes, o retrato e os dados de `src/data/profile.ts`. Rode o comando de novo depois de mudar nome, cargo ou foto.
 - A página tem uma versão para impressão: sem menu, sem decoração e com as seções escuras em tinta sobre branco.

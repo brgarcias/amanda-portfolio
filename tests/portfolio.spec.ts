@@ -115,7 +115,14 @@ test('oferece o currículo original e canais de contato válidos', async ({
     '/documents/Amanda-Assumpcao-Engenheira-de-Seguranca-do-Trabalho.pdf',
   );
   expect(response.headers()['content-type']).toContain('application/pdf');
-  expect((await response.body()).subarray(0, 5).toString()).toBe('%PDF-');
+  const pdf = await response.body();
+  expect(pdf.subarray(0, 5).toString()).toBe('%PDF-');
+  // The generator writes a tagged PDF, with the document language and an
+  // outline, so screen readers and recruiters' parsers get the structure.
+  const pdfSource = pdf.toString('latin1');
+  expect(pdfSource).toMatch(/\/Marked true/);
+  expect(pdfSource).toContain('/Lang (pt-BR)');
+  expect(pdfSource).toContain('/Outlines');
   await expect(
     page.getByRole('link', { name: /Conversar no WhatsApp/ }),
   ).toHaveAttribute('href', 'https://wa.me/5511996240704');
@@ -374,6 +381,7 @@ test('aplica os cabeçalhos de segurança sem bloquear a página', async ({
   );
   expect(headers['content-security-policy']).toContain("object-src 'none'");
   expect(headers['permissions-policy']).toContain('camera=()');
+  expect(headers['cross-origin-opener-policy']).toBe('same-origin');
   await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
   await expect(page.locator('.site-footer')).toBeInViewport();
   expect(
