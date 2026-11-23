@@ -29,7 +29,7 @@ jobs:
     if: github.event_name == 'pull_request' && github.event.pull_request.user.login == 'dependabot[bot]' && github.repository == 'brgarcias/amanda-portfolio'
     steps:
       - id: metadata
-        uses: dependabot/fetch-metadata@v2
+        uses: dependabot/fetch-metadata@v3
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - if: steps.metadata.outputs.update-type != 'version-update:semver-major' || startsWith(github.event.pull_request.head.ref, 'dependabot/github_actions/')
